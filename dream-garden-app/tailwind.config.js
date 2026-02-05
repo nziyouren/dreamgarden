@@ -37,17 +37,33 @@ export default {
             backgroundImage: {
                 'terrarium-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%)',
             },
-            animation: {
-                'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                'float': 'float 6s ease-in-out infinite',
-                'spin-slow': 'spin 3s linear infinite',
-            },
             keyframes: {
                 float: {
                     '0%, 100%': { transform: 'translateY(0)' },
                     '50%': { transform: 'translateY(-20px)' },
+                },
+                droop: {
+                    '0%, 100%': { transform: 'rotate(5deg)' },
+                    '50%': { transform: 'rotate(10deg)' },
+                },
+                tear: {
+                    '0%, 60%': { transform: 'translateY(0) scale(0)', opacity: '0' },
+                    '70%': { transform: 'translateY(0) scale(1)', opacity: '1' },
+                    '100%': { transform: 'translateY(24px) scale(0.5)', opacity: '0' },
+                },
+                sway: {
+                    '0%, 100%': { transform: 'rotate(-3deg)' },
+                    '50%': { transform: 'rotate(3deg)' },
                 }
-            }
+            },
+            animation: {
+                'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                'float': 'float 6s ease-in-out infinite',
+                'spin-slow': 'spin 3s linear infinite',
+                'droop': 'droop 3s ease-in-out infinite',
+                'tear': 'tear 4s ease-in-out infinite',
+                'sway': 'sway 4s ease-in-out infinite',
+            },
         },
     },
     plugins: [],
