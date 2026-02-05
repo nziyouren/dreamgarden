@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { useSuiClient, useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
-import { Transaction } from "@mysten/sui/transactions";
+import { Transaction, coinWithBalance } from "@mysten/sui/transactions";
 import { StableLayerClient } from "stable-layer-sdk";
 import { GiveUpDreamDialog } from "../components/GiveUpDreamDialog.tsx";
 import { useNavigate } from "react-router-dom";
 
+import { AddWaterDialog } from "../components/AddWaterDialog.tsx";
+
 // Constants (Should be moved to a config file)
+const USDC_TYPE = "0xa19934399e57864197F48FEF0A5E0f3900000000000000000000000000000000::usdc::USDC"; // Replace with actual Type
 const BTC_USD_TYPE = "0xb19934399e57864197F48FEF0A5E0f3900000000000000000000000000000000::btcusd::BTCUSD"; // Replace with actual Type
-// Note: Types above are placeholders. In a real scenario, these must match the deployed package.
 
 const sdk = new StableLayerClient({
     network: "testnet", // Adjust based on env
@@ -21,62 +23,74 @@ export function DashboardPage() {
     const navigate = useNavigate();
 
     const [balance, setBalance] = useState<string>("0.00");
+    const [usdcBalance, setUsdcBalance] = useState<string>("0.00");
     const [isGiveUpOpen, setIsGiveUpOpen] = useState(false);
+    const [isAddWaterOpen, setIsAddWaterOpen] = useState(false);
 
-    // Fetch Balance
+    // Fetch Balances
     useEffect(() => {
         if (!account) return;
 
-        const fetchBalance = async () => {
+        const fetchBalances = async () => {
             try {
                 // Fetch btcUSDC balance
-                const coinBalance = await suiClient.getBalance({
+                const lpRes = await suiClient.getBalance({
                     owner: account.address,
                     coinType: BTC_USD_TYPE
                 });
-                // Assuming 8 decimals? Adjust formatting accordingly
-                setBalance((parseInt(coinBalance.totalBalance) / 100_000_000).toFixed(2));
+                setBalance((parseInt(lpRes.totalBalance) / 100_000_000).toFixed(2));
+
+                // Fetch USDC balance
+                const usdcRes = await suiClient.getBalance({
+                    owner: account.address,
+                    coinType: USDC_TYPE
+                });
+                setUsdcBalance((parseInt(usdcRes.totalBalance) / 1_000_000).toFixed(2));
             } catch (e) {
-                console.error("Failed to fetch balance", e);
+                console.error("Failed to fetch balances", e);
             }
         };
 
-        fetchBalance();
-        const interval = setInterval(fetchBalance, 5000); // Poll every 5s
+        fetchBalances();
+        const interval = setInterval(fetchBalances, 5000); // Poll every 5s
         return () => clearInterval(interval);
     }, [account, suiClient]);
 
-    const handleAddWater = async () => {
+    const handleConfirmDeposit = async (amountStr: string) => {
         if (!account) return;
 
         const tx = new Transaction();
-        // Logic: Mint btcUSDC using USDC
+        const depositAmount = BigInt(Math.floor(parseFloat(amountStr) * 1_000_000));
 
         try {
             await sdk.buildMintTx({
                 tx,
-                amount: BigInt(1_000_000), // 1 USDC
+                amount: depositAmount,
                 sender: account.address,
-                // For now we assume typescript checks might fail if precise types like 'coinWithBalance' return types are needed
-                // but we use 'as any' to bypass for this generated file if needed.
-                // Actually, let's try strict typing if possible, but without exports from SDK it's hard.
-                // We use generic object structure.
+                usdcCoin: coinWithBalance({
+                    balance: depositAmount,
+                    type: USDC_TYPE,
+                })(tx),
                 autoTransfer: true,
                 lpToken: "btcUSDC" as any
-            } as any);
+            });
 
             signAndExecute({
                 transaction: tx,
             }, {
-                onSuccess: () => {
-                    console.log("Water added!");
+                onSuccess: (result) => {
+                    console.log("Water added!", result);
+                    setIsAddWaterOpen(false);
+                    alert(`Success! You added ${amountStr} USDC to your garden.`);
+                },
+                onError: (error) => {
+                    console.error("Transaction failed", error);
+                    alert("Transaction failed: " + error.message);
                 }
             });
         } catch (e) {
-            console.error("Mint failed", e);
-            // Fallback for demo
-            alert("Deposit simulation (Mock)");
-            setBalance((prev) => (parseFloat(prev) + 1).toFixed(2));
+            console.error("Mint setup failed", e);
+            alert("Deposit failed - Could not build transaction.");
         }
     };
 
@@ -118,6 +132,13 @@ export function DashboardPage() {
                 onConfirm={handleGiveUp}
             />
 
+            <AddWaterDialog
+                isOpen={isAddWaterOpen}
+                onClose={() => setIsAddWaterOpen(false)}
+                onConfirm={handleConfirmDeposit}
+                availableBalance={usdcBalance}
+            />
+
             <header className="w-full mb-8 text-center">
                 <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-text-main dark:text-white">
                     Let's grow your <br className="hidden sm:block" />
@@ -146,7 +167,7 @@ export function DashboardPage() {
                         </div>
                     </div>
 
-                    <button onClick={handleAddWater} className="group relative w-full py-6 bg-primary hover:bg-primary-dark text-background-dark rounded-[2rem] font-black text-xl shadow-[0_10px_0_0_#1a9e1a] hover:shadow-[0_5px_0_0_#1a9e1a] hover:translate-y-[5px] active:shadow-none active:translate-y-[10px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden">
+                    <button onClick={() => setIsAddWaterOpen(true)} className="group relative w-full py-6 bg-primary hover:bg-primary-dark text-background-dark rounded-[2rem] font-black text-xl shadow-[0_10px_0_0_#1a9e1a] hover:shadow-[0_5px_0_0_#1a9e1a] hover:translate-y-[5px] active:shadow-none active:translate-y-[10px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden">
                         <span className="material-symbols-outlined text-3xl animate-bounce">water_drop</span>
                         Add Water (Deposit)
                     </button>

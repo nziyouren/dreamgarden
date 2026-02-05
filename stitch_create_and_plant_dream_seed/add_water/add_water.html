@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add Water Deposit Modal (Improved Garden)</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#25f425",
+                        "primary-hover": "#1ee01e",
+                        "background-light": "#f5f8f5",
+                        "background-dark": "#102210",
+                        "brand-blue": "#40E0D0",
+                        "brand-yellow": "#FFD700",
+                        "brand-orange": "#FFA500",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a331a",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem", 
+                        "lg": "2rem", 
+                        "xl": "3rem", 
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'kids': '0px 8px 0px 0px rgba(0,0,0,0.1)',
+                        'kids-hover': '0px 4px 0px 0px rgba(0,0,0,0.1)',
+                        'kids-active': '0px 0px 0px 0px rgba(0,0,0,0.1)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .sparkle-animation {
+            animation: sparkle 2s infinite ease-in-out;
+        }
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }@keyframes sway {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        .sway-animation {
+            animation: sway 4s ease-in-out infinite;
+            transform-origin: 0px 0px;}.sprout-transition {
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.6s ease;
+            transform-origin: 0px 0px;
+        }
+        body {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased flex items-center justify-center min-h-screen p-4">
+<div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-0"></div>
+<div class="relative w-full max-w-[560px] bg-surface-light dark:bg-surface-dark rounded-xl shadow-2xl z-10 overflow-hidden border-4 border-[#dbe6db] dark:border-[#2a442a] flex flex-col max-h-[90vh]">
+<div class="absolute top-4 right-4 z-20">
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-[#f0f5f0]/80 dark:bg-[#2a442a]/80 text-[#111811] dark:text-white hover:bg-[#e0e5e0] dark:hover:bg-[#3a553a] transition-colors backdrop-blur-sm">
+<span class="material-symbols-outlined font-bold">close</span>
+</button>
+</div>
+<div class="overflow-y-auto flex-1 custom-scrollbar">
+<div class="w-full h-[260px] bg-[#87CEEB] relative overflow-hidden flex justify-center items-end border-b-4 border-[#7AB8D1]">
+<svg class="w-full h-full absolute inset-0 pointer-events-none" preserveAspectRatio="xMidYMax slice" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="soilGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#8D6E63;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#5D4037;stop-opacity:1"></stop>
+</linearGradient>
+</defs>
+<rect fill="#87CEEB" height="300" width="600"></rect>
+<g fill="#FFFFFF" opacity="0.8">
+<circle cx="100" cy="60" r="30"></circle>
+<circle cx="140" cy="70" r="25"></circle>
+<circle cx="60" cy="70" r="25"></circle>
+<circle cx="440" cy="90" r="35"></circle>
+<circle cx="490" cy="110" r="30"></circle>
+<circle cx="390" cy="100" r="25"></circle>
+</g>
+<g transform="translate(0, 20)">
+<ellipse cx="300" cy="300" fill="url(#soilGradient)" rx="180" ry="80"></ellipse>
+<circle cx="250" cy="280" fill="#4E342E" opacity="0.1" r="8"></circle>
+<circle cx="350" cy="310" fill="#4E342E" opacity="0.1" r="12"></circle>
+<circle cx="300" cy="330" fill="#4E342E" opacity="0.1" r="6"></circle>
+<circle cx="200" cy="300" fill="#4E342E" opacity="0.1" r="5"></circle>
+<circle cx="400" cy="290" fill="#4E342E" opacity="0.1" r="7"></circle>
+<g fill="#A1887F">
+<ellipse cx="220" cy="300" rx="8" ry="5"></ellipse>
+<ellipse cx="380" cy="310" fill="#8D6E63" rx="6" ry="4"></ellipse>
+<ellipse cx="235" cy="310" fill="#BCAAA4" rx="5" ry="3"></ellipse>
+</g>
+<g fill="#66BB6A">
+<path d="M160,300 l-5,-15 l10,0 z" transform="translate(0, 5) rotate(-10 160 300)"></path>
+<path d="M165,300 l-3,-12 l6,0 z" transform="translate(0, 8)"></path>
+<path d="M440,300 l-5,-15 l10,0 z" transform="translate(0, 5) rotate(10 440 300)"></path>
+<path d="M435,300 l-3,-12 l6,0 z" transform="translate(0, 8)"></path>
+</g>
+<g transform="translate(260, 270)">
+<path d="M0,0 Q-5,-10 0,-30" fill="none" stroke="#66BB6A" stroke-linecap="round" stroke-width="3"></path>
+<g transform="translate(0, -30)">
+<circle cx="0" cy="-5" fill="#FDD835" r="6"></circle>
+<circle cx="5" cy="-2" fill="#FDD835" r="6"></circle>
+<circle cx="3" cy="4" fill="#FDD835" r="6"></circle>
+<circle cx="-3" cy="4" fill="#FDD835" r="6"></circle>
+<circle cx="-5" cy="-2" fill="#FDD835" r="6"></circle>
+<circle fill="#F57F17" r="4"></circle>
+</g>
+</g>
+<g transform="translate(340, 275)">
+<path d="M0,0 Q5,-10 0,-30" fill="none" stroke="#66BB6A" stroke-linecap="round" stroke-width="3"></path>
+<g transform="translate(0, -30)">
+<circle cx="0" cy="-5" fill="#F48FB1" r="6"></circle>
+<circle cx="5" cy="-2" fill="#F48FB1" r="6"></circle>
+<circle cx="3" cy="4" fill="#F48FB1" r="6"></circle>
+<circle cx="-3" cy="4" fill="#F48FB1" r="6"></circle>
+<circle cx="-5" cy="-2" fill="#F48FB1" r="6"></circle>
+<circle fill="#C2185B" r="4"></circle>
+</g>
+</g>
+</g>
+<g transform="translate(300, 280)">
+<g class="sprout-transition" id="sprout-scaler">
+<g class="sway-animation">
+<rect fill="#66BB6A" height="50" width="6" x="-3" y="-50"></rect>
+<ellipse cx="-15" cy="-25" fill="#66BB6A" rx="15" ry="8" transform="rotate(-30 -15 -25)"></ellipse>
+<ellipse cx="15" cy="-25" fill="#66BB6A" rx="15" ry="8" transform="rotate(30 15 -25)"></ellipse>
+<circle cx="0" cy="-55" fill="#81C784" r="16"></circle>
+<circle cx="-5" cy="-58" fill="#1B5E20" r="2"></circle>
+<circle cx="5" cy="-58" fill="#1B5E20" r="2"></circle>
+<path d="M-5,-52 Q0,-48 5,-52" fill="none" stroke="#1B5E20" stroke-linecap="round" stroke-width="2"></path>
+</g>
+</g>
+</g>
+<g transform="translate(210, 80)">
+<g transform="translate(85, 30)">
+<circle cx="0" cy="0" fill="#E1F5FE" r="4">
+<animate attributeName="cy" begin="0s" dur="1s" from="0" repeatCount="indefinite" to="180"></animate>
+<animate attributeName="opacity" begin="0s" dur="1s" repeatCount="indefinite" values="1;0"></animate>
+</circle>
+<circle cx="0" cy="0" fill="#B3E5FC" r="3">
+<animate attributeName="cy" begin="0.3s" dur="1s" from="0" repeatCount="indefinite" to="180"></animate>
+<animate attributeName="opacity" begin="0.3s" dur="1s" repeatCount="indefinite" values="1;0"></animate>
+</circle>
+<circle cx="0" cy="0" fill="#E1F5FE" r="4">
+<animate attributeName="cy" begin="0.6s" dur="1s" from="0" repeatCount="indefinite" to="180"></animate>
+<animate attributeName="opacity" begin="0.6s" dur="1s" repeatCount="indefinite" values="1;0"></animate>
+</circle>
+</g>
+<g transform="rotate(-20 50 50)">
+<path d="M10,20 C-20,20 -20,80 10,80" fill="none" stroke="#E65100" stroke-linecap="round" stroke-width="10"></path>
+<rect fill="#FF9800" height="80" rx="8" width="80" x="10" y="10"></rect>
+<path d="M90,30 L130,10 L135,30 L90,50 Z" fill="#FF9800"></path>
+<rect fill="#E65100" height="30" rx="2" transform="rotate(10 133 20)" width="10" x="128" y="5"></rect>
+<rect fill="#F57C00" height="10" opacity="0.3" width="80" x="10" y="70"></rect>
+<circle cx="50" cy="45" fill="#FFB74D" r="15"></circle>
+</g>
+</g>
+</svg>
+</div>
+<div class="px-6 sm:px-10 py-8 flex flex-col items-center">
+<h2 class="text-[#111811] dark:text-white text-3xl font-extrabold tracking-tight text-center mb-2 leading-tight">
+                Time to water your seed!
+            </h2>
+<p class="text-[#608a60] dark:text-[#a0cfa0] text-center font-medium text-lg mb-8">
+                How much water (gold) will you add today?
+            </p>
+<div class="w-full relative mb-8 group">
+<div class="absolute left-4 top-1/2 -translate-y-1/2 text-brand-orange">
+<span class="material-symbols-outlined text-3xl">savings</span>
+</div>
+<input class="w-full bg-[#f0f5f0] dark:bg-[#152e15] border-2 border-transparent focus:border-primary dark:focus:border-primary text-[#111811] dark:text-white text-3xl font-bold rounded-lg py-5 pl-14 pr-20 text-center placeholder-[#a0bca0] focus:ring-0 transition-all outline-none" placeholder="0.00" type="number" value=""/>
+<span class="absolute right-6 top-1/2 -translate-y-1/2 text-[#111811] dark:text-white font-bold text-xl opacity-60">GOLD</span>
+</div>
+<div class="w-full grid grid-cols-4 gap-3 sm:gap-4 mb-8">
+<button class="group flex flex-col items-center gap-1 active:scale-95 transition-transform focus:outline-none" onclick="updateGrowth(1.2)">
+<div class="w-full aspect-square bg-brand-blue/10 dark:bg-brand-blue/20 rounded-full flex items-center justify-center border-2 border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white transition-colors cursor-pointer shadow-kids hover:shadow-kids-hover active:shadow-kids-active active:translate-y-[4px]">
+<span class="text-lg sm:text-xl font-bold">25%</span>
+</div>
+</button>
+<button class="group flex flex-col items-center gap-1 active:scale-95 transition-transform focus:outline-none" onclick="updateGrowth(1.5)">
+<div class="w-full aspect-square bg-brand-yellow/10 dark:bg-brand-yellow/20 rounded-full flex items-center justify-center border-2 border-brand-yellow text-brand-orange hover:bg-brand-yellow hover:text-[#111811] transition-colors cursor-pointer shadow-kids hover:shadow-kids-hover active:shadow-kids-active active:translate-y-[4px]">
+<span class="text-lg sm:text-xl font-bold">50%</span>
+</div>
+</button>
+<button class="group flex flex-col items-center gap-1 active:scale-95 transition-transform focus:outline-none" onclick="updateGrowth(1.8)">
+<div class="w-full aspect-square bg-brand-orange/10 dark:bg-brand-orange/20 rounded-full flex items-center justify-center border-2 border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white transition-colors cursor-pointer shadow-kids hover:shadow-kids-hover active:shadow-kids-active active:translate-y-[4px]">
+<span class="text-lg sm:text-xl font-bold">75%</span>
+</div>
+</button>
+<button class="group flex flex-col items-center gap-1 active:scale-95 transition-transform focus:outline-none" onclick="updateGrowth(2.4, true)">
+<div class="w-full aspect-square bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center border-2 border-primary text-primary-hover dark:text-primary hover:bg-primary hover:text-[#111811] transition-colors cursor-pointer shadow-kids hover:shadow-kids-hover active:shadow-kids-active active:translate-y-[4px]">
+<span class="text-lg sm:text-xl font-bold">ALL</span>
+</div>
+</button>
+</div>
+<div class="w-full flex items-start gap-3 bg-[#e6fcf5] dark:bg-[#1a331a] p-4 rounded-lg mb-8 border border-brand-blue/20">
+<span class="material-symbols-outlined text-brand-blue shrink-0">info</span>
+<p class="text-sm text-[#111811] dark:text-[#dbe6db] font-medium leading-snug">
+                    Adding water helps your seed grow faster! You have <span class="font-bold text-brand-orange">124.50 Gold</span> available.
+                </p>
+</div>
+<button class="w-full bg-primary hover:bg-primary-hover text-[#111811] text-xl font-bold py-5 rounded-lg shadow-kids hover:shadow-kids-hover active:shadow-kids-active active:translate-y-[4px] transition-all flex items-center justify-center gap-3">
+<span class="material-symbols-outlined font-bold">water_drop</span>
+                Confirm Deposit
+            </button>
+</div>
+</div>
+</div>
+<script>
+    function updateGrowth(scale, isMax = false) {
+        const sprout = document.getElementById('sprout-scaler');
+        if (!sprout) return;
+        sprout.style.transform = `scale(${scale})`;
+        if (isMax) {
+            // Make it vibrant with a drop shadow glow and increased saturation
+            sprout.style.filter = 'saturate(1.8) drop-shadow(0 0 15px rgba(37, 244, 37, 0.6)) brightness(1.1)';
+        } else {
+            sprout.style.filter = 'none';
+        }
+    }
+</script>
+
+</body></html>
