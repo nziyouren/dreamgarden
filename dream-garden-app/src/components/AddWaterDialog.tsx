@@ -35,19 +35,19 @@ export function AddWaterDialog({ isOpen, onClose, onConfirm, availableBalance }:
             ></div>
 
             {/* Modal Content */}
-            <div className="relative w-full max-w-[560px] bg-white dark:bg-[#1a331a] rounded-xl shadow-2xl z-20 overflow-hidden border-4 border-[#dbe6db] dark:border-[#2a442a] flex flex-col max-h-[90vh]">
-                <div className="absolute top-4 right-4 z-30">
+            <div className="relative w-full max-w-[420px] bg-white dark:bg-[#1a331a] rounded-3xl shadow-2xl z-20 overflow-hidden border-4 border-[#dbe6db] dark:border-[#2a442a] flex flex-col max-h-[90vh]">
+                <div className="absolute top-3 right-3 z-30">
                     <button
                         onClick={onClose}
-                        className="flex items-center justify-center w-10 h-10 rounded-full bg-[#f0f5f0]/80 dark:bg-[#2a442a]/80 text-[#111811] dark:text-white hover:bg-[#e0e5e0] dark:hover:bg-[#3a553a] transition-colors backdrop-blur-sm"
+                        className="flex items-center justify-center w-8 h-8 rounded-full bg-[#f0f5f0]/80 dark:bg-[#2a442a]/80 text-[#111811] dark:text-white hover:bg-[#e0e5e0] dark:hover:bg-[#3a553a] transition-colors backdrop-blur-sm"
                     >
-                        <span className="material-symbols-outlined font-bold text-sm">close</span>
+                        <span className="material-symbols-outlined font-bold text-xs">close</span>
                     </button>
                 </div>
 
                 <div className="overflow-y-auto flex-1 scrollbar-hide">
                     {/* Visual Section */}
-                    <div className="w-full h-[260px] bg-[#87CEEB] relative overflow-hidden flex justify-center items-end border-b-4 border-[#7AB8D1]">
+                    <div className="w-full h-[180px] bg-[#87CEEB] relative overflow-hidden flex justify-center items-end border-b-4 border-[#7AB8D1]">
                         <svg className="w-full h-full absolute inset-0 pointer-events-none" preserveAspectRatio="xMidYMax slice" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="soilGradient" x1="0%" x2="0%" y1="0%" y2="100%">
@@ -91,7 +91,7 @@ export function AddWaterDialog({ isOpen, onClose, onConfirm, availableBalance }:
                             <g transform="translate(300, 280)">
                                 <g
                                     style={{
-                                        transform: `scale(${growthScale})`,
+                                        transform: `scale(${growthScale * 0.75})`,
                                         filter: isMax ? 'saturate(1.8) drop-shadow(0 0 15px rgba(37, 244, 37, 0.6)) brightness(1.1)' : 'none',
                                         transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.6s ease',
                                         transformOrigin: '0px 0px'
@@ -131,27 +131,27 @@ export function AddWaterDialog({ isOpen, onClose, onConfirm, availableBalance }:
                         </svg>
                     </div>
 
-                    <div className="px-6 sm:px-10 py-8 flex flex-col items-center">
-                        <h2 className="text-[#111811] dark:text-white text-3xl font-extrabold tracking-tight text-center mb-2 leading-tight">
+                    <div className="px-6 py-6 flex flex-col items-center">
+                        <h2 className="text-[#111811] dark:text-white text-2xl font-extrabold tracking-tight text-center mb-1 leading-tight">
                             Time to water your seed!
                         </h2>
-                        <p className="text-[#608a60] dark:text-[#a0cfa0] text-center font-medium text-lg mb-8">
+                        <p className="text-[#608a60] dark:text-[#a0cfa0] text-center font-medium text-base mb-6">
                             How much water (gold) will you add today?
                         </p>
 
                         {/* Gold Input */}
-                        <div className="w-full relative mb-8 group">
+                        <div className="w-full relative mb-6 group">
                             <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#FFA500]">
-                                <span className="material-symbols-outlined text-3xl font-variation-fill">savings</span>
+                                <span className="material-symbols-outlined text-2xl font-variation-fill">savings</span>
                             </div>
                             <input
-                                className="w-full bg-[#f0f5f0] dark:bg-[#152e15] border-2 border-transparent focus:border-primary dark:focus:border-primary text-[#111811] dark:text-white text-3xl font-bold rounded-lg py-5 pl-14 pr-20 text-center placeholder-[#a0bca0] focus:ring-0 transition-all outline-none"
+                                className="w-full bg-[#f0f5f0] dark:bg-[#152e15] border-2 border-transparent focus:border-primary dark:focus:border-primary text-[#111811] dark:text-white text-2xl font-bold rounded-xl py-3 pl-12 pr-16 text-center placeholder-[#a0bca0] focus:ring-0 transition-all outline-none"
                                 placeholder="0.00"
                                 type="number"
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
                             />
-                            <span className="absolute right-6 top-1/2 -translate-y-1/2 text-[#111811] dark:text-white font-bold text-xl opacity-60 tracking-tight">GOLD</span>
+                            <span className="absolute right-6 top-1/2 -translate-y-1/2 text-[#111811] dark:text-white font-bold text-lg opacity-60 tracking-tight">GOLD</span>
                         </div>
 
                         {/* Quick Targets */}
