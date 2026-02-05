@@ -1,5 +1,5 @@
-import { ConnectModal } from "@mysten/dapp-kit";
-import { useState } from "react";
+import { ConnectModal, useCurrentAccount } from "@mysten/dapp-kit";
+import { useState, useEffect } from "react";
 
 interface ConnectWalletDialogProps {
     isOpen: boolean;
@@ -8,6 +8,13 @@ interface ConnectWalletDialogProps {
 
 export function ConnectWalletDialog({ isOpen, onClose }: ConnectWalletDialogProps) {
     const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
+    const account = useCurrentAccount();
+
+    useEffect(() => {
+        if (account && isOpen) {
+            onClose();
+        }
+    }, [account, isOpen, onClose]);
 
     if (!isOpen) return null;
 
