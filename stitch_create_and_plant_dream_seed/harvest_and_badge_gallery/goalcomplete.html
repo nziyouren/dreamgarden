@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Harvest and Badge Gallery - Dream Seeds</title>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#25f425",
+                        "background-light": "#f5f8f5",
+                        "background-dark": "#102210",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111811] dark:text-gray-100 overflow-x-hidden min-h-screen flex flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e5ece5] dark:border-[#2a442a] px-6 py-4 bg-white dark:bg-[#1a2e1a] sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="size-10 flex items-center justify-center bg-primary rounded-full text-[#111811]">
+<span class="material-symbols-outlined">potted_plant</span>
+</div>
+<h2 class="text-[#111811] dark:text-white text-xl font-bold leading-tight tracking-tight">Dream Seeds</h2>
+</div>
+<nav class="hidden md:flex flex-1 justify-center gap-8">
+<a class="text-[#111811] dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors text-sm font-semibold" href="#">My Garden</a>
+<a class="text-[#111811] dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors text-sm font-semibold" href="#">Vault</a>
+<a class="text-[#111811] dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors text-sm font-semibold" href="#">Badges</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center gap-2 bg-background-light dark:bg-background-dark px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700">
+<span class="material-symbols-outlined text-primary text-xl">monetization_on</span>
+<span class="font-bold text-sm">240 SDS</span>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary ring-offset-2 dark:ring-offset-[#1a2e1a]" data-alt="User profile avatar of a smiling child" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBDTEFbNP3pgmS_-WKrXLCdZ6GWSp-k4cTvttWBv-iGxRqWDimiDFLstyO2oAV0eEKgqcXy7QIQKJ3poCGkTRPOgFzWb-jT_kgHNHvffGmMhDPHj68qPYDp37NKruYrWNNe3bSsEm5FR9Nq1s3I_OzeZQe48e0Yw2kOhJnY3zkQ2e7ugnPc2gmQG2e81-MUkmzFzHYp_p3UBeYWVq0rnmnpFpjTqqYLwVMAQ2Fs9dW5IQil6K1cd_Pvvy4tyhgkgrJM4yfj-5LspLs");'></div>
+</div>
+</header>
+<main class="flex-1 px-4 py-8 md:px-10 md:py-10 flex justify-center">
+<div class="w-full max-w-[1024px] flex flex-col gap-10">
+<section class="flex flex-col gap-8 relative">
+<div class="relative overflow-visible rounded-xl bg-[#111811] p-8 md:p-12 text-white shadow-lg flex flex-col items-center text-center gap-6 mt-8">
+<div class="absolute inset-0 rounded-xl overflow-hidden">
+<div class="absolute inset-0 opacity-30 bg-[url('https://images.unsplash.com/photo-1514525253440-b393452e8d26?q=80&amp;w=1000&amp;auto=format&amp;fit=crop')] bg-cover bg-center mix-blend-screen pointer-events-none" data-alt="Abstract colorful confetti explosion pattern"></div>
+</div>
+<div class="absolute -top-16 md:-top-20 left-1/2 -translate-x-1/2 z-20 animate-float">
+<div class="relative group cursor-pointer">
+<div class="absolute inset-0 bg-primary/50 blur-3xl rounded-full animate-pulse-slow"></div>
+<div class="relative w-32 h-32 md:w-40 md:h-40 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full p-2 shadow-[0_10px_40px_rgba(255,200,0,0.4)] border-4 border-white dark:border-[#1a2e1a] ring-4 ring-primary/30">
+<div class="w-full h-full bg-white dark:bg-[#1a2e1a] rounded-full flex flex-col items-center justify-center text-center p-2 relative overflow-hidden">
+<div class="absolute inset-0 bg-[url('https://lh3.googleusercontent.com/aida-public/AB6AXuCrpps9woKv_5nm9gBAdZbtcCFXkSlMCR1KxSLAZTzcY8qdEs1GvnCfppDAyI13z5yPwCsONlA-n0ZS_QXGUPhLiFHShr8oE-TwN2xQuj8MlPCBaWwj_SyhCZrfrVV_tyAwcd83wq3C50SD7eXcMHh2FkphRzRYer6rcp7y_883ZrJUuK2eclzzNgZJgl1RbhhP6HCBJ5sQMd1FTJJjEkqhb5J7t__2aOcdMYTJxgjlHlDmU__PiBGcKSPsoeBwUvIw-fglax8C7Dg')] bg-cover bg-center opacity-90"></div>
+</div>
+<div class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-primary text-[#111811] px-4 py-1 rounded-full text-sm font-black uppercase tracking-wider whitespace-nowrap shadow-lg border-2 border-white">
+                                New Badge!
+                            </div>
+</div>
+</div>
+</div>
+<div class="relative z-10 flex flex-col gap-4 mt-16 max-w-2xl">
+<h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight drop-shadow-sm">
+                        Goal Complete!
+                    </h1>
+<p class="text-gray-300 text-lg md:text-xl leading-relaxed">
+                        Incredible job! You've fully grown your dream seed. The funds are ready to be withdrawn, and your badge has been added to the collection.
+                    </p>
+</div>
+</div>
+<div class="@container">
+<div class="flex flex-col md:flex-row items-stretch rounded-xl overflow-hidden shadow-2xl bg-white dark:bg-[#1a2e1a] border border-gray-100 dark:border-[#2a442a]">
+<div class="w-full md:w-5/12 bg-gray-100 relative h-64 md:h-auto group overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="Shiny red mountain bike in a forest setting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAjPrsXRgvyrpnjtLGMvxtpyjtb5KCMTlVjWAzyi5BZtFTywszId05oFAf-Fe8p8Ln-CBbk_5ZCQ2ZhWhTo2cWPGHq77q5S1tvdOHO63LHeOIDHFOXSLLU0ftqWt3APxP8_fWEMGnC9ZsptBvP_4F5tS_oAX31NdTX3D9b-a5ICjiiIIBH4Eq_p_381eG0LoGzcjb1RKKwTeoZmbYezMv0C3jKsZGEH12i6PhngzXu4LFN7ZcmcXpxwjIe2AVyfg1Y7-fLaS-3Mvig");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
+<div class="absolute bottom-4 left-4 text-white">
+<div class="text-xs font-bold uppercase tracking-wider opacity-80 mb-1">Target Acquired</div>
+<div class="text-xl font-bold">Shiny Mountain Bike</div>
+</div>
+</div>
+<div class="flex flex-col justify-center p-6 md:p-8 gap-6 w-full md:w-7/12 relative">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="text-2xl font-bold text-[#111811] dark:text-white">Ready to Harvest</h2>
+<p class="text-gray-500 dark:text-gray-400">Total Saved: <span class="text-primary font-bold">0.5 ETH</span></p>
+</div>
+<div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                                100% Funded
+                            </div>
+</div>
+<div class="bg-background-light dark:bg-background-dark p-4 rounded-lg border border-gray-100 dark:border-gray-700">
+<h4 class="font-bold text-sm text-[#111811] dark:text-gray-200 mb-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">restart_alt</span>
+                                Fresh Start
+                            </h4>
+<p class="text-sm text-gray-600 dark:text-gray-400 leading-snug">
+                                This action will transfer all funds to your wallet and <span class="font-semibold text-gray-800 dark:text-gray-200">reset this seed slot</span> so you can start saving for a new dream immediately.
+                            </p>
+</div>
+<div class="flex flex-col gap-3 mt-2">
+<button class="w-full bg-primary hover:bg-[#1ee01e] active:scale-[0.99] transition-all text-[#111811] font-bold text-lg h-14 rounded-full flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(37,244,37,0.4)]">
+<span class="material-symbols-outlined">agriculture</span>
+<span>Harvest &amp; Reset</span>
+</button>
+<div class="flex justify-center">
+<button class="text-gray-400 hover:text-red-500 text-sm font-medium transition-colors flex items-center gap-1 py-2">
+<span class="material-symbols-outlined text-sm">delete</span>
+                                    Cancel Goal &amp; Withdraw Only
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="h-px w-full bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent"></div>
+<section>
+<div class="flex items-center justify-between mb-6 px-2">
+<h3 class="text-2xl font-bold text-[#111811] dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">military_tech</span>
+                    My Badge Collection
+                </h3>
+<a class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-primary transition-colors flex items-center gap-1" href="#">
+                    View all
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+<div class="group relative flex flex-col items-center gap-3 p-4 bg-gradient-to-b from-primary/20 to-transparent rounded-xl border border-primary/40 shadow-sm transition-all ring-2 ring-primary ring-offset-2 ring-offset-white dark:ring-offset-[#102210]">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-[#111811] text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide z-10 shadow-sm">Just Earned</div>
+<div class="w-20 h-20 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center p-1">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover rounded-full" data-alt="Golden star medal icon" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCrpps9woKv_5nm9gBAdZbtcCFXkSlMCR1KxSLAZTzcY8qdEs1GvnCfppDAyI13z5yPwCsONlA-n0ZS_QXGUPhLiFHShr8oE-TwN2xQuj8MlPCBaWwj_SyhCZrfrVV_tyAwcd83wq3C50SD7eXcMHh2FkphRzRYer6rcp7y_883ZrJUuK2eclzzNgZJgl1RbhhP6HCBJ5sQMd1FTJJjEkqhb5J7t__2aOcdMYTJxgjlHlDmU__PiBGcKSPsoeBwUvIw-fglax8C7Dg");'></div>
+</div>
+<div class="text-center">
+<p class="font-bold text-[#111811] dark:text-white">Goal Reached</p>
+<p class="text-xs text-gray-500">Completed savings</p>
+</div>
+</div>
+<div class="group relative flex flex-col items-center gap-3 p-4 bg-white dark:bg-[#1a2e1a] rounded-xl border border-gray-100 dark:border-[#2a442a] shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+<div class="w-20 h-20 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center relative">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover rounded-full" data-alt="3D render of a simple sprouting plant icon" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuARjDSQTeGycgCdevLU8r3eZSu3IxzP63iCDfkFm3WLnayZlajCmD4TOq5qmLIzatgAcI2JLpoLDQGIZRAAEe4w2lcH4OQ_83nu59sCBxrafzTBC6Mkfezj-qsP5MHYHXQZa8hd293TX0Gfpd8a3-6d3eo6vN8oohCdiyTfJ350ySG2BRWmrqNjTE1B0fm_n0OSPKJLg3BsfkvQ3MSMcLcjT3Zkpx7x5rJkqT2dI1g3KUw_-Xwpmtv0jqXV33ok4_BUzYVPaTSoAGw");'></div>
+</div>
+<div class="text-center">
+<p class="font-bold text-[#111811] dark:text-white">First Seed</p>
+<p class="text-xs text-gray-500">Planted 1st goal</p>
+</div>
+</div>
+<div class="group relative flex flex-col items-center gap-3 p-4 bg-white dark:bg-[#1a2e1a] rounded-xl border border-gray-100 dark:border-[#2a442a] shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+<div class="w-20 h-20 rounded-full bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover rounded-full" data-alt="Piggy bank icon with coins" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCdxGVV5xlHydsp-uvvjuwdLhUbcFXeJxzYDwcGqHjgq9NwjywZeIeawr31not5W2vXlizT9SUuKxnUR6rv8PFNtoy1Ye5sQchUfDP7aWPqU6aWgfdGAsOA1mKpTH6c18c2o45mZZyY0ZZePT4Tj6l9NaZpeLb03UCCQofmrT4p8UpxaeBLETvDdiFAzqpwKbbBeVKW3WOAFvvugYBcsn04S2pQYU2V4J-R8eCEZyAt1TGu7U08AweOlSctht8Kj2vIdUNESyunA-c");'></div>
+</div>
+<div class="text-center">
+<p class="font-bold text-[#111811] dark:text-white">Super Saver</p>
+<p class="text-xs text-gray-500">Saved for 30 days</p>
+</div>
+</div>
+<div class="group relative flex flex-col items-center gap-3 p-4 bg-white dark:bg-[#1a2e1a] rounded-xl border border-gray-100 dark:border-[#2a442a] shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+<div class="w-20 h-20 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center p-2">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover rounded-full" data-alt="Abstract digital blockchain cube icon" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBoVjr5TgY5kGnkLCH2RWtTjnXQpj-4c-AioRFmt6v1YkrTwEXPJ_VGy-OINc_il4-fV6q8PEop3pceNUBbRciJhaS9I2vM360wgV3RSoum8AhKb7ABHoZ9NDHLub3XFe8QZ-a86BSNJ9yBTHoaU2_sE6ml8Fa0bQnjMXr6z7_3gTpec5tB46n9_hTmW0cYvcS52OOcjJloYj-2yVrGu-6Tgg4RLz1VEDEM9SUAvhlq1d1iCvCDIu8jZ7Ht0yo4FVQ-RFT7vYUHHvo");'></div>
+</div>
+<div class="text-center">
+<p class="font-bold text-[#111811] dark:text-white">Crypto Whiz</p>
+<p class="text-xs text-gray-500">Learned basics</p>
+</div>
+</div>
+<div class="group relative flex flex-col items-center gap-3 p-4 bg-gray-50 dark:bg-[#152515] rounded-xl border border-gray-100 dark:border-[#2a442a] opacity-60">
+<div class="w-20 h-20 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-gray-400 text-3xl">lock</span>
+</div>
+<div class="text-center">
+<p class="font-bold text-gray-500 dark:text-gray-400">Master Gardener</p>
+<p class="text-xs text-gray-400">Locked</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<div aria-labelledby="modal-title" aria-modal="true" class="hidden relative z-[100]" id="delete-modal" role="dialog">
+<div class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm transition-opacity"></div>
+<div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+<div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+<div class="relative transform overflow-hidden rounded-2xl bg-white dark:bg-[#1a2e1a] text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-gray-200 dark:border-[#2a442a]">
+<div class="bg-white dark:bg-[#1a2e1a] px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+<div class="sm:flex sm:items-start">
+<div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20 sm:mx-0 sm:h-10 sm:w-10">
+<span class="material-symbols-outlined text-red-600 dark:text-red-400">warning</span>
+</div>
+<div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+<h3 class="text-lg font-semibold leading-6 text-gray-900 dark:text-white" id="modal-title">Delete Dream &amp; Withdraw?</h3>
+<div class="mt-2">
+<p class="text-sm text-gray-500 dark:text-gray-400">
+                                    Are you sure you want to cancel this dream? You will withdraw your current savings (0.5 ETH) to your wallet, but the dream slot will be cleared and this goal will be marked as incomplete.
+                                </p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 dark:bg-[#152515] px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+<button class="inline-flex w-full justify-center rounded-full bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" type="button">Delete &amp; Withdraw</button>
+<button class="mt-3 inline-flex w-full justify-center rounded-full bg-white dark:bg-transparent px-3 py-2 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 sm:mt-0 sm:w-auto" type="button">Keep Dream</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="mt-12 py-6 border-t border-[#e5ece5] dark:border-[#2a442a] text-center">
+<p class="text-sm text-gray-500 dark:text-gray-400">© 2024 Dream Seeds. Growing financial futures.</p>
+</footer>
+
+</body></html>

@@ -1,0 +1,25 @@
+
+> dream-garden-app@0.0.0 build
+> tsc -b && vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+[plugin vite:resolve] Module "node:buffer" has been externalized for browser compatibility, imported by "/Users/zhang/Documents/xxhackton/dreamgarden/dream-garden-app/node_modules/@pythnetwork/pyth-sui-js/dist/esm/SuiPriceServiceConnection.mjs". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+[plugin vite:resolve] Module "node:buffer" has been externalized for browser compatibility, imported by "/Users/zhang/Documents/xxhackton/dreamgarden/dream-garden-app/node_modules/@pythnetwork/pyth-sui-js/dist/esm/client.mjs". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+✓ 558 modules transformed.
+✗ Build failed in 2.44s
+error during build:
+[vite]: Rollup failed to resolve import "axios" from "/Users/zhang/Documents/xxhackton/dreamgarden/dream-garden-app/node_modules/@zodios/core/lib/index.mjs".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+    at viteLog (file:///Users/zhang/Documents/xxhackton/dreamgarden/dream-garden-app/node_modules/vite/dist/node/chunks/config.js:33635:57)
+    at file:///Users/zhang/Documents/xxhackton/dreamgarden/dream-garden-app/node_modules/vite/dist/node/chunks/config.js:33669:73
+    at onwarn (file:///Users/zhang/Documents/xxhackton/dreamgarden/dream-garden-app/node_modules/@vitejs/plugin-react/dist/index.js:76:7)
+    at file:///Users/zhang/Documents/xxhackton/dreamgarden/dream-garden-app/node_modules/vite/dist/node/chunks/config.js:33669:28
+    at onRollupLog (file:///Users/zhang/Documents/xxhackton/dreamgarden/dream-garden-app/node_modules/vite/dist/node/chunks/config.js:33664:63)
+    at onLog (file:///Users/zhang/Documents/xxhackton/dreamgarden/dream-garden-app/node_modules/vite/dist/node/chunks/config.js:33467:4)
+    at file:///Users/zhang/Documents/xxhackton/dreamgarden/dream-garden-app/node_modules/rollup/dist/es/shared/node-entry.js:20958:32
+    at Object.logger [as onLog] (file:///Users/zhang/Documents/xxhackton/dreamgarden/dream-garden-app/node_modules/rollup/dist/es/shared/node-entry.js:22945:9)
+    at ModuleLoader.handleInvalidResolvedId (file:///Users/zhang/Documents/xxhackton/dreamgarden/dream-garden-app/node_modules/rollup/dist/es/shared/node-entry.js:21689:26)
+    at file:///Users/zhang/Documents/xxhackton/dreamgarden/dream-garden-app/node_modules/rollup/dist/es/shared/node-entry.js:21647:26
