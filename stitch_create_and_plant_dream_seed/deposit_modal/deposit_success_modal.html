@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Deposit Success Modal</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f48c25",
+                        "primary-dark": "#d67315",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#221910",
+                        "accent-blue": "#4ABDE7",
+                        "accent-green": "#7AC74F",
+                        "text-main": "#181411",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>@keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes confetti-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-pop-in {
+            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        .animate-spin-slow {
+            animation: confetti-spin 4s linear infinite;
+        }.confetti-piece {
+            position: absolute;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark min-h-screen flex items-center justify-center relative overflow-hidden text-text-main">
+<div class="absolute inset-0 bg-white/60 dark:bg-black/40 backdrop-blur-sm z-0"></div>
+<div class="absolute top-10 left-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl"></div>
+<div class="absolute bottom-20 right-20 w-48 h-48 bg-accent-blue/20 rounded-full blur-3xl"></div>
+<main class="relative z-10 w-full max-w-md mx-4 animate-pop-in">
+<div class="relative bg-white dark:bg-[#2C241B] rounded-[48px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden border-4 border-white dark:border-[#3a3025]">
+<button aria-label="Close modal" class="absolute top-6 right-6 z-50 p-2 text-text-main/40 hover:text-text-main hover:bg-black/5 rounded-full transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-3xl font-bold">close</span>
+</button>
+<div class="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
+<div class="confetti-piece top-8 left-8 text-primary animate-spin-slow" style="animation-duration: 5s;">
+<span class="material-symbols-outlined text-4xl">star</span>
+</div>
+<div class="confetti-piece top-20 left-4 text-accent-blue transform rotate-45">
+<div class="w-4 h-4 rounded-full bg-current"></div>
+</div>
+<div class="confetti-piece top-6 right-10 text-accent-green animate-spin-slow" style="animation-duration: 7s;">
+<svg fill="currentColor" height="24" viewBox="0 0 24 24" width="24"><path d="M12 2L15 22L2 9L22 9L9 22Z"></path></svg>
+</div>
+<div class="confetti-piece top-24 right-6 text-primary transform -rotate-12">
+<div class="w-3 h-3 rounded-full bg-current"></div>
+</div>
+<div class="confetti-piece bottom-32 left-10 text-[#FFD700] animate-spin-slow" style="animation-duration: 6s;">
+<span class="material-symbols-outlined text-3xl">change_history</span>
+</div>
+<div class="confetti-piece bottom-40 right-12 text-accent-blue opacity-50">
+<div class="w-6 h-6 rounded-full border-4 border-current"></div>
+</div>
+</div>
+<div class="flex flex-col items-center p-8 pb-10 pt-12 text-center relative z-10">
+<div class="relative w-64 h-56 mb-6 flex items-center justify-center">
+<div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-2 z-10 flex flex-col items-center">
+<div class="relative mb-[-5px] animate-float">
+<div class="w-10 h-10 bg-[#FF6B6B] rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20"></div>
+<div class="w-16 h-16 flex items-center justify-center animate-spin-slow">
+<div class="absolute w-5 h-16 bg-[#FFD93D] rounded-full rotate-0"></div>
+<div class="absolute w-5 h-16 bg-[#FFD93D] rounded-full rotate-45"></div>
+<div class="absolute w-5 h-16 bg-[#FFD93D] rounded-full rotate-90"></div>
+<div class="absolute w-5 h-16 bg-[#FFD93D] rounded-full rotate-135"></div>
+</div>
+</div>
+<div class="w-4 h-24 bg-accent-green rounded-full relative">
+<div class="absolute top-8 -left-6 w-8 h-4 bg-accent-green rounded-t-full rounded-bl-full transform -rotate-12"></div>
+<div class="absolute top-12 -right-6 w-8 h-4 bg-accent-green rounded-t-full rounded-br-full transform rotate-12"></div>
+</div>
+<div class="w-32 h-8 bg-[#8a7560] rounded-t-full mt-[-4px]"></div>
+</div>
+<div class="absolute top-0 right-[-10px] transform -rotate-[25deg] z-20 animate-float" style="animation-delay: 0.5s;">
+<div class="absolute top-2 -left-6 w-16 h-24 border-8 border-primary rounded-l-3xl"></div>
+<div class="absolute top-12 -left-8 w-16 h-4 bg-primary transform -rotate-45 origin-right"></div>
+<div class="relative w-28 h-28 bg-primary rounded-2xl flex items-center justify-center shadow-lg">
+<div class="w-16 h-16 bg-white/20 rounded-full blur-sm"></div> 
+</div>
+<div class="absolute top-[85px] -left-[35px] flex flex-col gap-2 z-0 transform rotate-[25deg]">
+<div class="w-2 h-2 bg-accent-blue rounded-full animate-bounce" style="animation-duration: 0.8s;"></div>
+<div class="w-3 h-3 bg-accent-blue rounded-full animate-bounce" style="animation-duration: 0.9s; animation-delay: 0.1s;"></div>
+<div class="w-2 h-2 bg-accent-blue rounded-full animate-bounce" style="animation-duration: 0.7s; animation-delay: 0.2s;"></div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-3 mb-8 max-w-[90%]">
+<h1 class="text-4xl md:text-5xl font-black text-text-main tracking-tight leading-none uppercase drop-shadow-sm">
+                        You Did It!
+                    </h1>
+<p class="text-lg text-[#8a7560] dark:text-[#bcaaa4] font-medium leading-snug">
+                        Your gold is safely in the magic vault. Look at your dream grow!
+                    </p>
+</div>
+<button class="group relative w-full max-w-[280px] h-16 bg-primary hover:bg-primary-dark transition-all duration-300 rounded-2xl shadow-[0_6px_0_0_#d67315] active:shadow-none active:translate-y-[6px] flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 w-full h-full bg-gradient-to-b from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="text-text-main font-bold text-2xl tracking-wide relative z-10 flex items-center gap-2">
+                        Yay! 
+                        <span class="material-symbols-outlined text-3xl animate-bounce">celebration</span>
+</span>
+</button>
+</div>
+</div>
+<div class="text-center mt-6 opacity-0 animate-[popIn_0.5s_0.5s_forwards]">
+<p class="text-sm font-medium text-text-main/50 dark:text-white/50 cursor-pointer hover:text-text-main transition-colors">Tap anywhere outside to close</p>
+</div>
+</main>
+</body></html>
