@@ -178,7 +178,7 @@ export function AddWaterDialog({ isOpen, onClose, onConfirm, availableBalance }:
                         <div className="w-full flex items-start gap-3 bg-[#e6fcf5] dark:bg-[#1a331a] p-4 rounded-lg mb-8 border border-[#40E0D0]/20">
                             <span className="material-symbols-outlined text-[#40E0D0] shrink-0">info</span>
                             <p className="text-sm text-[#111811] dark:text-[#dbe6db] font-medium leading-snug">
-                                Adding water helps your seed grow faster! You have <span className="font-bold text-[#FFA500]">{availableBalance} Gold</span> available.
+                                Adding water helps your seed grow faster! You have <span className="font-bold text-[#FFA500]">{availableBalance} Gold(USDC)</span> available.
                             </p>
                         </div>
 

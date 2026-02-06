@@ -8,11 +8,11 @@ import { useNavigate } from "react-router-dom";
 import { AddWaterDialog } from "../components/AddWaterDialog.tsx";
 
 // Constants (Should be moved to a config file)
-const USDC_TYPE = "0xa19934399e57864197F48FEF0A5E0f3900000000000000000000000000000000::usdc::USDC"; // Replace with actual Type
-const BTC_USD_TYPE = "0xb19934399e57864197F48FEF0A5E0f3900000000000000000000000000000000::btcusd::BTCUSD"; // Replace with actual Type
+const USDC_TYPE = "0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC";
+const BTC_USD_TYPE = "0x6d9fc33611f4881a3f5c0cd4899d95a862236ce52b3a38fef039077b0c5b5834::btc_usdc::BtcUSDC";
 
 const sdk = new StableLayerClient({
-    network: "testnet", // Adjust based on env
+    network: "mainnet", // Adjust based on env
     sender: "0x0" // Placeholder, will be updated per tx
 });
 
@@ -24,6 +24,7 @@ export function DashboardPage() {
 
     const [balance, setBalance] = useState<string>("0.00");
     const [usdcBalance, setUsdcBalance] = useState<string>("0.00");
+    const [activeUsdcType, setActiveUsdcType] = useState<string>(USDC_TYPE);
     const [isGiveUpOpen, setIsGiveUpOpen] = useState(false);
     const [isAddWaterOpen, setIsAddWaterOpen] = useState(false);
 
@@ -33,6 +34,12 @@ export function DashboardPage() {
 
         const fetchBalances = async () => {
             try {
+                // Fetch all balances for debugging and fallback
+                const allCoins = await suiClient.getAllCoins({
+                    owner: account.address,
+                });
+                console.log("All wallet coins:", allCoins.data);
+
                 // Fetch btcUSDC balance
                 const lpRes = await suiClient.getBalance({
                     owner: account.address,
@@ -40,12 +47,29 @@ export function DashboardPage() {
                 });
                 setBalance((parseInt(lpRes.totalBalance) / 100_000_000).toFixed(2));
 
-                // Fetch USDC balance
+                // Primary Fetch for USDC
                 const usdcRes = await suiClient.getBalance({
                     owner: account.address,
                     coinType: USDC_TYPE
                 });
-                setUsdcBalance((parseInt(usdcRes.totalBalance) / 1_000_000).toFixed(2));
+
+                let detectedUsdcBalance = parseInt(usdcRes.totalBalance);
+                let detectedUsdcType = USDC_TYPE;
+
+                // Fallback: If primary fetch is 0, try to find ANY USDC coin in the wallet
+                if (detectedUsdcBalance === 0 && allCoins.data.length > 0) {
+                    const usdcCoins = allCoins.data.filter(coin =>
+                        coin.coinType.toLowerCase().includes('usdc')
+                    );
+                    if (usdcCoins.length > 0) {
+                        detectedUsdcBalance = usdcCoins.reduce((sum, coin) => sum + parseInt(coin.balance), 0);
+                        detectedUsdcType = usdcCoins[0].coinType;
+                        console.log(`Detected alternative USDC coins! Type: ${detectedUsdcType}, Total: ${detectedUsdcBalance}`);
+                    }
+                }
+
+                setUsdcBalance((detectedUsdcBalance / 1_000_000).toFixed(2));
+                setActiveUsdcType(detectedUsdcType);
             } catch (e) {
                 console.error("Failed to fetch balances", e);
             }
@@ -69,7 +93,7 @@ export function DashboardPage() {
                 sender: account.address,
                 usdcCoin: coinWithBalance({
                     balance: depositAmount,
-                    type: USDC_TYPE,
+                    type: activeUsdcType,
                 })(tx),
                 autoTransfer: true,
                 lpToken: "btcUSDC" as any
