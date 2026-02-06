@@ -84,8 +84,12 @@ export function GiveUpDreamDialog({ isOpen, onClose, onConfirm }: GiveUpDreamDia
                     </div>
                 </div>
 
-                <button onClick={onClose} aria-label="Close modal" className="absolute -top-12 right-0 md:-right-12 p-2 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md text-white transition-colors cursor-pointer shadow-sm">
-                    <span className="material-symbols-outlined text-[28px]">close</span>
+                <button
+                    onClick={onClose}
+                    aria-label="Close modal"
+                    className="absolute -top-12 right-0 md:-right-12 w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md text-white transition-colors cursor-pointer shadow-sm"
+                >
+                    <span className="material-symbols-outlined text-[24px]">close</span>
                 </button>
             </div>
         </div>
