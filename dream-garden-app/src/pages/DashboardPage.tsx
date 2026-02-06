@@ -6,6 +6,8 @@ import { GiveUpDreamDialog } from "../components/GiveUpDreamDialog.tsx";
 import { useNavigate } from "react-router-dom";
 
 import { AddWaterDialog } from "../components/AddWaterDialog.tsx";
+import { DepositSuccessDialog } from "../components/DepositSuccessDialog.tsx";
+import { DepositFailureDialog } from "../components/DepositFailureDialog.tsx";
 
 // Constants (Should be moved to a config file)
 const USDC_TYPE = "0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC";
@@ -27,6 +29,10 @@ export function DashboardPage() {
     const [activeUsdcType, setActiveUsdcType] = useState<string>(USDC_TYPE);
     const [isGiveUpOpen, setIsGiveUpOpen] = useState(false);
     const [isAddWaterOpen, setIsAddWaterOpen] = useState(false);
+    const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+    const [isFailureOpen, setIsFailureOpen] = useState(false);
+    const [lastDepositAmount, setLastDepositAmount] = useState("");
+    const [depositError, setDepositError] = useState("");
 
     // Fetch Balances
     useEffect(() => {
@@ -82,6 +88,8 @@ export function DashboardPage() {
 
     const handleConfirmDeposit = async (amountStr: string) => {
         if (!account) return;
+        setLastDepositAmount(amountStr);
+        setIsAddWaterOpen(false);
 
         const tx = new Transaction();
         const depositAmount = BigInt(Math.floor(parseFloat(amountStr) * 1_000_000));
@@ -104,17 +112,18 @@ export function DashboardPage() {
             }, {
                 onSuccess: (result) => {
                     console.log("Water added!", result);
-                    setIsAddWaterOpen(false);
-                    alert(`Success! You added ${amountStr} USDC to your garden.`);
+                    setIsSuccessOpen(true);
                 },
                 onError: (error) => {
                     console.error("Transaction failed", error);
-                    alert("Transaction failed: " + error.message);
+                    setDepositError(error.message || "Unknown transaction error");
+                    setIsFailureOpen(true);
                 }
             });
         } catch (e) {
             console.error("Mint setup failed", e);
-            alert("Deposit failed - Could not build transaction.");
+            setDepositError(e instanceof Error ? e.message : "Could not build transaction");
+            setIsFailureOpen(true);
         }
     };
 
@@ -161,6 +170,21 @@ export function DashboardPage() {
                 onClose={() => setIsAddWaterOpen(false)}
                 onConfirm={handleConfirmDeposit}
                 availableBalance={usdcBalance}
+            />
+
+            <DepositSuccessDialog
+                isOpen={isSuccessOpen}
+                onClose={() => setIsSuccessOpen(false)}
+            />
+
+            <DepositFailureDialog
+                isOpen={isFailureOpen}
+                onClose={() => setIsFailureOpen(false)}
+                error={depositError}
+                onTryAgain={() => {
+                    setIsFailureOpen(false);
+                    handleConfirmDeposit(lastDepositAmount);
+                }}
             />
 
             <header className="w-full mb-8 text-center">

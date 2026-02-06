@@ -19,9 +19,17 @@ export default {
                 "text-main": "#0D1B1E",
                 "text-muted": "#4A6E73",
                 "glass-border": "rgba(255, 255, 255, 0.5)",
+                "accent-blue": "#4ABDE7",
+                "accent-green": "#7AC74F",
+                "duggee-soil": "#8d6e63",
+                "duggee-green": "#7cb342",
+                "duggee-cloud": "#90a4ae",
+                "duggee-rain": "#4fc3f7",
+                "modal-primary": "#f48c25",
+                "modal-primary-dark": "#d67315",
             },
             fontFamily: {
-                "display": ["Spline Sans", "sans-serif"]
+                "display": ["Spline Sans", "Plus Jakarta Sans", "sans-serif"]
             },
             borderRadius: {
                 "lg": "2rem",
