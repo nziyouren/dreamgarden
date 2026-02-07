@@ -6,7 +6,8 @@ export function Header() {
 
     const navItems = [
         { name: "My Garden", icon: "potted_plant", path: "/dashboard" },
-        { name: "Garden history", icon: "history", path: "/history" },
+        { name: "Seed Station", icon: "token", path: "/seed-station" },
+        { name: "History", icon: "history", path: "/history" },
     ];
 
     return (

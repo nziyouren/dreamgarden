@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Seed Station - Mint &amp; Burn</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#25f425", 
+                        "primary-dark": "#1bc41b",
+                        "accent-mint": "#00E676", 
+                        "accent-burn": "#FF5252", 
+                        "background-light": "#f2f0eb", 
+                        "background-dark": "#102210",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1a331a",
+                        "text-main": "#111811",
+                        "text-muted": "#608a60",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem", 
+                        "lg": "2rem", 
+                        "xl": "3rem", 
+                        "2xl": "4rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'soft': '0 8px 30px -4px rgba(0, 0, 0, 0.08)',
+                        'hover': '0 20px 40px -5px rgba(0, 0, 0, 0.15)',
+                        'button': '0 6px 0px 0px rgba(0,0,0,0.2)',
+                        'button-pressed': '0 2px 0px 0px rgba(0,0,0,0.2)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+            border: 3px solid transparent;
+            background-clip: content-box;
+        }
+        .btn-press:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px 0px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display transition-colors duration-300 min-h-screen flex flex-col">
+<nav class="sticky top-0 z-50 w-full bg-card-light/90 dark:bg-card-dark/90 backdrop-blur-md border-b border-[#e0e5e0] dark:border-white/10 px-4 sm:px-10 py-4 transition-all duration-300">
+<div class="max-w-[1200px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-12 bg-primary rounded-2xl rotate-3 flex items-center justify-center text-background-dark shadow-sm transform hover:scale-105 transition-transform border-4 border-white dark:border-card-dark">
+<span class="material-symbols-outlined text-3xl">token</span>
+</div>
+<h1 class="text-xl sm:text-2xl font-black tracking-tight text-text-main dark:text-white">Seed Station</h1>
+</div>
+<div class="hidden md:flex items-center gap-2 bg-white/50 dark:bg-black/20 p-2 rounded-full backdrop-blur-sm">
+<a class="px-5 py-2 text-text-muted dark:text-gray-400 text-sm font-bold hover:text-primary transition-colors rounded-full hover:bg-white dark:hover:bg-white/10" href="#">My Garden</a>
+<a class="px-5 py-2 bg-text-main text-white dark:bg-white dark:text-text-main text-sm font-bold shadow-md rounded-full" href="#">Seed Station</a>
+<a class="px-5 py-2 text-text-muted dark:text-gray-400 text-sm font-bold hover:text-primary transition-colors rounded-full hover:bg-white dark:hover:bg-white/10" href="#">History</a>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 bg-primary hover:bg-primary-dark transition-colors px-5 h-12 rounded-full text-background-dark text-sm font-bold shadow-button btn-press">
+<span class="material-symbols-outlined text-xl">account_balance_wallet</span>
+<span class="hidden sm:inline">0x...84f</span>
+</button>
+</div>
+</div>
+</nav>
+<main class="flex-grow w-full max-w-[1100px] mx-auto px-4 sm:px-6 py-8 flex flex-col justify-center">
+<header class="text-center mb-12">
+<div class="inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full font-bold text-sm mb-4">
+<span class="material-symbols-outlined text-lg">hotel_class</span>
+            Magic Gold Exchange
+        </div>
+<h2 class="text-4xl sm:text-6xl font-black tracking-tight text-text-main dark:text-white mb-4">
+            Manage Your <span class="text-primary underline decoration-wavy decoration-4 underline-offset-4">Magic Gold</span>
+</h2>
+<p class="text-lg text-text-muted dark:text-gray-400 max-w-2xl mx-auto font-medium">
+            Turn your real coins into Magic Gold to water your seeds, or turn your Magic Gold back into coins to spend!
+        </p>
+</header>
+<div class="relative z-10 -mb-10 mx-auto w-fit">
+<div class="bg-text-main dark:bg-white text-white dark:text-text-main px-10 py-6 rounded-2xl shadow-xl flex flex-col items-center transform rotate-[-2deg] border-4 border-white dark:border-card-dark">
+<span class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Current Balance</span>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-4xl text-primary">monetization_on</span>
+<span class="text-5xl font-black tracking-tight">2,450</span>
+</div>
+<div class="text-xs font-bold bg-white/20 dark:bg-black/10 px-3 py-1 rounded-full mt-2">
+                ≈ $24.50 USD
+            </div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-10">
+<div class="bg-card-light dark:bg-card-dark rounded-[2.5rem] p-8 shadow-soft border-4 border-white dark:border-white/5 relative overflow-hidden group hover:border-accent-mint/30 transition-colors duration-300">
+<div class="absolute top-0 right-0 -mr-10 -mt-10 size-64 bg-accent-mint/10 rounded-full blur-3xl group-hover:bg-accent-mint/20 transition-colors"></div>
+<div class="relative z-10 flex flex-col h-full items-center text-center">
+<div class="size-24 rounded-full bg-accent-mint/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+<div class="size-16 rounded-full bg-accent-mint text-white flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-4xl font-bold">add</span>
+</div>
+</div>
+<h3 class="text-3xl font-black text-text-main dark:text-white mb-2">Mint Magic Gold</h3>
+<p class="text-text-muted dark:text-gray-400 font-medium mb-8 px-4">
+                    Convert your ETH into Magic Gold to start growing your dream seeds.
+                </p>
+<div class="w-full bg-background-light dark:bg-black/20 p-6 rounded-2xl mb-6">
+<label class="block text-left text-sm font-bold text-text-muted mb-2 ml-1">Amount to Mint</label>
+<div class="relative mb-3">
+<input class="w-full bg-white dark:bg-card-dark border-2 border-transparent focus:border-accent-mint focus:ring-0 rounded-xl py-4 pl-4 pr-16 text-2xl font-bold text-text-main dark:text-white shadow-sm placeholder-gray-300 transition-all" placeholder="0" type="number"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1 text-sm font-bold text-text-muted select-none pointer-events-none">
+<span>ETH</span>
+</div>
+</div>
+<div class="flex gap-2 justify-between w-full">
+<button class="flex-1 py-1.5 text-xs sm:text-sm font-bold bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300 rounded-full hover:bg-accent-mint/20 hover:text-accent-mint transition-colors">25%</button>
+<button class="flex-1 py-1.5 text-xs sm:text-sm font-bold bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300 rounded-full hover:bg-accent-mint/20 hover:text-accent-mint transition-colors">50%</button>
+<button class="flex-1 py-1.5 text-xs sm:text-sm font-bold bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300 rounded-full hover:bg-accent-mint/20 hover:text-accent-mint transition-colors">75%</button>
+<button class="flex-1 py-1.5 text-xs sm:text-sm font-bold bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300 rounded-full hover:bg-accent-mint hover:text-white transition-colors">Max</button>
+</div>
+<div class="flex justify-between items-center mt-3 text-xs font-bold text-text-muted">
+<span>Balance: 1.2 ETH</span>
+</div>
+</div>
+<div class="mt-auto w-full">
+<div class="flex justify-between text-sm font-bold text-text-muted mb-4 px-2">
+<span>You will receive:</span>
+<span class="text-accent-mint">0 MG</span>
+</div>
+<button class="w-full py-4 bg-accent-mint hover:bg-[#00c965] text-white rounded-xl text-xl font-black shadow-button hover:shadow-hover btn-press transition-all flex items-center justify-center gap-2">
+                        Mint Now
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark rounded-[2.5rem] p-8 shadow-soft border-4 border-white dark:border-white/5 relative overflow-hidden group hover:border-accent-burn/30 transition-colors duration-300">
+<div class="absolute top-0 left-0 -ml-10 -mt-10 size-64 bg-accent-burn/10 rounded-full blur-3xl group-hover:bg-accent-burn/20 transition-colors"></div>
+<div class="relative z-10 flex flex-col h-full items-center text-center">
+<div class="size-24 rounded-full bg-accent-burn/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+<div class="size-16 rounded-full bg-accent-burn text-white flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-4xl font-bold">remove</span>
+</div>
+</div>
+<h3 class="text-3xl font-black text-text-main dark:text-white mb-2">Burn Magic Gold</h3>
+<p class="text-text-muted dark:text-gray-400 font-medium mb-8 px-4">
+                    Finished growing? Exchange your Magic Gold back into real crypto.
+                </p>
+<div class="w-full bg-background-light dark:bg-black/20 p-6 rounded-2xl mb-6">
+<label class="block text-left text-sm font-bold text-text-muted mb-2 ml-1">Amount to Burn</label>
+<div class="relative mb-3">
+<input class="w-full bg-white dark:bg-card-dark border-2 border-transparent focus:border-accent-burn focus:ring-0 rounded-xl py-4 pl-4 pr-16 text-2xl font-bold text-text-main dark:text-white shadow-sm placeholder-gray-300 transition-all" placeholder="0" type="number"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1 text-sm font-bold text-text-muted select-none pointer-events-none">
+<span>MG</span>
+</div>
+</div>
+<div class="flex gap-2 justify-between w-full">
+<button class="flex-1 py-1.5 text-xs sm:text-sm font-bold bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300 rounded-full hover:bg-accent-burn/20 hover:text-accent-burn transition-colors">25%</button>
+<button class="flex-1 py-1.5 text-xs sm:text-sm font-bold bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300 rounded-full hover:bg-accent-burn/20 hover:text-accent-burn transition-colors">50%</button>
+<button class="flex-1 py-1.5 text-xs sm:text-sm font-bold bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300 rounded-full hover:bg-accent-burn/20 hover:text-accent-burn transition-colors">75%</button>
+<button class="flex-1 py-1.5 text-xs sm:text-sm font-bold bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300 rounded-full hover:bg-accent-burn hover:text-white transition-colors">Max</button>
+</div>
+<div class="flex justify-between items-center mt-3 text-xs font-bold text-text-muted">
+<span>Available: 2,450 MG</span>
+</div>
+</div>
+<div class="mt-auto w-full">
+<div class="flex justify-between text-sm font-bold text-text-muted mb-4 px-2">
+<span>You will receive:</span>
+<span class="text-accent-burn">0.00 ETH</span>
+</div>
+<button class="w-full py-4 bg-accent-burn hover:bg-[#ff3b3b] text-white rounded-xl text-xl font-black shadow-button hover:shadow-hover btn-press transition-all flex items-center justify-center gap-2">
+                        Burn &amp; Exchange
+                        <span class="material-symbols-outlined">currency_exchange</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="bg-background-light dark:bg-black/40 border-t border-[#e0e5e0] dark:border-white/5 py-6 mt-auto">
+<div class="max-w-[1100px] mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+<div class="flex items-center gap-3">
+<div class="size-10 bg-white dark:bg-white/10 rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-text-muted text-xl">info</span>
+</div>
+<div>
+<p class="font-bold text-sm text-text-main dark:text-white">Exchange Rate</p>
+<p class="text-xs text-text-muted">1 ETH = 100,000 Magic Gold</p>
+</div>
+</div>
+<div class="text-xs font-bold text-text-muted">
+<a class="hover:text-primary mr-4" href="#">Need Help?</a>
+<a class="hover:text-primary" href="#">Parent Guide</a>
+</div>
+</div>
+</div>
+</body></html>
