@@ -2,7 +2,7 @@ module dream_garden::seed;
 
 use std::string::String;
 use sui::balance::{Self, Balance};
-use sui::coin::{Self, Coin};
+use sui::coin::Coin;
 
 // Status constants
 const STATUS_CREATED: u8 = 1;
@@ -26,7 +26,7 @@ public struct Seed<phantom T> has key, store {
 }
 
 /// Create a new seed for a specific coin type T.
-public entry fun create_seed<T>(
+public fun create_seed<T>(
     name: String,
     target_amount: u64,
     seed_type: String,
@@ -45,7 +45,7 @@ public entry fun create_seed<T>(
 }
 
 /// Add "water" (funds) to the seed.
-public entry fun add_water<T>(seed: &mut Seed<T>, water: Coin<T>) {
+public fun add_water<T>(seed: &mut Seed<T>, water: Coin<T>) {
     // Only allow adding water if not finished (completed or abandoned)
     assert!(seed.status == STATUS_CREATED || seed.status == STATUS_IN_PROGRESS, EInvalidStatus);
     
