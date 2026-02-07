@@ -47,18 +47,24 @@ export function DashboardPage() {
                     owner: account.address,
                 });
 
-                // Fetch btcUSDC balance
-                const lpRes = await suiClient.getBalance({
-                    owner: account.address,
-                    coinType: BTC_USD_TYPE
-                });
-                setBalance((parseInt(lpRes.totalBalance) / 100_000_000).toFixed(2));
+                // Fetch Balances and Metadata
+                const [lpRes, usdcRes, lpMeta, usdcMeta] = await Promise.all([
+                    suiClient.getBalance({
+                        owner: account.address,
+                        coinType: BTC_USD_TYPE
+                    }),
+                    suiClient.getBalance({
+                        owner: account.address,
+                        coinType: USDC_TYPE
+                    }),
+                    suiClient.getCoinMetadata({ coinType: BTC_USD_TYPE }),
+                    suiClient.getCoinMetadata({ coinType: USDC_TYPE })
+                ]);
 
-                // Primary Fetch for USDC
-                const usdcRes = await suiClient.getBalance({
-                    owner: account.address,
-                    coinType: USDC_TYPE
-                });
+                const lpDecimals = lpMeta?.decimals ?? 9;
+                const usdcDecimals = usdcMeta?.decimals ?? 6;
+
+                setBalance((parseInt(lpRes.totalBalance) / Math.pow(10, lpDecimals)).toFixed(2));
 
                 let detectedUsdcBalance = parseInt(usdcRes.totalBalance);
                 let detectedUsdcType = USDC_TYPE;
@@ -73,7 +79,7 @@ export function DashboardPage() {
                     }
                 }
 
-                setUsdcBalance((detectedUsdcBalance / 1_000_000).toFixed(2));
+                setUsdcBalance((detectedUsdcBalance / Math.pow(10, usdcDecimals)).toFixed(2));
                 setActiveUsdcType(detectedUsdcType);
 
                 // Fetch Seeds

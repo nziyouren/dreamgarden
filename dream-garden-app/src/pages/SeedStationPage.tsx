@@ -27,17 +27,24 @@ export function SeedStationPage() {
     const fetchData = async () => {
         if (!account) return;
         try {
-            const usdcRes = await suiClient.getBalance({
-                owner: account.address,
-                coinType: USDC_TYPE
-            });
-            setUsdcBalance((parseInt(usdcRes.totalBalance) / 1_000_000).toFixed(2));
+            const [usdcRes, lpRes, usdcMeta, lpMeta] = await Promise.all([
+                suiClient.getBalance({
+                    owner: account.address,
+                    coinType: USDC_TYPE
+                }),
+                suiClient.getBalance({
+                    owner: account.address,
+                    coinType: BTC_USD_TYPE
+                }),
+                suiClient.getCoinMetadata({ coinType: USDC_TYPE }),
+                suiClient.getCoinMetadata({ coinType: BTC_USD_TYPE })
+            ]);
 
-            const lpRes = await suiClient.getBalance({
-                owner: account.address,
-                coinType: BTC_USD_TYPE
-            });
-            setLpBalance((parseInt(lpRes.totalBalance) / 100_000_000).toFixed(2));
+            const usdcDecimals = usdcMeta?.decimals ?? 6;
+            const lpDecimals = lpMeta?.decimals ?? 9;
+
+            setUsdcBalance((parseInt(usdcRes.totalBalance) / Math.pow(10, usdcDecimals)).toFixed(2));
+            setLpBalance((parseInt(lpRes.totalBalance) / Math.pow(10, lpDecimals)).toFixed(2));
         } catch (e) {
             console.error("Fetch failed", e);
         }
@@ -86,7 +93,7 @@ export function SeedStationPage() {
     const handleBurn = async () => {
         if (!account || !burnAmount) return;
         const tx = new Transaction();
-        const amount = BigInt(Math.floor(parseFloat(burnAmount) * 100_000_000));
+        const amount = BigInt(Math.floor(parseFloat(burnAmount) * 1_000_000));
 
         try {
             await sdk.buildBurnTx({
