@@ -19,7 +19,7 @@ export function GardenHistoryPage() {
     const account = useCurrentAccount();
     const suiClient = useSuiClient();
     const [transactions, setTransactions] = useState<TransactionRecord[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(!!account);
     const [filter, setFilter] = useState<'all' | 'add_water' | 'withdraw'>('all');
     const [cursor, setCursor] = useState<string | null | undefined>(null);
     const [hasNextPage, setHasNextPage] = useState(false);
@@ -129,8 +129,11 @@ export function GardenHistoryPage() {
     };
 
     useEffect(() => {
-        if (account) {
+        if (account && account.address) {
             fetchTransactions();
+        } else {
+            setTransactions([]);
+            setIsLoading(false);
         }
     }, [account]);
 
@@ -188,7 +191,15 @@ export function GardenHistoryPage() {
                         {filter === 'all' ? 'Recent History' : filter === 'add_water' ? 'Watering History' : 'Harvesting History'}
                     </h3>
 
-                    {isLoading && transactions.length === 0 ? (
+                    {!account ? (
+                        <div className="bg-white dark:bg-card-dark/40 p-12 rounded-[2.5rem] border-2 border-dashed border-gray-200 dark:border-gray-800 flex flex-col items-center gap-4 text-center">
+                            <span className="material-symbols-outlined text-6xl text-primary animate-pulse">account_balance_wallet</span>
+                            <div>
+                                <p className="font-bold text-text-main dark:text-white text-lg">Wallet Not Connected</p>
+                                <p className="text-text-muted text-sm">Please connect your wallet to view your garden history.</p>
+                            </div>
+                        </div>
+                    ) : isLoading && transactions.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-20 gap-4">
                             <div className="size-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                             <p className="font-bold text-text-muted">Fetching on-chain activity...</p>
@@ -238,7 +249,7 @@ export function GardenHistoryPage() {
                         </div>
                     )}
 
-                    {hasNextPage && (
+                    {account && hasNextPage && (
                         <button
                             onClick={() => fetchTransactions(cursor)}
                             disabled={isLoading}
