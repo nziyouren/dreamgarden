@@ -218,9 +218,12 @@ export function GardenHistoryPage() {
                     ) : (
                         <div className="flex flex-col gap-3">
                             {filteredTransactions.map((tx) => (
-                                <div
+                                <a
                                     key={tx.digest}
-                                    className="bg-white dark:bg-card-dark p-5 rounded-[2rem] shadow-soft border border-white/60 dark:border-white/5 hover:border-primary/30 dark:hover:border-primary/30 transition-all group flex items-center gap-4 sm:gap-6"
+                                    href={`https://suivision.xyz/txblock/${tx.digest}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-white dark:bg-card-dark p-5 rounded-[2rem] shadow-soft border border-white/60 dark:border-white/5 hover:border-primary/40 dark:hover:border-primary/40 hover:shadow-hover hover:-translate-y-1 transition-all group flex items-center gap-4 sm:gap-6 relative overflow-hidden"
                                 >
                                     <div className={`shrink-0 size-14 sm:size-16 rounded-3xl flex items-center justify-center group-hover:scale-105 transition-transform duration-300 ${tx.type === 'add_water' ? 'bg-[#4BB3FD]/10' : tx.type === 'withdraw' ? 'bg-[#FF6B6B]/10' : 'bg-gray-100 dark:bg-gray-800'
                                         }`}>
@@ -237,14 +240,17 @@ export function GardenHistoryPage() {
                                             </span>
                                         </div>
                                         <div className="flex items-center justify-between">
-                                            <p className="text-text-secondary dark:text-gray-400 text-sm font-medium">{tx.dateStr}</p>
+                                            <div className="flex items-center gap-4">
+                                                <p className="text-text-secondary dark:text-gray-400 text-sm font-medium">{tx.dateStr}</p>
+                                                <span className="material-symbols-outlined text-sm text-text-muted opacity-0 group-hover:opacity-100 transition-opacity">open_in_new</span>
+                                            </div>
                                             <div className="flex items-center gap-1 bg-primary/10 px-2 py-1 rounded-lg">
                                                 <span className="material-symbols-outlined text-primary text-[16px]">check_circle</span>
                                                 <span className="text-xs font-bold text-primary uppercase">{tx.status}</span>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             ))}
                         </div>
                     )}
