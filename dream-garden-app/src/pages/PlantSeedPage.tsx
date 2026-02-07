@@ -20,9 +20,8 @@ export function PlantSeedPage() {
         setIsPlanting(true);
         const tx = new Transaction();
 
-        // Convert target amount to MIST (assuming 6 decimals for USDC/target representation)
-        // Wait, the user's DashboardPage had parseFloat(amountStr) * 1_000_000
-        const amount = BigInt(Math.floor(parseFloat(targetAmount) * 1_000_000));
+        // Convert target amount to BtcUSDC units (assuming 9 decimals for BtcUSDC)
+        const amount = BigInt(Math.floor(parseFloat(targetAmount) * 1_000_000_000));
 
         try {
             tx.moveCall({
@@ -64,7 +63,7 @@ export function PlantSeedPage() {
                         Plant a New Dream Seed
                     </h1>
                     <p className="text-[#608a60] dark:text-gray-400 text-lg font-normal max-w-lg mx-auto">
-                        Start saving for something special! You can grow one dream at a time.
+                        Start saving for something special! You can grow multiple dreams at once.
                     </p>
                 </div>
 
