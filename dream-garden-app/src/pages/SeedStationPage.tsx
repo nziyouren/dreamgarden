@@ -41,7 +41,7 @@ export function SeedStationPage() {
             ]);
 
             const usdcDecimals = usdcMeta?.decimals ?? 6;
-            const lpDecimals = lpMeta?.decimals ?? 9;
+            const lpDecimals = lpMeta?.decimals ?? 6;
 
             setUsdcBalance((parseInt(usdcRes.totalBalance) / Math.pow(10, usdcDecimals)).toFixed(2));
             setLpBalance((parseInt(lpRes.totalBalance) / Math.pow(10, lpDecimals)).toFixed(2));

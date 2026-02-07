@@ -63,7 +63,7 @@ export function DashboardPage() {
                     suiClient.getCoinMetadata({ coinType: USDC_TYPE })
                 ]);
 
-                const lpDecimals = lpMeta?.decimals ?? 9;
+                const lpDecimals = lpMeta?.decimals ?? 6;
                 const usdcDecimals = usdcMeta?.decimals ?? 6;
 
                 setBalance((parseInt(lpRes.totalBalance) / Math.pow(10, lpDecimals)).toFixed(2));
@@ -133,15 +133,15 @@ export function DashboardPage() {
         setIsAddWaterOpen(false);
 
         const tx = new Transaction();
-        const depositAmount = BigInt(Math.floor(parseFloat(amountStr) * 1_000_000));
+        const amount = BigInt(Math.floor(parseFloat(amountStr) * 1_000_000));
 
         try {
             const mintedCoin = await sdk.buildMintTx({
                 tx,
-                amount: depositAmount,
+                amount,
                 sender: account.address,
                 usdcCoin: coinWithBalance({
-                    balance: depositAmount,
+                    balance: amount,
                     type: activeUsdcType,
                 })(tx),
                 autoTransfer: false, // Don't transfer to user, we'll join to seed
@@ -185,7 +185,7 @@ export function DashboardPage() {
         setIsWithdrawOpen(false);
 
         const tx = new Transaction();
-        const withdrawAmount = BigInt(Math.floor(parseFloat(amountStr) * 1_000_000_000));
+        const withdrawAmount = BigInt(Math.floor(parseFloat(amountStr) * 1_000_000));
 
         try {
             // 1. Withdraw specific amount from seed
@@ -301,7 +301,7 @@ export function DashboardPage() {
                 isOpen={isWithdrawOpen}
                 onClose={() => setIsWithdrawOpen(false)}
                 onConfirm={handleConfirmWithdraw}
-                availableBalance={activeSeed ? (parseInt(activeSeed.funds || "0") / 1_000_000_000).toFixed(2) : "0.00"}
+                availableBalance={activeSeed ? (parseInt(activeSeed.funds || "0") / 1_000_000).toFixed(2) : "0.00"}
             />
 
             <DepositSuccessDialog
@@ -338,10 +338,10 @@ export function DashboardPage() {
                         <h3 className="text-lg font-bold text-text-muted dark:text-gray-400 mb-2">Vault Balance</h3>
                         <div className="flex items-baseline gap-1 mb-6 relative z-10">
                             <span className="text-5xl font-black text-text-main dark:text-white">
-                                ${activeSeed ? (parseInt(activeSeed.funds || "0") / 1_000_000_000).toFixed(2) : balance}
+                                ${activeSeed ? (parseInt(activeSeed.funds || "0") / 1_000_000).toFixed(2) : balance}
                             </span>
                             <span className="text-xl font-bold text-text-muted dark:text-gray-500">
-                                / ${activeSeed ? (parseInt(activeSeed.target_amount) / 1_000_000_000).toFixed(2) : "80.00"}
+                                / ${activeSeed ? (parseInt(activeSeed.target_amount) / 1_000_000).toFixed(2) : "80.00"}
                             </span>
                         </div>
 

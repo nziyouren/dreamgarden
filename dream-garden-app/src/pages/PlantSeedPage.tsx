@@ -20,8 +20,8 @@ export function PlantSeedPage() {
         setIsPlanting(true);
         const tx = new Transaction();
 
-        // Convert target amount to BtcUSDC units (assuming 9 decimals for BtcUSDC)
-        const amount = BigInt(Math.floor(parseFloat(targetAmount) * 1_000_000_000));
+        // Convert target amount to BtcUSDC units (6 decimals for BtcUSDC as verified on mainnet)
+        const amount = BigInt(Math.floor(parseFloat(targetAmount) * 1_000_000));
 
         try {
             tx.moveCall({
