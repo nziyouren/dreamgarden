@@ -7,7 +7,7 @@ import { DepositSuccessDialog } from "../components/DepositSuccessDialog";
 import { DepositFailureDialog } from "../components/DepositFailureDialog";
 
 const sdk = new StableLayerClient({
-    network: "testnet",
+    network: "mainnet",
     sender: "0x0"
 });
 
@@ -64,7 +64,7 @@ export function SeedStationPage() {
                     type: USDC_TYPE,
                 })(tx),
                 autoTransfer: true,
-                stableCoinType: "btcUSDC"
+                stableCoinType: BTC_USD_TYPE
             });
 
             signAndExecute({ transaction: tx }, {
@@ -91,7 +91,7 @@ export function SeedStationPage() {
         try {
             await sdk.buildBurnTx({
                 tx,
-                stableCoinType: "btcUSDC",
+                stableCoinType: BTC_USD_TYPE,
                 amount,
                 all: false,
                 sender: account.address,

@@ -12,7 +12,7 @@ import { DepositFailureDialog } from "../components/DepositFailureDialog.tsx";
 import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, USDC_TYPE } from "../constants";
 
 const sdk = new StableLayerClient({
-    network: "testnet", // Adjust based on env, Move contract is on testnet
+    network: "mainnet",
     sender: "0x0"
 });
 
@@ -129,7 +129,7 @@ export function DashboardPage() {
                     type: activeUsdcType,
                 })(tx),
                 autoTransfer: false, // Don't transfer to user, we'll join to seed
-                stableCoinType: "btcUSDC"
+                stableCoinType: BTC_USD_TYPE
             });
 
             // If we have an active seed, join the minted LP tokens to it
