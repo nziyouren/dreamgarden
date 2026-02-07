@@ -1,11 +1,56 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
+import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE } from "../constants";
 
 export function PlantSeedPage() {
     const navigate = useNavigate();
+    const account = useCurrentAccount();
+    const { mutate: signAndExecute } = useSignAndExecuteTransaction();
 
-    const handlePlantSeed = () => {
-        // In a real app, this would save the seed to contract or state
-        navigate("/dashboard");
+    const [dreamName, setDreamName] = useState("");
+    const [targetAmount, setTargetAmount] = useState("");
+    const [seedType, setSeedType] = useState("pedal_bike");
+    const [isPlanting, setIsPlanting] = useState(false);
+
+    const handlePlantSeed = async () => {
+        if (!account || !dreamName || !targetAmount) return;
+
+        setIsPlanting(true);
+        const tx = new Transaction();
+
+        // Convert target amount to MIST (assuming 6 decimals for USDC/target representation)
+        // Wait, the user's DashboardPage had parseFloat(amountStr) * 1_000_000
+        const amount = BigInt(Math.floor(parseFloat(targetAmount) * 1_000_000));
+
+        try {
+            tx.moveCall({
+                target: `${DREAM_GARDEN_PACKAGE_ID}::${DREAM_GARDEN_MODULE}::create_seed`,
+                arguments: [
+                    tx.pure.string(dreamName),
+                    tx.pure.u64(amount),
+                    tx.pure.string(seedType)
+                ],
+                typeArguments: [BTC_USD_TYPE] // Use BTC_USD_TYPE as the coin type for the seed vault
+            });
+
+            signAndExecute({
+                transaction: tx,
+            }, {
+                onSuccess: (result) => {
+                    console.log("Seed planted!", result);
+                    navigate("/dashboard");
+                },
+                onError: (error) => {
+                    console.error("Failed to plant seed", error);
+                    setIsPlanting(false);
+                }
+            });
+        } catch (e) {
+            console.error("Setup failed", e);
+            setIsPlanting(false);
+        }
     };
 
     return (
@@ -53,13 +98,23 @@ export function PlantSeedPage() {
                                 <div className="space-y-4 pl-11">
                                     <label className="block">
                                         <span className="text-text-main dark:text-gray-200 text-sm font-medium mb-2 block">Name your Dream Item</span>
-                                        <input className="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-text-main dark:text-white placeholder:text-gray-400 focus:border-primary focus:ring-primary h-14 px-4 text-lg transition-all" placeholder="e.g., New Bicycle, Lego Set" type="text" />
+                                        <input
+                                            value={dreamName}
+                                            onChange={(e) => setDreamName(e.target.value)}
+                                            className="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-text-main dark:text-white placeholder:text-gray-400 focus:border-primary focus:ring-primary h-14 px-4 text-lg transition-all"
+                                            placeholder="e.g., New Bicycle, Lego Set"
+                                            type="text"
+                                        />
                                     </label>
                                     <div>
                                         <span className="text-text-main dark:text-gray-200 text-sm font-medium mb-3 block">Choose an icon</span>
                                         <div className="grid grid-cols-4 gap-3">
                                             {['pedal_bike', 'videogame_asset', 'flight', 'add_a_photo'].map(icon => (
-                                                <button key={icon} className="aspect-square rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary hover:bg-primary/5 dark:hover:bg-primary/5 flex flex-col items-center justify-center gap-1 transition-all group bg-white dark:bg-transparent text-gray-400 hover:text-primary">
+                                                <button
+                                                    key={icon}
+                                                    onClick={() => setSeedType(icon)}
+                                                    className={`aspect-square rounded-lg border ${seedType === icon ? 'border-primary bg-primary/10 text-primary' : 'border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary hover:bg-primary/5 dark:hover:bg-primary/5'} flex flex-col items-center justify-center gap-1 transition-all group bg-white dark:bg-transparent text-gray-400 hover:text-primary`}
+                                                >
                                                     <span className="material-symbols-outlined text-3xl">{icon}</span>
                                                 </button>
                                             ))}
@@ -80,7 +135,13 @@ export function PlantSeedPage() {
                                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                                 <span className="text-gray-500 font-bold">$</span>
                                             </div>
-                                            <input className="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-text-main dark:text-white placeholder:text-gray-400 focus:border-primary focus:ring-primary h-14 pl-8 pr-4 text-lg font-mono transition-all" placeholder="50.00" type="number" />
+                                            <input
+                                                value={targetAmount}
+                                                onChange={(e) => setTargetAmount(e.target.value)}
+                                                className="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-text-main dark:text-white placeholder:text-gray-400 focus:border-primary focus:ring-primary h-14 pl-8 pr-4 text-lg font-mono transition-all"
+                                                placeholder="50.00"
+                                                type="number"
+                                            />
                                             <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
                                                 <span className="text-xs font-bold text-gray-400 uppercase">USDC</span>
                                             </div>
@@ -90,9 +151,15 @@ export function PlantSeedPage() {
                                 </div>
                             </div>
                             <div className="pt-4">
-                                <button onClick={handlePlantSeed} className="w-full group flex items-center justify-center gap-2 bg-primary hover:bg-[#1ee01e] active:scale-[0.98] text-text-main text-lg font-bold py-4 rounded-xl shadow-xl shadow-primary/30 transition-all duration-200">
-                                    <span className="material-symbols-outlined transition-transform group-hover:-translate-y-1">local_florist</span>
-                                    Plant My Seed
+                                <button
+                                    onClick={handlePlantSeed}
+                                    disabled={isPlanting || !dreamName || !targetAmount}
+                                    className="w-full group disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 bg-primary hover:bg-[#1ee01e] active:scale-[0.98] text-text-main text-lg font-bold py-4 rounded-xl shadow-xl shadow-primary/30 transition-all duration-200"
+                                >
+                                    <span className="material-symbols-outlined transition-transform group-hover:-translate-y-1">
+                                        {isPlanting ? 'sync' : 'local_florist'}
+                                    </span>
+                                    {isPlanting ? 'Planting...' : 'Plant My Seed'}
                                 </button>
                             </div>
                         </div>

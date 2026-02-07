@@ -9,13 +9,11 @@ import { AddWaterDialog } from "../components/AddWaterDialog.tsx";
 import { DepositSuccessDialog } from "../components/DepositSuccessDialog.tsx";
 import { DepositFailureDialog } from "../components/DepositFailureDialog.tsx";
 
-// Constants (Should be moved to a config file)
-const USDC_TYPE = "0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC";
-const BTC_USD_TYPE = "0x6d9fc33611f4881a3f5c0cd4899d95a862236ce52b3a38fef039077b0c5b5834::btc_usdc::BtcUSDC";
+import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, USDC_TYPE } from "../constants";
 
 const sdk = new StableLayerClient({
-    network: "mainnet", // Adjust based on env
-    sender: "0x0" // Placeholder, will be updated per tx
+    network: "testnet", // Adjust based on env, Move contract is on testnet
+    sender: "0x0"
 });
 
 export function DashboardPage() {
@@ -34,17 +32,19 @@ export function DashboardPage() {
     const [lastDepositAmount, setLastDepositAmount] = useState("");
     const [depositError, setDepositError] = useState("");
 
-    // Fetch Balances
+    const [activeSeed, setActiveSeed] = useState<any>(null);
+    const [isLoadingSeeds, setIsLoadingSeeds] = useState(true);
+
+    // Fetch Balances and Seeds
     useEffect(() => {
         if (!account) return;
 
-        const fetchBalances = async () => {
+        const fetchData = async () => {
             try {
-                // Fetch all balances for debugging and fallback
+                // Fetch all balances
                 const allCoins = await suiClient.getAllCoins({
                     owner: account.address,
                 });
-                console.log("All wallet coins:", allCoins.data);
 
                 // Fetch btcUSDC balance
                 const lpRes = await suiClient.getBalance({
@@ -62,7 +62,6 @@ export function DashboardPage() {
                 let detectedUsdcBalance = parseInt(usdcRes.totalBalance);
                 let detectedUsdcType = USDC_TYPE;
 
-                // Fallback: If primary fetch is 0, try to find ANY USDC coin in the wallet
                 if (detectedUsdcBalance === 0 && allCoins.data.length > 0) {
                     const usdcCoins = allCoins.data.filter(coin =>
                         coin.coinType.toLowerCase().includes('usdc')
@@ -70,21 +69,47 @@ export function DashboardPage() {
                     if (usdcCoins.length > 0) {
                         detectedUsdcBalance = usdcCoins.reduce((sum, coin) => sum + parseInt(coin.balance), 0);
                         detectedUsdcType = usdcCoins[0].coinType;
-                        console.log(`Detected alternative USDC coins! Type: ${detectedUsdcType}, Total: ${detectedUsdcBalance}`);
                     }
                 }
 
                 setUsdcBalance((detectedUsdcBalance / 1_000_000).toFixed(2));
                 setActiveUsdcType(detectedUsdcType);
+
+                // Fetch Seeds
+                setIsLoadingSeeds(true);
+                const objects = await suiClient.getOwnedObjects({
+                    owner: account.address,
+                    filter: {
+                        StructType: `${DREAM_GARDEN_PACKAGE_ID}::${DREAM_GARDEN_MODULE}::Seed<${BTC_USD_TYPE}>`
+                    },
+                    options: {
+                        showContent: true,
+                    }
+                });
+
+                const seeds = objects.data.map((obj: any) => ({
+                    ...obj.data?.content?.fields,
+                    objectId: obj.data?.objectId
+                }));
+                const uncompletedSeed = seeds.find((s: any) => !s.is_finished);
+                setActiveSeed(uncompletedSeed || null);
+
+                // If no active seed, redirect to plant page
+                if (!uncompletedSeed && seeds.length === 0) {
+                    navigate("/plant-seed");
+                }
+
+                setIsLoadingSeeds(false);
             } catch (e) {
-                console.error("Failed to fetch balances", e);
+                console.error("Failed to fetch data", e);
+                setIsLoadingSeeds(false);
             }
         };
 
-        fetchBalances();
-        const interval = setInterval(fetchBalances, 5000); // Poll every 5s
+        fetchData();
+        const interval = setInterval(fetchData, 10000); // Poll every 10s
         return () => clearInterval(interval);
-    }, [account, suiClient]);
+    }, [account, suiClient, navigate]);
 
     const handleConfirmDeposit = async (amountStr: string) => {
         if (!account) return;
@@ -95,7 +120,7 @@ export function DashboardPage() {
         const depositAmount = BigInt(Math.floor(parseFloat(amountStr) * 1_000_000));
 
         try {
-            await sdk.buildMintTx({
+            const mintedCoin = await sdk.buildMintTx({
                 tx,
                 amount: depositAmount,
                 sender: account.address,
@@ -103,9 +128,21 @@ export function DashboardPage() {
                     balance: depositAmount,
                     type: activeUsdcType,
                 })(tx),
-                autoTransfer: true,
-                lpToken: "btcUSDC" as any
+                autoTransfer: false, // Don't transfer to user, we'll join to seed
+                stableCoinType: "btcUSDC"
             });
+
+            // If we have an active seed, join the minted LP tokens to it
+            if (activeSeed) {
+                tx.moveCall({
+                    target: `${DREAM_GARDEN_PACKAGE_ID}::${DREAM_GARDEN_MODULE}::add_water`,
+                    arguments: [
+                        tx.object(activeSeed.objectId),
+                        mintedCoin as any
+                    ],
+                    typeArguments: [BTC_USD_TYPE]
+                });
+            }
 
             signAndExecute({
                 transaction: tx,
@@ -128,32 +165,67 @@ export function DashboardPage() {
     };
 
     const handleGiveUp = async () => {
-        if (!account) {
+        if (!account || !activeSeed) {
             navigate("/");
             return;
         }
 
         const tx = new Transaction();
         try {
-            await sdk.buildBurnTx({
-                tx,
-                all: true, // Burn all
-                sender: account.address,
-                lpToken: "btcUSDC" as any
-            } as any);
+            // 1. Withdraw funds from seed
+            const [fundsCoin] = tx.moveCall({
+                target: `${DREAM_GARDEN_PACKAGE_ID}::${DREAM_GARDEN_MODULE}::withdraw_and_delete`,
+                arguments: [tx.object(activeSeed.objectId)],
+                typeArguments: [BTC_USD_TYPE]
+            });
+
+            // 2. Transfer the withdrawn LP tokens back to the user
+            tx.transferObjects([fundsCoin], tx.pure.address(account.address));
+
+            // Wait, buildBurnTx in v1.x usually takes 'coin' if we want to burn a specific coin result.
+            // But let's check sdk buildBurnTx params again. 
+            // If it doesn't take 'coin', we might need to transfer the coin to user first then let sdk find it.
+            // But usually PTBs allow passing the result.
 
             signAndExecute({
                 transaction: tx,
             }, {
                 onSuccess: () => {
-                    console.log("Withdrawn!");
+                    console.log("Withdrawn and Deleted!");
                     navigate("/");
                 }
             });
         } catch (e) {
             console.error("Burn failed", e);
-            alert("Withdraw simulation (Mock): Funds returned.");
             navigate("/");
+        }
+    };
+
+    const handleFinish = async () => {
+        if (!account || !activeSeed) return;
+
+        const tx = new Transaction();
+        try {
+            // 1. Mark finished and withdraw ALL funds
+            const [fundsCoin] = tx.moveCall({
+                target: `${DREAM_GARDEN_PACKAGE_ID}::${DREAM_GARDEN_MODULE}::finish`,
+                arguments: [tx.object(activeSeed.objectId)],
+                typeArguments: [BTC_USD_TYPE]
+            });
+
+            // 2. Transfer the yield-bearing LP tokens back to the user
+            tx.transferObjects([fundsCoin], tx.pure.address(account.address));
+
+            signAndExecute({
+                transaction: tx,
+            }, {
+                onSuccess: () => {
+                    console.log("Finished!");
+                    setIsSuccessOpen(true);
+                }
+            });
+        } catch (e) {
+            console.error("Finish failed", e);
         }
     };
 
@@ -189,8 +261,10 @@ export function DashboardPage() {
 
             <header className="w-full mb-8 text-center">
                 <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-text-main dark:text-white">
-                    Let's grow your <br className="hidden sm:block" />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-600 drop-shadow-sm">Mega Block Set!</span>
+                    {activeSeed ? "Growing your dream..." : "Let's grow your "} <br className="hidden sm:block" />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-600 drop-shadow-sm">
+                        {activeSeed ? activeSeed.name : "Mega Block Set!"}
+                    </span>
                 </h2>
             </header>
 
@@ -203,26 +277,44 @@ export function DashboardPage() {
                         </div>
                         <h3 className="text-lg font-bold text-text-muted dark:text-gray-400 mb-2">Vault Balance</h3>
                         <div className="flex items-baseline gap-1 mb-6 relative z-10">
-                            <span className="text-5xl font-black text-text-main dark:text-white">${balance}</span>
-                            <span className="text-xl font-bold text-text-muted dark:text-gray-500">/ $80.00</span>
+                            <span className="text-5xl font-black text-text-main dark:text-white">
+                                ${activeSeed ? (parseInt(activeSeed.funds || "0") / 100_000_000).toFixed(2) : balance}
+                            </span>
+                            <span className="text-xl font-bold text-text-muted dark:text-gray-500">
+                                / ${activeSeed ? (parseInt(activeSeed.target_amount) / 1_000_000).toFixed(2) : "80.00"}
+                            </span>
                         </div>
 
                         {/* Progress Bar */}
                         <div className="relative w-full h-8 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden shadow-inner-lg mb-2 border-2 border-white dark:border-gray-700">
-                            <div className="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-green-400 w-[25%] rounded-full flex items-center justify-end pr-2 transition-all duration-1000">
+                            <div
+                                className="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-green-400 rounded-full flex items-center justify-end pr-2 transition-all duration-1000"
+                                style={{ width: `${Math.min(100, (parseInt(activeSeed?.funds || "0") / parseInt(activeSeed?.target_amount || "1")) * 100)}%` }}
+                            >
                                 <div className="h-4 w-4 bg-white rounded-full animate-pulse"></div>
                             </div>
                         </div>
                     </div>
 
-                    <button onClick={() => setIsAddWaterOpen(true)} className="group relative w-full py-6 bg-primary hover:bg-primary-dark text-background-dark rounded-[2rem] font-black text-xl shadow-[0_10px_0_0_#1a9e1a] hover:shadow-[0_5px_0_0_#1a9e1a] hover:translate-y-[5px] active:shadow-none active:translate-y-[10px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden">
+                    <button
+                        onClick={() => setIsAddWaterOpen(true)}
+                        disabled={activeSeed?.is_finished || isLoadingSeeds}
+                        className="group relative w-full py-6 bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-background-dark rounded-[2rem] font-black text-xl shadow-[0_10px_0_0_#1a9e1a] hover:shadow-[0_5px_0_0_#1a9e1a] hover:translate-y-[5px] active:shadow-none active:translate-y-[10px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden"
+                    >
                         <span className="material-symbols-outlined text-3xl animate-bounce">water_drop</span>
-                        Add Water (Deposit)
+                        {isLoadingSeeds ? 'Checking Seeds...' : 'Add Water (Deposit)'}
                     </button>
+
+                    {activeSeed && parseInt(activeSeed.funds) >= parseInt(activeSeed.target_amount) && !activeSeed.is_finished && (
+                        <button onClick={handleFinish} className="w-full py-6 bg-emerald-500 hover:bg-emerald-600 text-white rounded-[2rem] font-black text-xl shadow-[0_10px_0_0_#065f46] hover:shadow-[0_5px_0_0_#065f46] hover:translate-y-[5px] active:shadow-none active:translate-y-[10px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden">
+                            <span className="material-symbols-outlined text-3xl">celebration</span>
+                            Finish Dream & Collect!
+                        </button>
+                    )}
 
                     <button onClick={() => setIsGiveUpOpen(true)} className="w-full py-4 bg-white dark:bg-card-dark text-red-500 dark:text-red-400 border-2 border-red-100 dark:border-red-900/30 rounded-2xl font-bold text-sm hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center justify-center gap-2">
                         <span className="material-symbols-outlined text-lg">cancel</span>
-                        Cancel Dream & Withdraw Funds
+                        {activeSeed?.is_finished ? 'Remove Dream Record' : (activeSeed ? 'Cancel Dream & Withdraw Funds' : 'Go Back')}
                     </button>
                 </div>
 
@@ -232,8 +324,10 @@ export function DashboardPage() {
                         {/* Plant Visualization */}
                         <div className="relative z-20 mb-8 transition-transform duration-500 group-hover:scale-105">
                             {/* Placeholder for plant image/animation */}
-                            <div className="size-64 sm:size-80 bg-white p-4 rounded-3xl shadow-xl border-4 border-white dark:border-gray-700 flex items-center justify-center">
-                                <span className="material-symbols-outlined text-9xl text-green-500">potted_plant</span>
+                            <div className="size-64 sm:size-80 bg-white p-4 rounded-3xl shadow-xl border-4 border-white dark:border-gray-700 flex flex-col items-center justify-center">
+                                <span className="material-symbols-outlined text-9xl text-green-500">{activeSeed?.seed_type || 'potted_plant'}</span>
+                                <span className="mt-4 text-2xl font-black text-text-main">{activeSeed?.name || 'Growing...'}</span>
+                                {activeSeed?.is_finished && <div className="mt-2 px-4 py-1 bg-green-100 text-green-700 rounded-full text-sm font-bold">COMPLETED</div>}
                             </div>
                         </div>
                     </div>
