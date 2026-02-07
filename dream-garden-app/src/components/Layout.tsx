@@ -13,7 +13,9 @@ export function Layout({ children }: LayoutProps) {
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/20 rounded-full blur-[100px]"></div>
             </div>
             <Header />
-            {children}
+            <div className="pt-20 flex-grow flex flex-col">
+                {children}
+            </div>
             <footer className="mt-auto border-t border-[#f0f5f0] dark:border-white/10 py-8 bg-card-light dark:bg-card-dark">
                 <div className="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="flex items-center gap-2">

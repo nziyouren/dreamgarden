@@ -30,6 +30,10 @@
     border-radius: 20px;
 }
 
+html {
+    overflow-y: scroll;
+}
+
 body {
     background-color: #E0F7FA;
 }

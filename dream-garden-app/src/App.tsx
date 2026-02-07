@@ -3,6 +3,7 @@ import { Layout } from "./components/Layout.tsx";
 import { LandingPage } from "./pages/LandingPage.tsx";
 import { PlantSeedPage } from "./pages/PlantSeedPage.tsx";
 import { DashboardPage } from "./pages/DashboardPage.tsx";
+import { GardenHistoryPage } from "./pages/GardenHistoryPage.tsx";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/plant" element={<PlantSeedPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/history" element={<GardenHistoryPage />} />
         </Routes>
       </Layout>
     </Router>
