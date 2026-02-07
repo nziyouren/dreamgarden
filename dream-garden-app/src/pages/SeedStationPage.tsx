@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSuiClient, useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction, coinWithBalance } from "@mysten/sui/transactions";
 import { StableLayerClient } from "stable-layer-sdk";
@@ -6,15 +6,15 @@ import { USDC_TYPE, BTC_USD_TYPE } from "../constants";
 import { DepositSuccessDialog } from "../components/DepositSuccessDialog";
 import { DepositFailureDialog } from "../components/DepositFailureDialog";
 
-const sdk = new StableLayerClient({
-    network: "mainnet",
-    sender: "0x0"
-});
-
 export function SeedStationPage() {
     const account = useCurrentAccount();
     const suiClient = useSuiClient();
     const { mutate: signAndExecute } = useSignAndExecuteTransaction();
+
+    const sdk = useMemo(() => new StableLayerClient({
+        network: "mainnet",
+        sender: account?.address || "0x0"
+    }), [account]);
 
     const [usdcBalance, setUsdcBalance] = useState<string>("0.00");
     const [lpBalance, setLpBalance] = useState<string>("0.00");

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSuiClient, useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction, coinWithBalance } from "@mysten/sui/transactions";
 import { StableLayerClient } from "stable-layer-sdk";
@@ -11,16 +11,17 @@ import { DepositFailureDialog } from "../components/DepositFailureDialog.tsx";
 
 import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, USDC_TYPE } from "../constants";
 
-const sdk = new StableLayerClient({
-    network: "mainnet",
-    sender: "0x0"
-});
 
 export function DashboardPage() {
     const account = useCurrentAccount();
     const suiClient = useSuiClient();
     const { mutate: signAndExecute } = useSignAndExecuteTransaction();
     const navigate = useNavigate();
+
+    const sdk = useMemo(() => new StableLayerClient({
+        network: "mainnet",
+        sender: account?.address || "0x0"
+    }), [account]);
 
     const [balance, setBalance] = useState<string>("0.00");
     const [usdcBalance, setUsdcBalance] = useState<string>("0.00");
