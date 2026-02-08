@@ -45,9 +45,10 @@ export function LandingPage() {
         fetchSeeds();
     }, [account, suiClient]);
 
-    // Aggregate stats
-    const totalSaved = seeds.reduce((sum, s) => sum + parseInt(s.funds || "0"), 0);
-    const growingCount = seeds.filter(s => s.status === 1 || s.status === 2).length;
+    // Aggregate stats - Only count funds in active (growing) seeds
+    const activeSeeds = seeds.filter(s => s.status === 1 || s.status === 2);
+    const totalSaved = activeSeeds.reduce((sum, s) => sum + parseInt(s.funds || "0"), 0);
+    const growingCount = activeSeeds.length;
     const harvestedCount = seeds.filter(s => s.status === 3).length;
 
     return (
