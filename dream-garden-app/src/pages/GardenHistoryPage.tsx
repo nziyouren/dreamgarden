@@ -236,7 +236,7 @@ export function GardenHistoryPage() {
                                 <p className="font-bold text-text-main dark:text-white text-lg">No records found</p>
                                 <p className="text-text-muted text-sm">You haven't performed any actions in your garden yet.</p>
                             </div>
-                            <Link to="/plant" className="mt-4 px-6 py-3 bg-primary text-text-main font-bold rounded-full hover:scale-105 transition-transform">
+                            <Link to="/" className="mt-4 px-6 py-3 bg-primary text-text-main font-bold rounded-full hover:scale-105 transition-transform">
                                 Start Your Garden
                             </Link>
                         </div>

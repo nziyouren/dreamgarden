@@ -84,7 +84,7 @@ export function Header() {
                 <div className="flex items-center gap-4 h-full">
                     <div className="flex items-center h-10 gap-4">
                         <div className="custom-connect-btn flex items-center" data-connected={!!account}>
-                            <ConnectButton label="Connect Wallet" />
+                            <ConnectButton connectText="Connect Wallet" />
                         </div>
 
                         <div className="size-10 rounded-full border-2 border-white shadow-md overflow-hidden bg-gray-50 flex items-center justify-center shrink-0 box-border">
