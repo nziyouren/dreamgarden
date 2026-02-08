@@ -356,34 +356,34 @@ export function DashboardPage() {
                         </div>
                     </div>
 
-                    <div className="flex gap-4">
+                    <div className="flex flex-col gap-3">
                         <button
                             onClick={() => setIsAddWaterOpen(true)}
                             disabled={(activeSeed?.status !== 1 && activeSeed?.status !== 2) || isLoadingSeeds}
-                            className="group relative flex-1 py-6 bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-background-dark rounded-[2rem] font-black text-xl shadow-[0_10px_0_0_#1a9e1a] hover:shadow-[0_5px_0_0_#1a9e1a] hover:translate-y-[5px] active:shadow-none active:translate-y-[10px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden"
+                            className="group relative w-full py-3 bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-background-dark rounded-2xl font-black text-lg shadow-[0_4px_0_0_#1a9e1a] hover:shadow-[0_2px_0_0_#1a9e1a] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden"
                         >
-                            <span className="material-symbols-outlined text-3xl animate-bounce">water_drop</span>
+                            <span className="material-symbols-outlined text-2xl animate-bounce">water_drop</span>
                             {isLoadingSeeds ? '...' : 'Add (Deposit)'}
                         </button>
 
                         <button
                             onClick={() => setIsWithdrawOpen(true)}
                             disabled={(activeSeed?.status !== 1 && activeSeed?.status !== 2) || isLoadingSeeds || !activeSeed || parseInt(activeSeed.funds || "0") === 0}
-                            className="group relative flex-1 py-6 bg-orange-400 hover:bg-orange-500 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-white rounded-[2rem] font-black text-xl shadow-[0_10px_0_0_#c2410c] hover:shadow-[0_5px_0_0_#c2410c] hover:translate-y-[5px] active:shadow-none active:translate-y-[10px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden"
+                            className="group relative w-full py-3 bg-orange-400 hover:bg-orange-500 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-white rounded-2xl font-black text-lg shadow-[0_4px_0_0_#c2410c] hover:shadow-[0_2px_0_0_#c2410c] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden"
                         >
-                            <span className="material-symbols-outlined text-3xl">logout</span>
+                            <span className="material-symbols-outlined text-2xl">logout</span>
                             {isLoadingSeeds ? '...' : 'Take (Withdraw)'}
                         </button>
                     </div>
 
                     {activeSeed && parseInt(activeSeed.funds) >= parseInt(activeSeed.target_amount) && activeSeed.status !== 3 && (
-                        <button onClick={handleFinish} className="w-full py-6 bg-emerald-500 hover:bg-emerald-600 text-white rounded-[2rem] font-black text-xl shadow-[0_10px_0_0_#065f46] hover:shadow-[0_5px_0_0_#065f46] hover:translate-y-[5px] active:shadow-none active:translate-y-[10px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden">
-                            <span className="material-symbols-outlined text-3xl">celebration</span>
+                        <button onClick={handleFinish} className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black text-lg shadow-[0_4px_0_0_#065f46] hover:shadow-[0_2px_0_0_#065f46] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden">
+                            <span className="material-symbols-outlined text-2xl">celebration</span>
                             Finish Dream & Collect!
                         </button>
                     )}
 
-                    <button onClick={() => setIsGiveUpOpen(true)} className="w-full py-4 bg-white dark:bg-card-dark text-red-500 dark:text-red-400 border-2 border-red-100 dark:border-red-900/30 rounded-2xl font-bold text-sm hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center justify-center gap-2">
+                    <button onClick={() => setIsGiveUpOpen(true)} className="w-full py-2.5 bg-white dark:bg-card-dark text-red-500 dark:text-red-400 border-2 border-red-100 dark:border-red-900/30 rounded-xl font-bold text-sm hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center justify-center gap-2">
                         <span className="material-symbols-outlined text-lg">cancel</span>
                         {activeSeed?.status === 3 ? 'Remove Dream Record' : (activeSeed ? 'Cancel Dream & Withdraw Funds' : 'Go Back')}
                     </button>
