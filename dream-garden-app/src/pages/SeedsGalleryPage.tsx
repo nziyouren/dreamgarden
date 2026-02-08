@@ -71,29 +71,29 @@ export function SeedsGalleryPage() {
             </header>
 
             {/* Tab Navigation */}
-            <div className="bg-card-light dark:bg-card-dark rounded-2xl p-2 mb-10 shadow-sm border border-gray-100 dark:border-white/5 flex flex-col md:flex-row gap-2">
+            <div className="bg-white dark:bg-card-dark rounded-[2rem] p-1.5 mb-10 shadow-sm border border-gray-100 dark:border-white/5 flex flex-col md:flex-row gap-1 w-fit mx-auto">
                 <button
                     onClick={() => setActiveTab('active')}
-                    className={`flex-1 flex items-center justify-center gap-3 py-4 px-6 rounded-xl transition-all hover:scale-[1.02] font-bold ${activeTab === 'active' ? 'bg-primary text-background-dark shadow-soft' : 'text-text-muted hover:bg-gray-50 dark:hover:bg-white/5'}`}
+                    className={`px-8 flex items-center justify-center gap-2 h-11 rounded-full transition-all hover:scale-[1.02] font-bold ${activeTab === 'active' ? 'bg-primary text-background-dark shadow-soft' : 'text-text-muted hover:bg-gray-50 dark:hover:bg-white/5'}`}
                 >
-                    <span>Active Seeds</span>
-                    <span className={`${activeTab === 'active' ? 'bg-black/10' : 'bg-gray-100 dark:bg-white/10'} px-2 py-0.5 rounded-full text-xs ml-1`}>{stats.active}</span>
+                    <span className="text-sm">Active Seeds</span>
+                    <span className={`${activeTab === 'active' ? 'bg-black/10' : 'bg-gray-100 dark:bg-white/10'} px-2 py-0.5 rounded-full text-[10px] ml-1`}>{stats.active}</span>
                 </button>
                 <button
                     onClick={() => setActiveTab('harvested')}
-                    className={`flex-1 flex items-center justify-center gap-3 py-4 px-6 rounded-xl transition-all hover:scale-[1.02] font-semibold group ${activeTab === 'harvested' ? 'bg-primary text-background-dark shadow-soft font-bold' : 'text-text-muted hover:bg-gray-50 dark:hover:bg-white/5 hover:text-purple-600 dark:hover:text-purple-400'}`}
+                    className={`px-8 flex items-center justify-center gap-2 h-11 rounded-full transition-all hover:scale-[1.02] font-bold group ${activeTab === 'harvested' ? 'bg-primary text-background-dark shadow-soft' : 'text-text-muted hover:bg-gray-50 dark:hover:bg-white/5'}`}
                 >
-                    <span className={`material-symbols-outlined text-2xl group-hover:scale-110 transition-transform ${activeTab === 'harvested' ? 'text-background-dark' : 'text-purple-500'}`}>emoji_events</span>
-                    <span>Harvested Dreams</span>
-                    <span className={`${activeTab === 'harvested' ? 'bg-black/10' : 'bg-gray-100 dark:bg-white/10'} px-2 py-0.5 rounded-full text-xs ml-1`}>{stats.harvested}</span>
+                    <span className={`material-symbols-outlined text-xl ${activeTab === 'harvested' ? 'text-background-dark' : 'text-purple-500'}`}>emoji_events</span>
+                    <span className="text-sm">Harvested Dreams</span>
+                    <span className={`${activeTab === 'harvested' ? 'bg-black/10' : 'bg-gray-100 dark:bg-white/10'} px-2 py-0.5 rounded-full text-[10px] ml-1`}>{stats.harvested}</span>
                 </button>
                 <button
                     onClick={() => setActiveTab('giving-up')}
-                    className={`flex-1 flex items-center justify-center gap-3 py-4 px-6 rounded-xl transition-all hover:scale-[1.02] font-semibold group ${activeTab === 'giving-up' ? 'bg-primary text-background-dark shadow-soft font-bold' : 'text-text-muted hover:bg-gray-50 dark:hover:bg-white/5 hover:text-coral-red dark:hover:text-red-400'}`}
+                    className={`px-8 flex items-center justify-center gap-2 h-11 rounded-full transition-all hover:scale-[1.02] font-bold group ${activeTab === 'giving-up' ? 'bg-primary text-background-dark shadow-soft' : 'text-text-muted hover:bg-gray-50 dark:hover:bg-white/5'}`}
                 >
-                    <span className={`material-symbols-outlined text-2xl group-hover:scale-110 transition-transform ${activeTab === 'giving-up' ? 'text-background-dark' : 'text-[#ff6b6b]'}`}>inventory_2</span>
-                    <span>Giving Up</span>
-                    <span className={`${activeTab === 'giving-up' ? 'bg-black/10' : 'bg-gray-100 dark:bg-white/10'} px-2 py-0.5 rounded-full text-xs ml-1`}>{stats.abandoned}</span>
+                    <span className={`material-symbols-outlined text-xl ${activeTab === 'giving-up' ? 'text-background-dark' : 'text-[#ff6b6b]'}`}>inventory_2</span>
+                    <span className="text-sm">Giving Up</span>
+                    <span className={`${activeTab === 'giving-up' ? 'bg-black/10' : 'bg-gray-100 dark:bg-white/10'} px-2 py-0.5 rounded-full text-[10px] ml-1`}>{stats.abandoned}</span>
                 </button>
             </div>
 
@@ -135,9 +135,8 @@ export function SeedsGalleryPage() {
                                                             <span className="material-symbols-outlined text-6xl text-primary">{seed.seed_type || 'potted_plant'}</span>
                                                         </div>
                                                     )}
-                                                    <div className="absolute top-3 right-3 bg-white/90 dark:bg-black/60 backdrop-blur px-3 py-1.5 rounded-full text-xs font-bold text-primary flex items-center gap-1 shadow-sm">
-                                                        <span className="material-symbols-outlined text-sm">water_drop</span>
-                                                        Growing
+                                                    <div className="absolute top-3 right-3 bg-white/90 dark:bg-black/60 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-blue-600 dark:text-blue-300">
+                                                        {seed.status === SEED_STATUS.COMPLETED ? 'Harvested' : progress >= 100 ? 'Ready' : 'Growing'}
                                                     </div>
                                                 </div>
                                                 <div className="flex justify-between items-start mb-2">
@@ -169,10 +168,9 @@ export function SeedsGalleryPage() {
                                                     </div>
                                                     <button
                                                         onClick={() => navigate(`/dashboard/${seed.objectId}`)}
-                                                        className="w-full mt-5 py-3 bg-primary text-background-dark rounded-lg text-sm font-bold hover:bg-primary-dark shadow-soft transition-colors flex items-center justify-center gap-2"
+                                                        className="w-full mt-4 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-lg text-sm font-bold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
                                                     >
-                                                        <span className="material-symbols-outlined text-lg">water_drop</span>
-                                                        Add Water (Deposit)
+                                                        View Details
                                                     </button>
                                                 </div>
                                             </div>
@@ -217,9 +215,9 @@ export function SeedsGalleryPage() {
                                                     </div>
                                                     <button
                                                         onClick={() => navigate(`/dashboard/${seed.objectId}`)}
-                                                        className="w-full py-2 bg-white dark:bg-white/10 border border-purple-200 dark:border-purple-700 text-purple-700 dark:text-purple-300 rounded-lg text-sm font-bold hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-colors"
+                                                        className="w-full py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-lg text-sm font-bold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
                                                     >
-                                                        View Achievement
+                                                        View Details
                                                     </button>
                                                 </div>
                                             </div>
@@ -262,6 +260,12 @@ export function SeedsGalleryPage() {
                                                     <p className="text-xs text-gray-500 mb-1">Funds Returned:</p>
                                                     <p className="text-lg font-bold text-gray-700 dark:text-gray-300">${(parseInt(seed.funds) / 1_000_000).toFixed(2)}</p>
                                                 </div>
+                                                <button
+                                                    onClick={() => navigate(`/dashboard/${seed.objectId}`)}
+                                                    className="w-full mt-4 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-lg text-sm font-bold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
+                                                >
+                                                    View Details
+                                                </button>
                                             </div>
                                         </div>
                                     ))}
