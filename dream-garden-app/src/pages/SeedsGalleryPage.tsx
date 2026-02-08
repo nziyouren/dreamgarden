@@ -38,9 +38,11 @@ export function SeedsGalleryPage() {
                     ...obj.data?.content?.fields,
                     objectId: obj.data?.objectId
                 }));
-                // Simple heuristic: reverse the list to show recently created seeds first.
-                // Accurate chronological sorting would require a timestamp field in the Move contract.
-                setSeeds(parsedSeeds.reverse());
+                // Sort by creation_time descending (newest first)
+                const sortedSeeds = parsedSeeds.sort((a: any, b: any) =>
+                    Number(b.creation_time || 0) - Number(a.creation_time || 0)
+                );
+                setSeeds(sortedSeeds);
             } catch (e) {
                 console.error("Failed to fetch seeds", e);
             } finally {

@@ -3,6 +3,7 @@ module dream_garden::seed;
 use std::string::String;
 use sui::balance::{Self, Balance};
 use sui::coin::Coin;
+use sui::clock::{Self, Clock};
 
 // Status constants
 const STATUS_CREATED: u8 = 1;
@@ -22,6 +23,7 @@ public struct Seed<phantom T> has key, store {
     target_amount: u64,
     seed_type: String,
     status: u8,
+    creation_time: u64,
     funds: Balance<T>,
 }
 
@@ -30,6 +32,7 @@ public fun create_seed<T>(
     name: String,
     target_amount: u64,
     seed_type: String,
+    clock: &Clock,
     ctx: &mut TxContext
 ) {
     let seed = Seed<T> {
@@ -39,6 +42,7 @@ public fun create_seed<T>(
         target_amount,
         seed_type,
         status: STATUS_CREATED,
+        creation_time: clock.timestamp_ms(),
         funds: balance::zero(),
     };
     transfer::public_transfer(seed, ctx.sender());
@@ -113,4 +117,8 @@ public fun seed_type<T>(seed: &Seed<T>): String {
 
 public fun owner<T>(seed: &Seed<T>): address {
     seed.owner
+}
+
+public fun creation_time<T>(seed: &Seed<T>): u64 {
+    seed.creation_time
 }

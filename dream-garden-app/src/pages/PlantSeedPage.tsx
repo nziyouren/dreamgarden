@@ -30,7 +30,8 @@ export function PlantSeedPage() {
                 arguments: [
                     tx.pure.string(dreamName),
                     tx.pure.u64(amount),
-                    tx.pure.string(seedType)
+                    tx.pure.string(seedType),
+                    tx.object("0x6") // SUI_CLOCK_OBJECT_ID
                 ],
                 typeArguments: [BTC_USD_TYPE] // Use BTC_USD_TYPE as the coin type for the seed vault
             });

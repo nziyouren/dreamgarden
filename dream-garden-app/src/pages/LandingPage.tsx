@@ -1,6 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
-import { useSuiClient, useCurrentAccount } from "@mysten/dapp-kit";
+import { useSuiClient, useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { useState, useEffect } from "react";
+import { Transaction } from "@mysten/sui/transactions";
 import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_STATUS, SEED_TYPE_LIST } from "../constants";
 
 export function LandingPage() {
@@ -10,6 +11,8 @@ export function LandingPage() {
 
     const [seeds, setSeeds] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isBatchProcessing, setIsBatchProcessing] = useState(false);
+    const { mutate: signAndExecute } = useSignAndExecuteTransaction();
 
     useEffect(() => {
         if (!account) {
@@ -34,9 +37,11 @@ export function LandingPage() {
                     ...obj.data?.content?.fields,
                     objectId: obj.data?.objectId
                 }));
-                // Simple heuristic: reverse the list because getOwnedObjects often returns older objects first.
-                // For a more robust solution, we would need to store a timestamp in the contract.
-                setSeeds(parsedSeeds.reverse());
+                // Sort by creation_time descending (newest first)
+                const sortedSeeds = parsedSeeds.sort((a: any, b: any) =>
+                    Number(b.creation_time || 0) - Number(a.creation_time || 0)
+                );
+                setSeeds(sortedSeeds);
             } catch (e) {
                 console.error("Failed to fetch seeds", e);
             } finally {
@@ -51,6 +56,43 @@ export function LandingPage() {
     const totalSaved = activeSeeds.reduce((sum, s) => sum + parseInt(s.funds || "0"), 0);
     const growingCount = activeSeeds.length;
     const harvestedCount = seeds.filter(s => s.status === SEED_STATUS.COMPLETED).length;
+
+    const handleBatchWithdraw = async () => {
+        if (!account || activeSeeds.length === 0) return;
+
+        const seedsWithFunds = activeSeeds.filter(s => parseInt(s.funds || "0") > 0);
+        if (seedsWithFunds.length === 0) {
+            alert("No funds to withdraw!");
+            return;
+        }
+
+        setIsBatchProcessing(true);
+        const tx = new Transaction();
+
+        seedsWithFunds.forEach(seed => {
+            const [coin] = tx.moveCall({
+                target: `${DREAM_GARDEN_PACKAGE_ID}::${DREAM_GARDEN_MODULE}::withdraw`,
+                arguments: [
+                    tx.object(seed.objectId),
+                    tx.pure.u64(seed.funds)
+                ],
+                typeArguments: [BTC_USD_TYPE]
+            });
+            tx.transferObjects([coin], account.address);
+        });
+
+        signAndExecute({ transaction: tx }, {
+            onSuccess: () => {
+                alert("Test Success: All funds withdrawn to your wallet!");
+                window.location.reload();
+            },
+            onError: (err) => {
+                console.error(err);
+                alert("Batch withdraw failed: " + err.message);
+                setIsBatchProcessing(false);
+            }
+        });
+    };
 
     return (
         <main className="flex-grow w-full max-w-[1040px] mx-auto px-4 sm:px-6 py-8">
@@ -259,6 +301,20 @@ export function LandingPage() {
                     </Link>
                 </div>
             </section>
+            {/* Test Tool: Batch Withdraw Button */}
+            <button
+                onClick={handleBatchWithdraw}
+                disabled={isBatchProcessing || activeSeeds.length === 0}
+                className="fixed bottom-8 right-8 z-[60] bg-red-500 hover:bg-red-600 text-white p-4 rounded-full shadow-2xl transition-all active:scale-95 group flex items-center gap-2 overflow-hidden max-w-[56px] hover:max-w-[200px] disabled:opacity-50 disabled:cursor-not-allowed border-4 border-white/20"
+                title="Test Tool: Withdraw all funds"
+            >
+                <span className={`material-symbols-outlined ${isBatchProcessing ? 'animate-spin' : ''}`}>
+                    {isBatchProcessing ? 'sync' : 'experimental'}
+                </span>
+                <span className="whitespace-nowrap font-bold text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {isBatchProcessing ? 'Running PTB...' : 'TEST: Batch Withdraw'}
+                </span>
+            </button>
         </main>
     );
 }
