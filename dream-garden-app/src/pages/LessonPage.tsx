@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export function LessonPage() {
     const [years, setYears] = useState(5);
@@ -10,7 +11,17 @@ export function LessonPage() {
     const calculatedAmount = (baseAmount * Math.pow(1 + growthRate, years)).toFixed(2);
 
     return (
-        <main className="flex-grow w-full max-w-[1040px] mx-auto px-4 sm:px-6 py-12">
+        <main className="flex-grow w-full max-w-[1040px] mx-auto px-4 sm:px-6 py-12 relative">
+            <div className="absolute top-8 left-4 sm:left-6">
+                <Link
+                    to="/"
+                    className="flex items-center gap-2 bg-text-main dark:bg-white text-white dark:text-text-main px-6 py-3 rounded-xl font-bold text-sm hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group"
+                >
+                    <span className="material-symbols-outlined transition-transform group-hover:-translate-x-1">arrow_back</span>
+                    Back to My Garden
+                </Link>
+            </div>
+
             <header className="mb-12 text-center">
                 <div className="inline-block bg-[#ffdd00] text-amber-900 px-6 py-2 rounded-full font-black text-sm uppercase tracking-widest mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.15)] border-2 border-amber-900/10">
                     Lesson 1: Magic Growth
@@ -136,15 +147,6 @@ export function LessonPage() {
                 </div>
             </section>
 
-            <div className="flex justify-center mt-12">
-                <button
-                    onClick={() => window.history.back()}
-                    className="flex items-center gap-2 bg-text-main dark:bg-white text-white dark:text-text-main px-8 py-4 rounded-xl font-bold text-lg hover:shadow-hover hover:-translate-y-1 transition-all duration-300"
-                >
-                    <span className="material-symbols-outlined">arrow_back</span>
-                    Back to My Garden
-                </button>
-            </div>
         </main>
     );
 }

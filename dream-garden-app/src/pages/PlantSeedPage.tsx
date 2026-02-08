@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
+import { useCurrentAccount, useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_TYPES, SEED_TYPE_LIST } from "../constants";
 
 export function PlantSeedPage() {
     const navigate = useNavigate();
     const account = useCurrentAccount();
+    const suiClient = useSuiClient();
     const { mutate: signAndExecute } = useSignAndExecuteTransaction();
 
     const [dreamName, setDreamName] = useState("");
@@ -37,9 +38,33 @@ export function PlantSeedPage() {
             signAndExecute({
                 transaction: tx,
             }, {
-                onSuccess: (result) => {
+                onSuccess: async (result) => {
                     console.log("Seed planted!", result);
-                    navigate("/dashboard");
+                    try {
+                        // We need to fetch the transaction details to get objectChanges
+                        const txData = await suiClient.waitForTransaction({
+                            digest: result.digest,
+                            options: {
+                                showObjectChanges: true,
+                            }
+                        });
+
+                        // Find the created Seed object from object changes
+                        const createdSeed = txData.objectChanges?.find(
+                            (change: any) =>
+                                change.type === 'created' &&
+                                change.objectType.includes(`${DREAM_GARDEN_PACKAGE_ID}::${DREAM_GARDEN_MODULE}::Seed`)
+                        );
+
+                        if (createdSeed && 'objectId' in createdSeed) {
+                            navigate(`/dashboard/${createdSeed.objectId}`);
+                        } else {
+                            navigate("/dashboard");
+                        }
+                    } catch (e) {
+                        console.error("Failed to fetch transaction details", e);
+                        navigate("/dashboard");
+                    }
                 },
                 onError: (error) => {
                     console.error("Failed to plant seed", error);

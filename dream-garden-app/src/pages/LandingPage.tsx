@@ -34,7 +34,9 @@ export function LandingPage() {
                     ...obj.data?.content?.fields,
                     objectId: obj.data?.objectId
                 }));
-                setSeeds(parsedSeeds);
+                // Simple heuristic: reverse the list because getOwnedObjects often returns older objects first.
+                // For a more robust solution, we would need to store a timestamp in the contract.
+                setSeeds(parsedSeeds.reverse());
             } catch (e) {
                 console.error("Failed to fetch seeds", e);
             } finally {
@@ -201,8 +203,8 @@ export function LandingPage() {
                                             <h4 className="text-xl font-bold text-text-main dark:text-white truncate max-w-[150px]">{seed.name}</h4>
                                             <p className="text-xs text-text-muted dark:text-gray-400 uppercase tracking-wide font-bold mt-1">Target: ${(target / 1_000_000).toFixed(2)}</p>
                                         </div>
-                                        <div className="bg-blue-50 dark:bg-blue-900/30 p-2 rounded-lg text-blue-600 dark:text-blue-400">
-                                            <span className="material-symbols-outlined">
+                                        <div className="size-10 flex-shrink-0 bg-blue-50 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400">
+                                            <span className="material-symbols-outlined text-xl">
                                                 {SEED_TYPE_LIST.find(t => t.id === seed.seed_type)?.icon || seed.seed_type || 'potted_plant'}
                                             </span>
                                         </div>

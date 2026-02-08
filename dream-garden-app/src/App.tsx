@@ -8,9 +8,12 @@ import { SeedStationPage } from "./pages/SeedStationPage.tsx";
 import { SeedsGalleryPage } from "./pages/SeedsGalleryPage.tsx";
 import { LessonPage } from "./pages/LessonPage.tsx";
 
+import { ScrollToTop } from "./components/ScrollToTop.tsx";
+
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Layout>
         <Routes>
           <Route path="/" element={<LandingPage />} />

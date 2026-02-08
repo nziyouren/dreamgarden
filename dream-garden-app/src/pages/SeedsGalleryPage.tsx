@@ -38,7 +38,9 @@ export function SeedsGalleryPage() {
                     ...obj.data?.content?.fields,
                     objectId: obj.data?.objectId
                 }));
-                setSeeds(parsedSeeds);
+                // Simple heuristic: reverse the list to show recently created seeds first.
+                // Accurate chronological sorting would require a timestamp field in the Move contract.
+                setSeeds(parsedSeeds.reverse());
             } catch (e) {
                 console.error("Failed to fetch seeds", e);
             } finally {
@@ -158,8 +160,8 @@ export function SeedsGalleryPage() {
                                                         <h4 className="text-xl font-bold text-text-main dark:text-white truncate max-w-[150px]">{seed.name}</h4>
                                                         <p className="text-xs text-text-muted dark:text-gray-400 uppercase tracking-wide font-bold mt-1">Target: ${(target / 1_000_000).toFixed(2)}</p>
                                                     </div>
-                                                    <div className="bg-blue-50 dark:bg-blue-900/30 p-2 rounded-lg text-blue-600 dark:text-blue-400">
-                                                        <span className="material-symbols-outlined">
+                                                    <div className="size-10 flex-shrink-0 bg-blue-50 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400">
+                                                        <span className="material-symbols-outlined text-xl">
                                                             {SEED_TYPE_LIST.find(t => t.id === seed.seed_type)?.icon || seed.seed_type || 'potted_plant'}
                                                         </span>
                                                     </div>
@@ -273,8 +275,8 @@ export function SeedsGalleryPage() {
                                     {abandonedSeedsList.map((seed) => (
                                         <div key={seed.objectId} className="bg-gray-50 dark:bg-white/5 rounded-xl p-5 border border-gray-200 dark:border-white/5 flex flex-col h-full opacity-80 hover:opacity-100 transition-opacity">
                                             <div className="flex justify-between items-start mb-4">
-                                                <div className="bg-gray-200 dark:bg-white/10 p-2 rounded-lg text-gray-500 dark:text-gray-400">
-                                                    <span className="material-symbols-outlined">
+                                                <div className="size-10 flex-shrink-0 bg-blue-50 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400">
+                                                    <span className="material-symbols-outlined text-xl">
                                                         {SEED_TYPE_LIST.find(t => t.id === seed.seed_type)?.icon || seed.seed_type || 'potted_plant'}
                                                     </span>
                                                 </div>
