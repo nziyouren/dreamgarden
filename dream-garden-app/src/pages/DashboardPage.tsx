@@ -9,7 +9,7 @@ import { WithdrawWaterDialog } from "../components/WithdrawWaterDialog.tsx";
 import { DepositSuccessDialog } from "../components/DepositSuccessDialog.tsx";
 import { DepositFailureDialog } from "../components/DepositFailureDialog.tsx";
 
-import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE } from "../constants";
+import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_STATUS } from "../constants";
 
 
 export function DashboardPage() {
@@ -68,7 +68,7 @@ export function DashboardPage() {
 
                 // Status: 1 Created, 2 In Progress, 3 Completed, 4 Abandoned
                 // Active seeds are status 1 or 2
-                const activeSeeds = seeds.filter((s: any) => s.status === 1 || s.status === 2);
+                const activeSeeds = seeds.filter((s: any) => s.status === SEED_STATUS.CREATED || s.status === SEED_STATUS.IN_PROGRESS);
 
                 // For now, prioritize the seed that has the most progress, or just the first one
                 const uncompletedSeed = activeSeeds.length > 0 ? activeSeeds[0] : null;
@@ -316,7 +316,7 @@ export function DashboardPage() {
                     <div className="flex flex-col gap-3">
                         <button
                             onClick={() => setIsAddWaterOpen(true)}
-                            disabled={(activeSeed?.status !== 1 && activeSeed?.status !== 2) || isLoadingSeeds}
+                            disabled={(activeSeed?.status !== SEED_STATUS.CREATED && activeSeed?.status !== SEED_STATUS.IN_PROGRESS) || isLoadingSeeds}
                             className="group relative w-full py-3 bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-background-dark rounded-2xl font-black text-lg shadow-[0_4px_0_0_#1a9e1a] hover:shadow-[0_2px_0_0_#1a9e1a] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden"
                         >
                             <span className="material-symbols-outlined text-2xl animate-bounce">water_drop</span>
@@ -325,7 +325,7 @@ export function DashboardPage() {
 
                         <button
                             onClick={() => setIsWithdrawOpen(true)}
-                            disabled={(activeSeed?.status !== 1 && activeSeed?.status !== 2) || isLoadingSeeds || !activeSeed || parseInt(activeSeed.funds || "0") === 0}
+                            disabled={(activeSeed?.status !== SEED_STATUS.CREATED && activeSeed?.status !== SEED_STATUS.IN_PROGRESS) || isLoadingSeeds || !activeSeed || parseInt(activeSeed.funds || "0") === 0}
                             className="group relative w-full py-3 bg-orange-400 hover:bg-orange-500 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-white rounded-2xl font-black text-lg shadow-[0_4px_0_0_#c2410c] hover:shadow-[0_2px_0_0_#c2410c] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden"
                         >
                             <span className="material-symbols-outlined text-2xl">logout</span>
@@ -333,7 +333,7 @@ export function DashboardPage() {
                         </button>
                     </div>
 
-                    {activeSeed && parseInt(activeSeed.funds) >= parseInt(activeSeed.target_amount) && activeSeed.status !== 3 && (
+                    {activeSeed && parseInt(activeSeed.funds) >= parseInt(activeSeed.target_amount) && activeSeed.status !== SEED_STATUS.COMPLETED && (
                         <button onClick={handleFinish} className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black text-lg shadow-[0_4px_0_0_#065f46] hover:shadow-[0_2px_0_0_#065f46] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden">
                             <span className="material-symbols-outlined text-2xl">celebration</span>
                             Finish Dream & Collect!
@@ -342,7 +342,7 @@ export function DashboardPage() {
 
                     <button onClick={() => setIsGiveUpOpen(true)} className="w-full py-2.5 bg-white dark:bg-card-dark text-red-500 dark:text-red-400 border-2 border-red-100 dark:border-red-900/30 rounded-xl font-bold text-sm hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center justify-center gap-2">
                         <span className="material-symbols-outlined text-lg">cancel</span>
-                        {activeSeed?.status === 3 ? 'Remove Dream Record' : (activeSeed ? 'Cancel Dream & Withdraw Funds' : 'Go Back')}
+                        {activeSeed?.status === SEED_STATUS.COMPLETED ? 'Remove Dream Record' : (activeSeed ? 'Cancel Dream & Withdraw Funds' : 'Go Back')}
                     </button>
                 </div>
 
@@ -355,7 +355,7 @@ export function DashboardPage() {
                             <div className="size-64 sm:size-80 bg-white p-4 rounded-3xl shadow-xl border-4 border-white dark:border-gray-700 flex flex-col items-center justify-center">
                                 <span className="material-symbols-outlined text-9xl text-green-500">{activeSeed?.seed_type || 'potted_plant'}</span>
                                 <span className="mt-4 text-2xl font-black text-text-main">{activeSeed?.name || 'Growing...'}</span>
-                                {activeSeed?.status === 3 && <div className="mt-2 px-4 py-1 bg-green-100 text-green-700 rounded-full text-sm font-bold">COMPLETED</div>}
+                                {activeSeed?.status === SEED_STATUS.COMPLETED && <div className="mt-2 px-4 py-1 bg-green-100 text-green-700 rounded-full text-sm font-bold">COMPLETED</div>}
                             </div>
                         </div>
                     </div>

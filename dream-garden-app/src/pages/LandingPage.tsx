@@ -1,7 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useSuiClient, useCurrentAccount } from "@mysten/dapp-kit";
 import { useState, useEffect } from "react";
-import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE } from "../constants";
+import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_STATUS } from "../constants";
 
 export function LandingPage() {
     const account = useCurrentAccount();
@@ -45,11 +45,10 @@ export function LandingPage() {
         fetchSeeds();
     }, [account, suiClient]);
 
-    // Aggregate stats - Only count funds in active (growing) seeds
-    const activeSeeds = seeds.filter(s => s.status === 1 || s.status === 2);
+    const activeSeeds = seeds.filter(s => s.status === SEED_STATUS.CREATED || s.status === SEED_STATUS.IN_PROGRESS);
     const totalSaved = activeSeeds.reduce((sum, s) => sum + parseInt(s.funds || "0"), 0);
     const growingCount = activeSeeds.length;
-    const harvestedCount = seeds.filter(s => s.status === 3).length;
+    const harvestedCount = seeds.filter(s => s.status === SEED_STATUS.COMPLETED).length;
 
     return (
         <main className="flex-grow w-full max-w-[1040px] mx-auto px-4 sm:px-6 py-8">
@@ -150,27 +149,27 @@ export function LandingPage() {
                     <div className="flex items-center justify-center py-20">
                         <div className="size-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                     </div>
-                ) : seeds.length === 0 ? (
+                ) : seeds.filter(s => s.status === SEED_STATUS.CREATED || s.status === SEED_STATUS.IN_PROGRESS).length === 0 ? (
                     <div className="bg-white dark:bg-card-dark p-12 rounded-[2.5rem] border-2 border-dashed border-gray-200 dark:border-gray-800 flex flex-col items-center gap-6 text-center">
                         <div className="size-24 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                             <span className="material-symbols-outlined text-5xl">local_florist</span>
                         </div>
                         <div>
-                            <h4 className="text-2xl font-black text-text-main dark:text-white mb-2">No Seeds Planted Yet</h4>
+                            <h4 className="text-2xl font-black text-text-main dark:text-white mb-2">No Active Seeds</h4>
                             <p className="text-text-muted dark:text-gray-400 max-w-md">
-                                Your garden is ready for your first dream. Plant a seed to start saving for something special!
+                                Your garden is ready for your next dream. Plant a seed to start saving for something special!
                             </p>
                         </div>
                         <Link
                             to="/plant"
                             className="bg-primary hover:bg-primary-dark text-background-dark font-black px-10 py-4 rounded-xl shadow-soft transition-all hover:scale-105"
                         >
-                            Plant My First Seed
+                            Plant A New Seed
                         </Link>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {seeds.map((seed) => {
+                        {seeds.filter(s => s.status === SEED_STATUS.CREATED || s.status === SEED_STATUS.IN_PROGRESS).map((seed) => {
                             const funds = parseInt(seed.funds || "0");
                             const target = parseInt(seed.target_amount || "1");
                             const progress = Math.min(100, (funds / target) * 100);
@@ -182,7 +181,7 @@ export function LandingPage() {
                                             {seed.seed_type || 'potted_plant'}
                                         </span>
                                         <div className="absolute top-3 right-3 bg-white/90 dark:bg-black/60 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-blue-600 dark:text-blue-300">
-                                            {seed.status === 3 ? 'Harvested' : progress >= 100 ? 'Ready' : 'Growing'}
+                                            {seed.status === SEED_STATUS.COMPLETED ? 'Harvested' : progress >= 100 ? 'Ready' : 'Growing'}
                                         </div>
                                     </div>
                                     <div className="flex justify-between items-start mb-2">
