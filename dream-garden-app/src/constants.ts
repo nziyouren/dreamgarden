@@ -12,3 +12,13 @@ export const SEED_STATUS = {
     ABANDONED: 4,
 } as const;
 export const LP_TOKEN_TYPE = BTC_USD_TYPE; // Default yield-bearing token
+
+// Seed Type Constants
+export const SEED_TYPES = {
+    TOY: { id: "toy", icon: "smart_toy", label: "Toy" },
+    FOOD: { id: "food", icon: "restaurant", label: "Food" },
+    TRIP: { id: "trip", icon: "flight", label: "Trip" },
+    CLOTHES: { id: "clothes", icon: "checkroom", label: "Clothes" },
+} as const;
+
+export const SEED_TYPE_LIST = Object.values(SEED_TYPES);

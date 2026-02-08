@@ -9,7 +9,7 @@ import { WithdrawWaterDialog } from "../components/WithdrawWaterDialog.tsx";
 import { DepositSuccessDialog } from "../components/DepositSuccessDialog.tsx";
 import { DepositFailureDialog } from "../components/DepositFailureDialog.tsx";
 
-import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_STATUS } from "../constants";
+import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_STATUS, SEED_TYPE_LIST } from "../constants";
 
 
 export function DashboardPage() {
@@ -357,14 +357,41 @@ export function DashboardPage() {
 
                 {/* Right Column: Visualization */}
                 <div className="lg:col-span-8 h-full min-h-[500px] relative order-1 lg:order-2">
-                    <div className="relative w-full h-full bg-white/40 dark:bg-white/5 backdrop-blur-sm rounded-[3rem] border-4 border-white/60 dark:border-white/10 shadow-glass flex flex-col items-center justify-end overflow-hidden p-8 group">
+                    <div className="relative w-full h-full bg-white/40 dark:bg-white/5 backdrop-blur-sm rounded-[3rem] border-4 border-white/60 dark:border-white/10 shadow-glass flex flex-col items-center justify-center overflow-hidden p-8 group">
                         {/* Plant Visualization */}
-                        <div className="relative z-20 mb-8 transition-transform duration-500 group-hover:scale-105">
-                            {/* Placeholder for plant image/animation */}
-                            <div className="size-64 sm:size-80 bg-white p-4 rounded-3xl shadow-xl border-4 border-white dark:border-gray-700 flex flex-col items-center justify-center">
-                                <span className="material-symbols-outlined text-9xl text-green-500">{activeSeed?.seed_type || 'potted_plant'}</span>
-                                <span className="mt-4 text-2xl font-black text-text-main">{activeSeed?.name || 'Growing...'}</span>
-                                {activeSeed?.status === SEED_STATUS.COMPLETED && <div className="mt-2 px-4 py-1 bg-green-100 text-green-700 rounded-full text-sm font-bold">COMPLETED</div>}
+                        <div className="relative z-20 transition-transform duration-500 group-hover:scale-105 w-full max-w-lg aspect-[4/5] bg-white dark:bg-gray-800 rounded-[2.5rem] shadow-2xl border-[12px] border-white dark:border-gray-700 overflow-hidden flex flex-col">
+                            <div className="flex-1 relative overflow-hidden">
+                                {SEED_TYPE_LIST.some(t => t.id === activeSeed?.seed_type) ? (
+                                    <img
+                                        src={`/previews/${activeSeed.seed_type}.png`}
+                                        alt={activeSeed.seed_type}
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-gradient-to-br from-green-50 to-primary/10 flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-[10rem] text-primary">{activeSeed?.seed_type || 'local_florist'}</span>
+                                    </div>
+                                )}
+                                <div className="absolute top-6 right-6 bg-white/90 dark:bg-black/60 backdrop-blur-md px-4 py-2 rounded-full shadow-lg flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-primary">
+                                        {SEED_TYPE_LIST.find(t => t.id === activeSeed?.seed_type)?.icon || 'local_florist'}
+                                    </span>
+                                    <span className="font-black text-blue-600 dark:text-blue-300 uppercase tracking-widest text-xs">
+                                        {activeSeed?.seed_type || 'Other'}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="bg-white dark:bg-gray-800 p-8 text-center border-t border-gray-100 dark:border-gray-700">
+                                <h3 className="text-3xl font-black text-text-main dark:text-white mb-2">{activeSeed?.name || 'Growing Dream...'}</h3>
+                                <div className="flex items-center justify-center gap-2 text-text-muted dark:text-gray-400 font-bold uppercase tracking-widest text-sm">
+                                    <span className="material-symbols-outlined text-primary">verified</span>
+                                    On-chain Dream Seed
+                                </div>
+                                {activeSeed?.status === SEED_STATUS.COMPLETED && (
+                                    <div className="mt-4 px-6 py-2 bg-green-500 text-white rounded-xl text-lg font-black shadow-lg animate-bounce">
+                                        DREAM ACHIEVED! 🎉
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

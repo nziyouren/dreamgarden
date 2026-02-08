@@ -1,7 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useSuiClient, useCurrentAccount } from "@mysten/dapp-kit";
 import { useState, useEffect } from "react";
-import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_STATUS } from "../constants";
+import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_STATUS, SEED_TYPE_LIST } from "../constants";
 
 export function LandingPage() {
     const account = useCurrentAccount();
@@ -174,12 +174,24 @@ export function LandingPage() {
                             const target = parseInt(seed.target_amount || "1");
                             const progress = Math.min(100, (funds / target) * 100);
 
+                            const isPresetType = SEED_TYPE_LIST.some(t => t.id === seed.seed_type);
+
                             return (
                                 <div key={seed.objectId} className="bg-card-light dark:bg-card-dark rounded-xl p-5 shadow-soft border border-gray-100 dark:border-white/5 hover:shadow-hover transition-all duration-300 flex flex-col h-full">
-                                    <div className="relative w-full h-40 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/20 rounded-lg mb-4 flex items-center justify-center group overflow-hidden">
-                                        <span className="material-symbols-outlined text-6xl text-primary group-hover:scale-110 transition-transform duration-500">
-                                            {seed.seed_type || 'potted_plant'}
-                                        </span>
+                                    <div className="relative w-full h-48 bg-gray-100 dark:bg-gray-800 rounded-lg mb-4 flex items-center justify-center group overflow-hidden">
+                                        {isPresetType ? (
+                                            <img
+                                                src={`/previews/${seed.seed_type}.png`}
+                                                alt={seed.seed_type}
+                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/20 flex items-center justify-center">
+                                                <span className="material-symbols-outlined text-6xl text-primary group-hover:scale-110 transition-transform duration-500">
+                                                    {seed.seed_type || 'potted_plant'}
+                                                </span>
+                                            </div>
+                                        )}
                                         <div className="absolute top-3 right-3 bg-white/90 dark:bg-black/60 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-blue-600 dark:text-blue-300">
                                             {seed.status === SEED_STATUS.COMPLETED ? 'Harvested' : progress >= 100 ? 'Ready' : 'Growing'}
                                         </div>
@@ -190,7 +202,9 @@ export function LandingPage() {
                                             <p className="text-xs text-text-muted dark:text-gray-400 uppercase tracking-wide font-bold mt-1">Target: ${(target / 1_000_000).toFixed(2)}</p>
                                         </div>
                                         <div className="bg-blue-50 dark:bg-blue-900/30 p-2 rounded-lg text-blue-600 dark:text-blue-400">
-                                            <span className="material-symbols-outlined">{seed.seed_type || 'potted_plant'}</span>
+                                            <span className="material-symbols-outlined">
+                                                {SEED_TYPE_LIST.find(t => t.id === seed.seed_type)?.icon || seed.seed_type || 'potted_plant'}
+                                            </span>
                                         </div>
                                     </div>
                                     <div className="mt-auto">
