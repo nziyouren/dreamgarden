@@ -235,9 +235,12 @@ export function LandingPage() {
                         <h4 className="text-2xl font-bold mb-2">Did you know?</h4>
                         <p className="text-gray-300 text-lg">Compound interest is like planting a seed that drops more seeds! The longer you leave it, the bigger your garden grows.</p>
                     </div>
-                    <button className="bg-primary hover:bg-primary-dark text-background-dark font-bold py-3 px-6 rounded-lg whitespace-nowrap transition-colors">
+                    <Link
+                        to="/lesson/1"
+                        className="bg-primary hover:bg-primary-dark text-background-dark font-bold py-3 px-6 rounded-lg whitespace-nowrap transition-colors"
+                    >
                         Learn More
-                    </button>
+                    </Link>
                 </div>
             </section>
         </main>
