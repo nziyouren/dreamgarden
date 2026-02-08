@@ -96,7 +96,7 @@ export function GardenHistoryPage() {
 
                     if (isAddWater || isMint) {
                         type = 'add_water';
-                        actionName = isAddWater ? "Watered the Garden" : "Minted Magic Gold";
+                        actionName = isAddWater ? "Watered the Garden" : "Minted Magic Drop";
                     } else if (isWithdraw || isBurn) {
                         type = 'withdraw';
                         actionName = isWithdraw ? "Harvested (Withdraw)" : "Moved to Storage";

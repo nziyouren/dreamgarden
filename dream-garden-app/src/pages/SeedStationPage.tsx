@@ -126,19 +126,19 @@ export function SeedStationPage() {
             <header className="text-center mb-12 mt-12">
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full font-bold text-sm mb-4">
                     <span className="material-symbols-outlined text-lg">hotel_class</span>
-                    Magic Gold Exchange
+                    Magic Drops Shop
                 </div>
                 <h2 className="text-4xl sm:text-6xl font-black tracking-tight text-text-main dark:text-white mb-4">
-                    Manage Your <span className="text-primary underline decoration-wavy decoration-4 underline-offset-4">Magic Gold</span>
+                    Manage Your <span className="text-primary underline decoration-wavy decoration-4 underline-offset-4">Magic Drop</span>
                 </h2>
                 <p className="text-lg text-text-muted dark:text-gray-400 max-w-2xl mx-auto font-medium">
-                    Turn your real coins into Magic Gold to water your seeds, or turn your Magic Gold back into coins to spend!
+                    Turn your real coins into Magic Drop to water your seeds, or turn your Magic Drop back into coins to spend!
                 </p>
             </header>
 
             <div className="relative z-10 -mb-10 mx-auto w-fit">
                 <div className="bg-text-main text-white dark:bg-white dark:text-text-main px-10 py-6 rounded-2xl shadow-xl flex flex-col items-center transform rotate-[-2deg] border-4 border-white dark:border-card-dark transition-all hover:rotate-0">
-                    <span className="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Magic Gold Balance</span>
+                    <span className="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Magic Drop Balance</span>
                     <div className="flex items-center gap-3">
                         <span className="material-symbols-outlined text-4xl text-primary">monetization_on</span>
                         <span className="text-5xl font-black tracking-tight">{lpBalance}</span>
@@ -159,9 +159,9 @@ export function SeedStationPage() {
                                 <span className="material-symbols-outlined text-4xl font-bold">add</span>
                             </div>
                         </div>
-                        <h3 className="text-3xl font-black text-text-main dark:text-white mb-2">Mint Magic Gold</h3>
+                        <h3 className="text-3xl font-black text-text-main dark:text-white mb-2">Mint Magic Drop</h3>
                         <p className="text-text-muted dark:text-gray-400 font-medium mb-8 px-4 text-sm">
-                            Convert your USDC into Magic Gold to start growing your dream seeds and earn rewards.
+                            Convert your USDC into Magic Drop to start growing your dream seeds and earn rewards.
                         </p>
 
                         <div className="w-full bg-background-light dark:bg-black/20 p-6 rounded-2xl mb-6">
@@ -215,9 +215,9 @@ export function SeedStationPage() {
                                 <span className="material-symbols-outlined text-4xl font-bold">remove</span>
                             </div>
                         </div>
-                        <h3 className="text-3xl font-black text-text-main dark:text-white mb-2">Burn Magic Gold</h3>
+                        <h3 className="text-3xl font-black text-text-main dark:text-white mb-2">Burn Magic Drop</h3>
                         <p className="text-text-muted dark:text-gray-400 font-medium mb-8 px-4 text-sm">
-                            Finished growing? Exchange your Magic Gold back into real USDC to spend or save.
+                            Finished growing? Exchange your Magic Drop back into real USDC to spend or save.
                         </p>
 
                         <div className="w-full bg-background-light dark:bg-black/20 p-6 rounded-2xl mb-6">
@@ -246,7 +246,7 @@ export function SeedStationPage() {
                                 ))}
                             </div>
                             <div className="flex justify-between items-center mt-4 text-xs font-bold text-text-muted">
-                                <span>Available: {lpBalance} Magic Gold</span>
+                                <span>Available: {lpBalance} Magic Drop</span>
                             </div>
                         </div>
 
@@ -271,7 +271,7 @@ export function SeedStationPage() {
                         </div>
                         <div>
                             <p className="font-bold text-sm text-text-main dark:text-white">Exchange Rate</p>
-                            <p className="text-xs text-text-muted">1 USDC = 1 Magic Gold (btcUSDC)</p>
+                            <p className="text-xs text-text-muted">1 USDC = 1 Magic Drop (btcUSDC)</p>
                         </div>
                     </div>
                     <div className="flex gap-4">

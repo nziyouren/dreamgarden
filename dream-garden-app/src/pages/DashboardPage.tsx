@@ -110,7 +110,7 @@ export function DashboardPage() {
         const amount = BigInt(Math.floor(parseFloat(amountStr) * 1_000_000));
 
         try {
-            // Directly use user's BTC_USD_TYPE (Magic Gold)
+            // Directly use user's BTC_USD_TYPE (Magic Drop)
             const goldCoin = coinWithBalance({
                 balance: amount,
                 type: BTC_USD_TYPE,
