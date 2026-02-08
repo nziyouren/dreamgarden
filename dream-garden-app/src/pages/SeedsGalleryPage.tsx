@@ -110,8 +110,22 @@ export function SeedsGalleryPage() {
                                 Growing Now
                             </h3>
                             {activeSeedsList.length === 0 ? (
-                                <div className="text-center py-12 bg-white dark:bg-white/5 rounded-2xl border border-dashed border-gray-200 dark:border-white/10">
-                                    <p className="text-text-muted">No active seeds growing right now.</p>
+                                <div className="bg-white dark:bg-card-dark p-12 rounded-[2.5rem] border-2 border-dashed border-gray-100 dark:border-gray-800 flex flex-col items-center gap-6 text-center max-w-2xl mx-auto shadow-sm">
+                                    <div className="size-24 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                        <span className="material-symbols-outlined text-5xl">local_florist</span>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-2xl font-black text-text-main dark:text-white mb-2">No Active Seeds</h4>
+                                        <p className="text-text-muted dark:text-gray-400 max-w-md">
+                                            Your garden is ready for your next dream. Plant a seed to start saving for something special!
+                                        </p>
+                                    </div>
+                                    <button
+                                        onClick={() => navigate('/plant')}
+                                        className="bg-primary hover:bg-primary-dark text-background-dark font-black px-10 py-4 rounded-xl shadow-soft transition-all hover:scale-105"
+                                    >
+                                        Plant A New Seed
+                                    </button>
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -188,8 +202,16 @@ export function SeedsGalleryPage() {
                                 Harvested Dreams
                             </h3>
                             {harvestedSeedsList.length === 0 ? (
-                                <div className="text-center py-12 bg-white dark:bg-white/5 rounded-2xl border border-dashed border-gray-200 dark:border-white/10">
-                                    <p className="text-text-muted">You haven't harvested any dreams yet.</p>
+                                <div className="bg-white dark:bg-card-dark p-12 rounded-[2.5rem] border-2 border-dashed border-gray-100 dark:border-gray-800 flex flex-col items-center gap-6 text-center max-w-2xl mx-auto shadow-sm">
+                                    <div className="size-24 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600">
+                                        <span className="material-symbols-outlined text-5xl">emoji_events</span>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-2xl font-black text-text-main dark:text-white mb-2">No Harvests Yet</h4>
+                                        <p className="text-text-muted dark:text-gray-400 max-w-md">
+                                            Keep watering those seeds! Once they reach 100%, they'll appear here as your proud achievements.
+                                        </p>
+                                    </div>
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -235,8 +257,16 @@ export function SeedsGalleryPage() {
                                 Giving Up (Archive)
                             </h3>
                             {abandonedSeedsList.length === 0 ? (
-                                <div className="text-center py-12 bg-white dark:bg-white/5 rounded-2xl border border-dashed border-gray-200 dark:border-white/10">
-                                    <p className="text-text-muted">No abandoned seeds found.</p>
+                                <div className="bg-white dark:bg-card-dark p-12 rounded-[2.5rem] border-2 border-dashed border-gray-100 dark:border-gray-800 flex flex-col items-center gap-6 text-center max-w-2xl mx-auto shadow-sm">
+                                    <div className="size-24 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600">
+                                        <span className="material-symbols-outlined text-5xl">inventory_2</span>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-2xl font-black text-text-main dark:text-white mb-2">Workspace Empty</h4>
+                                        <p className="text-text-muted dark:text-gray-400 max-w-md">
+                                            This is where seeds you've decided to stop growing are archived. It's clean for now!
+                                        </p>
+                                    </div>
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
