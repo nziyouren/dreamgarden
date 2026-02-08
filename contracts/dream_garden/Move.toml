@@ -8,4 +8,4 @@ edition = "2024"         # edition = "legacy" to use legacy (pre-2024) Move
 Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "mainnet" }
 
 [addresses]
-dream_garden = "0x0"
+dream_garden = "0xfac5be3df28f5374ebfb7aa5032a81c91be9ebd17ec4e67a8d677878a2230dc5"

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSuiClient, useCurrentAccount } from "@mysten/dapp-kit";
 import { Link } from "react-router-dom";
+import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE } from "../constants";
 
 // Constants from SDK for identification
 const STABLE_LAYER_PACKAGE_ID = "0x41e25d09e20cf3bc43fe321e51ef178fac419ae47b783a7161982158fc9f17d6";
@@ -68,16 +69,40 @@ export function GardenHistoryPage() {
 
                     const isBurn = moveCalls.some(m =>
                         'MoveCall' in m &&
-                        ('MoveCall' in m && m.MoveCall.package === STABLE_LAYER_PACKAGE_ID &&
+                        (m.MoveCall.package === STABLE_LAYER_PACKAGE_ID &&
                             (m.MoveCall.function === "request_burn" || m.MoveCall.function === "fulfill_burn"))
                     );
 
-                    if (isMint) {
+                    const isAddWater = moveCalls.some(m =>
+                        'MoveCall' in m &&
+                        m.MoveCall.package === DREAM_GARDEN_PACKAGE_ID &&
+                        (m.MoveCall.module === DREAM_GARDEN_MODULE || m.MoveCall.module === "seed") &&
+                        m.MoveCall.function === "add_water"
+                    );
+
+                    const isWithdraw = moveCalls.some(m =>
+                        'MoveCall' in m &&
+                        m.MoveCall.package === DREAM_GARDEN_PACKAGE_ID &&
+                        (m.MoveCall.module === DREAM_GARDEN_MODULE || m.MoveCall.module === "seed") &&
+                        m.MoveCall.function === "withdraw"
+                    );
+
+                    const isComplete = moveCalls.some(m =>
+                        'MoveCall' in m &&
+                        m.MoveCall.package === DREAM_GARDEN_PACKAGE_ID &&
+                        (m.MoveCall.module === DREAM_GARDEN_MODULE || m.MoveCall.module === "seed") &&
+                        m.MoveCall.function === "complete"
+                    );
+
+                    if (isAddWater || isMint) {
                         type = 'add_water';
-                        actionName = "Watered the Garden";
-                    } else if (isBurn) {
+                        actionName = isAddWater ? "Watered the Garden" : "Minted Magic Gold";
+                    } else if (isWithdraw || isBurn) {
                         type = 'withdraw';
-                        actionName = "Moved to Storage";
+                        actionName = isWithdraw ? "Harvested (Withdraw)" : "Moved to Storage";
+                    } else if (isComplete) {
+                        type = 'other';
+                        actionName = "Dream Completed!";
                     } else if (moveCalls.length > 0) {
                         const firstCall = (moveCalls[0] as any).MoveCall;
                         actionName = firstCall.function.replace(/_/g, ' ');

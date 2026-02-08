@@ -1,4 +1,4 @@
-export const DREAM_GARDEN_PACKAGE_ID = "0x0"; // Placeholder - Replace with actual ID after deployment
+export const DREAM_GARDEN_PACKAGE_ID = "0xfac5be3df28f5374ebfb7aa5032a81c91be9ebd17ec4e67a8d677878a2230dc5"; // Real published address
 export const DREAM_GARDEN_MODULE = "seed";
 
 export const USDC_TYPE = "0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC";
