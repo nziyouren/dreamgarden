@@ -5,6 +5,7 @@ import { PlantSeedPage } from "./pages/PlantSeedPage.tsx";
 import { DashboardPage } from "./pages/DashboardPage.tsx";
 import { GardenHistoryPage } from "./pages/GardenHistoryPage.tsx";
 import { SeedStationPage } from "./pages/SeedStationPage.tsx";
+import { SeedsGalleryPage } from "./pages/SeedsGalleryPage.tsx";
 import { LessonPage } from "./pages/LessonPage.tsx";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/dashboard/:objectId?" element={<DashboardPage />} />
           <Route path="/history" element={<GardenHistoryPage />} />
           <Route path="/seed-station" element={<SeedStationPage />} />
+          <Route path="/gallery" element={<SeedsGalleryPage />} />
           <Route path="/lesson/1" element={<LessonPage />} />
         </Routes>
       </Layout>

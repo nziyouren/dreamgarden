@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dream Seeds Status Gallery</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#25f425",
+                        "primary-dark": "#1bc41b",
+                        "background-light": "#f5f8f5",
+                        "background-dark": "#102210",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1a331a",
+                        "text-main": "#111811",
+                        "text-muted": "#608a60",
+                        "coral-red": "#ff6b6b",
+                        "purple-trophy": "#a855f7",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem", 
+                        "lg": "2rem", 
+                        "xl": "3rem", 
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(37, 244, 37, 0.15)',
+                        'hover': '0 10px 25px -5px rgba(37, 244, 37, 0.25)',
+                        'glow': '0 0 15px rgba(37, 244, 37, 0.4)',
+                        'glow-purple': '0 0 15px rgba(168, 85, 247, 0.4)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+        .wallet-dropdown {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.2s ease-in-out;
+        }
+        .wallet-container:hover .wallet-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display transition-colors duration-300 min-h-screen flex flex-col">
+<nav class="sticky top-0 z-50 w-full bg-card-light/90 dark:bg-card-dark/90 backdrop-blur-md border-b border-[#f0f5f0] dark:border-white/10 px-4 sm:px-10 py-4 transition-all duration-300">
+<div class="max-w-[1200px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 bg-primary rounded-full flex items-center justify-center text-background-dark shadow-sm transform hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-2xl">emoji_nature</span>
+</div>
+<h1 class="text-xl sm:text-2xl font-bold tracking-tight text-text-main dark:text-white">Dream Garden</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-text-main dark:text-gray-200 text-sm font-semibold hover:text-primary transition-colors" href="#">My Garden</a>
+<a class="text-text-muted dark:text-gray-400 text-sm font-medium hover:text-primary transition-colors" href="#">Learn</a>
+<a class="text-text-muted dark:text-gray-400 text-sm font-medium hover:text-primary transition-colors" href="#">Friends</a>
+<a class="text-text-muted dark:text-gray-400 text-sm font-medium hover:text-primary transition-colors" href="#">Store</a>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative wallet-container">
+<button class="flex items-center gap-2 bg-primary hover:bg-primary-dark transition-colors px-4 h-10 rounded-full text-background-dark text-sm font-bold shadow-soft cursor-pointer group">
+<span class="material-symbols-outlined text-lg">account_balance_wallet</span>
+<span class="hidden sm:inline">Connected: 0x...84f</span>
+<span class="material-symbols-outlined text-sm transition-transform duration-200 group-hover:rotate-180">expand_more</span>
+</button>
+<div class="wallet-dropdown absolute right-0 top-full mt-2 w-64 bg-white dark:bg-card-dark rounded-xl shadow-xl border border-gray-100 dark:border-white/10 p-2 z-50">
+<div class="px-4 py-3 border-b border-gray-100 dark:border-white/10 mb-2">
+<p class="text-xs text-text-muted dark:text-gray-400 font-medium">Your Balance</p>
+<p class="text-lg font-bold text-text-main dark:text-white mt-1">1.45 ETH</p>
+<p class="text-xs text-text-muted dark:text-gray-400">$2,450.32 USD</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-text-main dark:text-gray-200 rounded-lg hover:bg-background-light dark:hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg text-primary">history</span>
+                        Transaction History
+                    </a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-text-main dark:text-gray-200 rounded-lg hover:bg-background-light dark:hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg text-primary">settings</span>
+                        Wallet Settings
+                    </a>
+<div class="border-t border-gray-100 dark:border-white/10 mt-2 pt-2">
+<button class="w-full flex items-center gap-3 px-3 py-2 text-sm font-bold text-red-500 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+<span class="material-symbols-outlined text-lg">logout</span>
+                            Disconnect
+                        </button>
+</div>
+</div>
+</div>
+<button class="size-10 flex items-center justify-center bg-gray-100 dark:bg-white/10 rounded-full text-text-main dark:text-white hover:bg-gray-200 dark:hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</div>
+</nav>
+<main class="flex-grow w-full max-w-[1200px] mx-auto px-4 sm:px-6 py-8">
+<header class="mb-8">
+<h2 class="text-3xl sm:text-4xl font-black tracking-tight mb-2">Dream Seeds Gallery</h2>
+<p class="text-text-muted dark:text-gray-400 text-lg">Manage your growing investments and see past achievements.</p>
+</header>
+<div class="bg-card-light dark:bg-card-dark rounded-2xl p-2 mb-10 shadow-sm border border-gray-100 dark:border-white/5 flex flex-col md:flex-row gap-2">
+<button class="flex-1 flex items-center justify-center gap-3 py-4 px-6 rounded-xl bg-primary text-background-dark font-bold shadow-soft transition-all hover:scale-[1.02]">
+<span class="material-symbols-outlined text-2xl">clover_spark</span>
+<span>Active Seeds</span>
+<span class="bg-black/10 px-2 py-0.5 rounded-full text-xs ml-1">3</span>
+</button>
+<button class="flex-1 flex items-center justify-center gap-3 py-4 px-6 rounded-xl text-text-muted hover:bg-gray-50 dark:hover:bg-white/5 transition-all hover:text-purple-600 dark:hover:text-purple-400 font-semibold group">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform text-purple-500">emoji_events</span>
+<span>Harvested Dreams</span>
+<span class="bg-gray-100 dark:bg-white/10 px-2 py-0.5 rounded-full text-xs ml-1">1</span>
+</button>
+<button class="flex-1 flex items-center justify-center gap-3 py-4 px-6 rounded-xl text-text-muted hover:bg-gray-50 dark:hover:bg-white/5 transition-all hover:text-coral-red dark:hover:text-red-400 font-semibold group">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform text-coral-red">inventory_2</span>
+<span>Giving Up</span>
+<span class="bg-gray-100 dark:bg-white/10 px-2 py-0.5 rounded-full text-xs ml-1">2</span>
+</button>
+</div>
+<div class="mb-16">
+<h3 class="text-xl font-bold flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">eco</span>
+            Growing Now
+        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="bg-card-light dark:bg-card-dark rounded-xl p-5 shadow-soft border border-gray-100 dark:border-white/5 hover:shadow-hover transition-all duration-300 flex flex-col h-full group">
+<div class="relative w-full h-48 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/20 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+<img alt="New Bike" class="w-full h-full object-cover rounded-lg opacity-80 group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCM3_SJPyNyk-h28YAXJJXGR1WdHSuXneLdski2wgpCo-JJUwUsmDw3U2btjZGS1fYksgtSXGn8ICY4FUzY-He6eBdRnNwQc43weYybtWJk7TpPd8DC72niZc4xKMqLL-828Obttkwfl34flmWk_8SfIKktj9JNo99SNUW2sTB4NlbzIuOu96yCXmMpAQyL2V9hJFM5e99n-pMk1qKOCl5nUVhqAc1mJ5j4k7ZLGgCEjoboLbWXZ0G6yHrarVRuELzZTHp0ZTCEcaI"/>
+<div class="absolute top-3 right-3 bg-white/90 dark:bg-black/60 backdrop-blur px-3 py-1.5 rounded-full text-xs font-bold text-primary dark:text-primary flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-sm">water_drop</span>
+                        Growing
+                    </div>
+</div>
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="text-xl font-bold">New Bike</h4>
+<p class="text-xs text-text-muted dark:text-gray-400 uppercase tracking-wide font-bold mt-1">Target: $250.00</p>
+</div>
+<div class="bg-blue-50 dark:bg-blue-900/30 p-2 rounded-lg text-blue-600 dark:text-blue-400">
+<span class="material-symbols-outlined">pedal_bike</span>
+</div>
+</div>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-2">
+<span class="text-2xl font-black text-text-main dark:text-white">$150.00</span>
+<span class="text-sm font-medium text-blue-600 dark:text-blue-400">60%</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-gray-700 h-4 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full w-[60%] shadow-[0_0_10px_rgba(37,244,37,0.5)] relative">
+<div class="absolute inset-0 bg-white/20 w-full h-full animate-pulse"></div>
+</div>
+</div>
+<div class="mt-3 flex justify-between text-xs font-medium text-text-muted dark:text-gray-500">
+<span>Last water: 2 days ago</span>
+<span>Needed: $100.00</span>
+</div>
+<button class="w-full mt-5 py-3 bg-primary text-background-dark rounded-lg text-sm font-bold hover:bg-primary-dark shadow-soft transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">water_drop</span>
+                        Add Water (Deposit)
+                    </button>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark rounded-xl p-5 shadow-soft border border-gray-100 dark:border-white/5 hover:shadow-hover transition-all duration-300 flex flex-col h-full group">
+<div class="relative w-full h-48 bg-gradient-to-br from-orange-100 to-amber-100 dark:from-orange-900/40 dark:to-amber-800/20 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+<img alt="Lego Set" class="w-full h-full object-cover rounded-lg opacity-80 group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBLkD6qs1s1ylASARzm_U8h_KmqVpkSWFrDxGd1bR8WUZl2sb3wTaIBXovNLk59BhVnIbyiEhBMAbhg_aUgzQKmIR4nJmwqS7TT4dXhkLPVpSwYzzEp5jKVpq_B1CWCmr5s3v1iQ2JNsiTa5-nZ4jClPONY9SO5-M-Iu1TmJAAtnLf_B5HdDsSTnxGOEfQ8vOtI-cTMjj3vCEo0PNmR-Yec4GpzwqRNTvj41cT9nmtp4WXtQI6MpuBU1p4Y9P4feXaJvvnlut4yvA"/>
+<div class="absolute top-3 right-3 bg-white/90 dark:bg-black/60 backdrop-blur px-3 py-1.5 rounded-full text-xs font-bold text-orange-500 dark:text-orange-400 flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-sm">wb_sunny</span>
+                        Sprouting
+                    </div>
+</div>
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="text-xl font-bold">Lego Set</h4>
+<p class="text-xs text-text-muted dark:text-gray-400 uppercase tracking-wide font-bold mt-1">Target: $80.00</p>
+</div>
+<div class="bg-orange-50 dark:bg-orange-900/30 p-2 rounded-lg text-orange-600 dark:text-orange-400">
+<span class="material-symbols-outlined">extension</span>
+</div>
+</div>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-2">
+<span class="text-2xl font-black text-text-main dark:text-white">$20.00</span>
+<span class="text-sm font-medium text-orange-600 dark:text-orange-400">25%</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-gray-700 h-4 rounded-full overflow-hidden">
+<div class="bg-orange-400 h-full rounded-full w-[25%] shadow-[0_0_10px_rgba(251,146,60,0.5)]"></div>
+</div>
+<div class="mt-3 flex justify-between text-xs font-medium text-text-muted dark:text-gray-500">
+<span>Last water: Today</span>
+<span>Needed: $60.00</span>
+</div>
+<button class="w-full mt-5 py-3 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-lg text-sm font-bold hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">water_drop</span>
+                        Add Water (Deposit)
+                    </button>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark rounded-xl p-5 shadow-soft border border-gray-100 dark:border-white/5 hover:shadow-hover transition-all duration-300 flex flex-col h-full group">
+<div class="relative w-full h-48 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/40 dark:to-pink-800/20 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+<img alt="Game Console" class="w-full h-full object-cover rounded-lg opacity-80 group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIyOKyJVIdPRMNevWxnfotMrDRoH6HMnLwlZ7rB_ywTNesMOfDX3jjP_ThciaigDJZeuFjaOwpIiLXs6GMOvcKsr1utshoUNyUfr7bKC8bCgRYNiWQHs69com8px8VM1nuWhi2flOZvLwWjqAqH4Elpucavy7_yjcwZrEZFbAZX2tit0VSv8ZUJxLQszsSPK5G9ZHRVEtPuYvTLh4KjR0V_9KQMT-QdEx179BQuh9JoG0aTUG4LTvOuKOyrCzkAghPi83wT1AQhqM"/>
+<div class="absolute top-3 right-3 bg-white/90 dark:bg-black/60 backdrop-blur px-3 py-1.5 rounded-full text-xs font-bold text-purple-600 dark:text-purple-300 flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-sm">local_florist</span>
+                        Blooming
+                    </div>
+</div>
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="text-xl font-bold">New Game</h4>
+<p class="text-xs text-text-muted dark:text-gray-400 uppercase tracking-wide font-bold mt-1">Target: $60.00</p>
+</div>
+<div class="bg-purple-50 dark:bg-purple-900/30 p-2 rounded-lg text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined">sports_esports</span>
+</div>
+</div>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-2">
+<span class="text-2xl font-black text-text-main dark:text-white">$54.00</span>
+<span class="text-sm font-medium text-purple-600 dark:text-purple-400">90%</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-gray-700 h-4 rounded-full overflow-hidden">
+<div class="bg-purple-500 h-full rounded-full w-[90%] shadow-[0_0_10px_rgba(168,85,247,0.5)] relative">
+<div class="absolute inset-0 bg-white/20 w-full h-full animate-pulse"></div>
+</div>
+</div>
+<div class="mt-3 flex justify-between text-xs font-medium text-text-muted dark:text-gray-500">
+<span>Almost there!</span>
+<span>Needed: $6.00</span>
+</div>
+<button class="w-full mt-5 py-3 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-lg text-sm font-bold hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">bolt</span>
+                        Finish Growing!
+                    </button>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h3 class="text-xl font-bold flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-purple-500">emoji_events</span>
+            Harvested Dreams
+        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="bg-card-light dark:bg-card-dark rounded-xl p-1 shadow-glow-purple border-2 border-purple-200 dark:border-purple-800 transition-all duration-300 flex flex-col h-full relative overflow-hidden">
+<div class="absolute inset-0 bg-purple-500/5 dark:bg-purple-500/10 z-0"></div>
+<div class="p-4 relative z-10 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-purple-100 dark:bg-purple-900/50 p-2.5 rounded-full text-purple-600 dark:text-purple-300">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<span class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">stars</span>
+                            Completed
+                        </span>
+</div>
+<h4 class="text-xl font-bold mb-1">Theme Park Trip</h4>
+<p class="text-sm text-text-muted dark:text-gray-400 mb-4">Harvested on Oct 12, 2023</p>
+<div class="mt-auto pt-4 border-t border-dashed border-purple-200 dark:border-purple-800">
+<div class="flex justify-between items-center mb-4">
+<span class="text-xs font-bold text-text-muted">Total Saved</span>
+<span class="text-lg font-black text-purple-700 dark:text-purple-300">$120.00</span>
+</div>
+<button class="w-full py-2 bg-white dark:bg-white/10 border border-purple-200 dark:border-purple-700 text-purple-700 dark:text-purple-300 rounded-lg text-sm font-bold hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-colors">
+                            View Achievement
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-8">
+<h3 class="text-xl font-bold flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-coral-red">inventory_2</span>
+            Giving Up (Archive)
+        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="bg-gray-50 dark:bg-white/5 rounded-xl p-5 border border-gray-200 dark:border-white/5 flex flex-col h-full opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-gray-200 dark:bg-white/10 p-2 rounded-lg text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined">skateboarding</span>
+</div>
+<span class="bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-400 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">lock</span>
+                        Returned to Vault
+                    </span>
+</div>
+<h4 class="text-lg font-bold text-gray-600 dark:text-gray-300">Skateboard</h4>
+<p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Cancelled: Sept 01, 2023</p>
+<div class="mt-auto pt-4">
+<div class="bg-white dark:bg-black/20 rounded-lg p-3 border border-gray-100 dark:border-white/5">
+<p class="text-xs text-gray-500 mb-1">Funds Returned:</p>
+<p class="text-lg font-bold text-gray-700 dark:text-gray-300">$45.00</p>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 dark:bg-white/5 rounded-xl p-5 border border-gray-200 dark:border-white/5 flex flex-col h-full opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-gray-200 dark:bg-white/10 p-2 rounded-lg text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined">headphones</span>
+</div>
+<span class="bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-400 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">lock</span>
+                        Returned to Vault
+                    </span>
+</div>
+<h4 class="text-lg font-bold text-gray-600 dark:text-gray-300">Headphones</h4>
+<p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Cancelled: Aug 15, 2023</p>
+<div class="mt-auto pt-4">
+<div class="bg-white dark:bg-black/20 rounded-lg p-3 border border-gray-100 dark:border-white/5">
+<p class="text-xs text-gray-500 mb-1">Funds Returned:</p>
+<p class="text-lg font-bold text-gray-700 dark:text-gray-300">$12.50</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="mt-auto border-t border-[#f0f5f0] dark:border-white/10 py-8 bg-card-light dark:bg-card-dark">
+<div class="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">emoji_nature</span>
+<span class="font-bold text-sm text-text-muted">© 2023 Dream Garden</span>
+</div>
+<div class="flex gap-6 text-sm font-medium text-text-muted dark:text-gray-400">
+<a class="hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms</a>
+<a class="hover:text-primary transition-colors" href="#">Parent Dashboard</a>
+</div>
+</div>
+</footer>
+
+</body></html>

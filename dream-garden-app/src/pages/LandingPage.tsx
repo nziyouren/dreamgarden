@@ -140,8 +140,8 @@ export function LandingPage() {
                         <span className="material-symbols-outlined text-primary">grass</span>
                         Active Dream Seeds
                     </h3>
-                    <Link to="/history" className="text-sm font-bold text-primary hover:text-primary-dark hover:underline">
-                        View All History
+                    <Link to="/gallery" className="text-sm font-bold text-primary hover:text-primary-dark hover:underline">
+                        View All Seeds
                     </Link>
                 </div>
 

@@ -8,6 +8,7 @@ export function Header() {
     const navItems = [
         { name: "My Garden", icon: "potted_plant", path: "/" },
         { name: "Magic Drops Shop", icon: "token", path: "/seed-station" },
+        { name: "Seeds Gallery", icon: "gallery_thumbnail", path: "/gallery" },
         { name: "Garden History", icon: "history", path: "/history" },
     ];
 
