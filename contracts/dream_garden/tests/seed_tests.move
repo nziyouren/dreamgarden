@@ -4,6 +4,7 @@ module dream_garden::seed_tests;
 use std::string;
 use sui::test_scenario::{Self as ts, Scenario};
 use sui::coin::{Self, Coin};
+use sui::clock::{Self, Clock};
 use dream_garden::seed::{Self, Seed};
 
 // Mock coin type for testing
@@ -16,14 +17,17 @@ const OTHER_USER: address = @0xDE;
 fun test_seed_lifecycle() {
     let mut scenario = ts::begin(OWNER);
     
-    // 1. Create Seed
+    // 1. Create Clock and Seed
     {
+        let clock = clock::create_for_testing(ts::ctx(&mut scenario));
         seed::create_seed<MOCK_COIN>(
             string::utf8(b"Dream Bike"),
             1000,
             string::utf8(b"bike_icon"),
+            &clock,
             ts::ctx(&mut scenario)
         );
+        clock::destroy_for_testing(clock);
     };
 
     // 2. Verify creation and Add Water
@@ -33,6 +37,7 @@ fun test_seed_lifecycle() {
         
         assert!(seed::status(&seed) == 1, 0); // STATUS_CREATED
         assert!(seed::balance(&seed) == 0, 0);
+        assert!(seed::creation_time(&seed) == 0, 0); // clock was set to 0 initially
         
         // Mint some mock coins and add water
         let water = coin::mint_for_testing<MOCK_COIN>(500, ts::ctx(&mut scenario));
@@ -84,7 +89,9 @@ fun test_abandon() {
     let mut scenario = ts::begin(OWNER);
     
     // Create and Add some money
-    seed::create_seed<MOCK_COIN>(string::utf8(b"Dream"), 1000, string::utf8(b"icon"), ts::ctx(&mut scenario));
+    let clock = clock::create_for_testing(ts::ctx(&mut scenario));
+    seed::create_seed<MOCK_COIN>(string::utf8(b"Dream"), 1000, string::utf8(b"icon"), &clock, ts::ctx(&mut scenario));
+    clock::destroy_for_testing(clock);
     ts::next_tx(&mut scenario, OWNER);
     
     let mut seed = ts::take_from_sender<Seed<MOCK_COIN>>(&scenario);
@@ -106,7 +113,9 @@ fun test_abandon() {
 fun test_complete_fail_too_early() {
     let mut scenario = ts::begin(OWNER);
     
-    seed::create_seed<MOCK_COIN>(string::utf8(b"Dream"), 1000, string::utf8(b"icon"), ts::ctx(&mut scenario));
+    let clock = clock::create_for_testing(ts::ctx(&mut scenario));
+    seed::create_seed<MOCK_COIN>(string::utf8(b"Dream"), 1000, string::utf8(b"icon"), &clock, ts::ctx(&mut scenario));
+    clock::destroy_for_testing(clock);
     ts::next_tx(&mut scenario, OWNER);
     
     let mut seed = ts::take_from_sender<Seed<MOCK_COIN>>(&scenario);
@@ -126,7 +135,9 @@ fun test_complete_fail_too_early() {
 fun test_withdraw_too_much() {
     let mut scenario = ts::begin(OWNER);
     
-    seed::create_seed<MOCK_COIN>(string::utf8(b"Dream"), 1000, string::utf8(b"icon"), ts::ctx(&mut scenario));
+    let clock = clock::create_for_testing(ts::ctx(&mut scenario));
+    seed::create_seed<MOCK_COIN>(string::utf8(b"Dream"), 1000, string::utf8(b"icon"), &clock, ts::ctx(&mut scenario));
+    clock::destroy_for_testing(clock);
     ts::next_tx(&mut scenario, OWNER);
     
     let mut seed = ts::take_from_sender<Seed<MOCK_COIN>>(&scenario);
