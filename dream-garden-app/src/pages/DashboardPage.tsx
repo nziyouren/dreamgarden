@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSuiClient, useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction, coinWithBalance } from "@mysten/sui/transactions";
 import { GiveUpDreamDialog } from "../components/GiveUpDreamDialog.tsx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { AddWaterDialog } from "../components/AddWaterDialog.tsx";
 import { WithdrawWaterDialog } from "../components/WithdrawWaterDialog.tsx";
@@ -17,6 +17,7 @@ export function DashboardPage() {
     const suiClient = useSuiClient();
     const { mutate: signAndExecute } = useSignAndExecuteTransaction();
     const navigate = useNavigate();
+    const { objectId } = useParams();
 
     const [balance, setBalance] = useState("0");
     const [isGiveUpOpen, setIsGiveUpOpen] = useState(false);
@@ -68,11 +69,19 @@ export function DashboardPage() {
 
                 // Status: 1 Created, 2 In Progress, 3 Completed, 4 Abandoned
                 // Active seeds are status 1 or 2
-                const activeSeeds = seeds.filter((s: any) => s.status === SEED_STATUS.CREATED || s.status === SEED_STATUS.IN_PROGRESS);
+                // If objectId is provided in URL, prioritize that seed
+                let selectedSeed = null;
+                if (objectId) {
+                    selectedSeed = seeds.find((s: any) => s.objectId === objectId);
+                }
 
-                // For now, prioritize the seed that has the most progress, or just the first one
-                const uncompletedSeed = activeSeeds.length > 0 ? activeSeeds[0] : null;
-                setActiveSeed(uncompletedSeed || null);
+                // Fallback to the first active seed if no specific seed selected or found
+                if (!selectedSeed) {
+                    const activeSeeds = seeds.filter((s: any) => s.status === SEED_STATUS.CREATED || s.status === SEED_STATUS.IN_PROGRESS);
+                    selectedSeed = activeSeeds.length > 0 ? activeSeeds[0] : null;
+                }
+
+                setActiveSeed(selectedSeed);
 
                 // If no active seed but has seeds, maybe user just completed/abandoned them all?
                 // Let's only redirect if they have truly NO seeds at all

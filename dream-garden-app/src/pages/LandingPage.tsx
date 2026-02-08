@@ -211,7 +211,7 @@ export function LandingPage() {
                                             <span>Remaining: ${((target - funds) / 1_000_000).toFixed(2)}</span>
                                         </div>
                                         <button
-                                            onClick={() => navigate("/dashboard")}
+                                            onClick={() => navigate(`/dashboard/${seed.objectId}`)}
                                             className="w-full mt-4 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-lg text-sm font-bold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
                                         >
                                             View Details
