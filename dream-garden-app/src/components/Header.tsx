@@ -5,7 +5,7 @@ export function Header() {
     const location = useLocation();
 
     const navItems = [
-        { name: "My Garden", icon: "potted_plant", path: "/dashboard" },
+        { name: "My Garden", icon: "potted_plant", path: "/" },
         { name: "Seed Station", icon: "token", path: "/seed-station" },
         { name: "History", icon: "history", path: "/history" },
     ];
