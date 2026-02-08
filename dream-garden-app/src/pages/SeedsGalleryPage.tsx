@@ -76,7 +76,6 @@ export function SeedsGalleryPage() {
                     onClick={() => setActiveTab('active')}
                     className={`flex-1 flex items-center justify-center gap-3 py-4 px-6 rounded-xl transition-all hover:scale-[1.02] font-bold ${activeTab === 'active' ? 'bg-primary text-background-dark shadow-soft' : 'text-text-muted hover:bg-gray-50 dark:hover:bg-white/5'}`}
                 >
-                    <span className="material-symbols-outlined text-2xl">clover_spark</span>
                     <span>Active Seeds</span>
                     <span className={`${activeTab === 'active' ? 'bg-black/10' : 'bg-gray-100 dark:bg-white/10'} px-2 py-0.5 rounded-full text-xs ml-1`}>{stats.active}</span>
                 </button>
