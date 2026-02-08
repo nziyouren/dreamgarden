@@ -1,7 +1,6 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useSuiClient, useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction, coinWithBalance } from "@mysten/sui/transactions";
-import { StableLayerClient } from "stable-layer-sdk";
 import { GiveUpDreamDialog } from "../components/GiveUpDreamDialog.tsx";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +9,7 @@ import { WithdrawWaterDialog } from "../components/WithdrawWaterDialog.tsx";
 import { DepositSuccessDialog } from "../components/DepositSuccessDialog.tsx";
 import { DepositFailureDialog } from "../components/DepositFailureDialog.tsx";
 
-import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, USDC_TYPE } from "../constants";
+import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE } from "../constants";
 
 
 export function DashboardPage() {
@@ -19,14 +18,7 @@ export function DashboardPage() {
     const { mutate: signAndExecute } = useSignAndExecuteTransaction();
     const navigate = useNavigate();
 
-    const sdk = useMemo(() => new StableLayerClient({
-        network: "mainnet",
-        sender: account?.address || "0x0"
-    }), [account]);
-
-    const [balance, setBalance] = useState<string>("0.00");
-    const [usdcBalance, setUsdcBalance] = useState<string>("0.00");
-    const [activeUsdcType, setActiveUsdcType] = useState<string>(USDC_TYPE);
+    const [balance, setBalance] = useState("0");
     const [isGiveUpOpen, setIsGiveUpOpen] = useState(false);
     const [isAddWaterOpen, setIsAddWaterOpen] = useState(false);
     const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
@@ -44,45 +36,18 @@ export function DashboardPage() {
 
         const fetchData = async () => {
             try {
-                // Fetch all balances
-                const allCoins = await suiClient.getAllCoins({
-                    owner: account.address,
-                });
-
                 // Fetch Balances and Metadata
-                const [lpRes, usdcRes, lpMeta, usdcMeta] = await Promise.all([
+                const [lpRes, lpMeta] = await Promise.all([
                     suiClient.getBalance({
                         owner: account.address,
                         coinType: BTC_USD_TYPE
                     }),
-                    suiClient.getBalance({
-                        owner: account.address,
-                        coinType: USDC_TYPE
-                    }),
                     suiClient.getCoinMetadata({ coinType: BTC_USD_TYPE }),
-                    suiClient.getCoinMetadata({ coinType: USDC_TYPE })
                 ]);
 
                 const lpDecimals = lpMeta?.decimals ?? 6;
-                const usdcDecimals = usdcMeta?.decimals ?? 6;
 
                 setBalance((parseInt(lpRes.totalBalance) / Math.pow(10, lpDecimals)).toFixed(2));
-
-                let detectedUsdcBalance = parseInt(usdcRes.totalBalance);
-                let detectedUsdcType = USDC_TYPE;
-
-                if (detectedUsdcBalance === 0 && allCoins.data.length > 0) {
-                    const usdcCoins = allCoins.data.filter(coin =>
-                        coin.coinType.toLowerCase().includes('usdc')
-                    );
-                    if (usdcCoins.length > 0) {
-                        detectedUsdcBalance = usdcCoins.reduce((sum, coin) => sum + parseInt(coin.balance), 0);
-                        detectedUsdcType = usdcCoins[0].coinType;
-                    }
-                }
-
-                setUsdcBalance((detectedUsdcBalance / Math.pow(10, usdcDecimals)).toFixed(2));
-                setActiveUsdcType(detectedUsdcType);
 
                 // Fetch Seeds
                 setIsLoadingSeeds(true);
@@ -136,45 +101,39 @@ export function DashboardPage() {
         const amount = BigInt(Math.floor(parseFloat(amountStr) * 1_000_000));
 
         try {
-            const mintedCoin = await sdk.buildMintTx({
-                tx,
-                amount,
-                sender: account.address,
-                usdcCoin: coinWithBalance({
-                    balance: amount,
-                    type: activeUsdcType,
-                })(tx),
-                autoTransfer: false, // Don't transfer to user, we'll join to seed
-                stableCoinType: BTC_USD_TYPE
-            });
+            // Directly use user's BTC_USD_TYPE (Magic Gold)
+            const goldCoin = coinWithBalance({
+                balance: amount,
+                type: BTC_USD_TYPE,
+            })(tx);
 
-            // If we have an active seed, join the minted LP tokens to it
+            // If we have an active seed, join the gold coins to it
             if (activeSeed) {
                 tx.moveCall({
                     target: `${DREAM_GARDEN_PACKAGE_ID}::${DREAM_GARDEN_MODULE}::add_water`,
                     arguments: [
                         tx.object(activeSeed.objectId),
-                        mintedCoin as any
+                        goldCoin
                     ],
                     typeArguments: [BTC_USD_TYPE]
                 });
-            }
 
-            signAndExecute({
-                transaction: tx,
-            }, {
-                onSuccess: (result) => {
-                    console.log("Water added!", result);
-                    setIsSuccessOpen(true);
-                },
-                onError: (error) => {
-                    console.error("Transaction failed", error);
-                    setDepositError(error.message || "Unknown transaction error");
-                    setIsFailureOpen(true);
-                }
-            });
+                signAndExecute({
+                    transaction: tx,
+                }, {
+                    onSuccess: (result) => {
+                        console.log("Water added!", result);
+                        setIsSuccessOpen(true);
+                    },
+                    onError: (error) => {
+                        console.error("Transaction failed", error);
+                        setDepositError(error.message || "Unknown transaction error");
+                        setIsFailureOpen(true);
+                    }
+                });
+            }
         } catch (e) {
-            console.error("Mint setup failed", e);
+            console.error("Deposit setup failed", e);
             setDepositError(e instanceof Error ? e.message : "Could not build transaction");
             setIsFailureOpen(true);
         }
@@ -294,7 +253,7 @@ export function DashboardPage() {
                 isOpen={isAddWaterOpen}
                 onClose={() => setIsAddWaterOpen(false)}
                 onConfirm={handleConfirmDeposit}
-                availableBalance={usdcBalance}
+                availableBalance={balance}
             />
 
             <WithdrawWaterDialog
@@ -336,14 +295,12 @@ export function DashboardPage() {
                             <span className="material-symbols-outlined text-9xl">savings</span>
                         </div>
                         <h3 className="text-lg font-bold text-text-muted dark:text-gray-400 mb-2">Vault Balance</h3>
-                        <div className="flex items-baseline gap-1 mb-6 relative z-10">
-                            <span className="text-5xl font-black text-text-main dark:text-white">
-                                ${activeSeed ? (parseInt(activeSeed.funds || "0") / 1_000_000).toFixed(2) : balance}
-                            </span>
-                            <span className="text-xl font-bold text-text-muted dark:text-gray-500">
-                                / ${activeSeed ? (parseInt(activeSeed.target_amount) / 1_000_000).toFixed(2) : "80.00"}
-                            </span>
-                        </div>
+                        <span className="text-5xl font-black text-text-main dark:text-white">
+                            ${activeSeed ? (parseInt(activeSeed.funds || "0") / 1_000_000).toFixed(2) : balance}
+                        </span>
+                        <span className="text-xl font-bold text-text-muted dark:text-gray-500">
+                            / ${activeSeed ? (parseInt(activeSeed.target_amount) / 1_000_000).toFixed(2) : "80.00"}
+                        </span>
 
                         {/* Progress Bar */}
                         <div className="relative w-full h-8 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden shadow-inner-lg mb-2 border-2 border-white dark:border-gray-700">

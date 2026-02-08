@@ -48,9 +48,7 @@ export function WithdrawWaterDialog({ isOpen, onClose, onConfirm, availableBalan
                                 <circle cx="0" cy="0" r="60" fill="white" fillOpacity="0.2">
                                     <animate attributeName="r" values="60;70;60" dur="3s" repeatCount="indefinite" />
                                 </circle>
-                                <span className="material-symbols-outlined text-white text-6xl" style={{ position: 'absolute', transform: 'translate(-50%, -50%)' }}>
-                                    <text x="-30" y="20" fill="white" fontSize="60" className="material-symbols-outlined">outbound</text>
-                                </span>
+                                <text x="0" y="20" textAnchor="middle" fill="white" fontSize="60" className="material-symbols-outlined select-none">outbound</text>
                             </g>
 
                             {/* Particles moving up */}
