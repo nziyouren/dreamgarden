@@ -30,6 +30,7 @@ export function DashboardPage() {
     const [isFailureOpen, setIsFailureOpen] = useState(false);
     const [lastDepositAmount, setLastDepositAmount] = useState("");
     const [depositError, setDepositError] = useState("");
+    const [isProcessing, setIsProcessing] = useState(false);
 
     const [activeSeed, setActiveSeed] = useState<any>(null);
     const [isLoadingSeeds, setIsLoadingSeeds] = useState(true);
@@ -135,6 +136,7 @@ export function DashboardPage() {
                     typeArguments: [BTC_USD_TYPE]
                 });
 
+                setIsProcessing(true);
                 signAndExecute({
                     transaction: tx,
                 }, {
@@ -142,12 +144,14 @@ export function DashboardPage() {
                         console.log("Water added!", result);
                         updateStatus('success', { message: "Water added to your dream!" });
                         setIsSuccessOpen(true);
+                        setIsProcessing(false);
                     },
                     onError: (error) => {
                         console.error("Transaction failed", error);
                         updateStatus('error', { error: error.message || "Transaction failed" });
                         setDepositError(error.message || "Unknown transaction error");
                         setIsFailureOpen(true);
+                        setIsProcessing(false);
                     }
                 });
             }
@@ -156,6 +160,7 @@ export function DashboardPage() {
             updateStatus('error', { error: e instanceof Error ? e.message : "Setup failed" });
             setDepositError(e instanceof Error ? e.message : "Could not build transaction");
             setIsFailureOpen(true);
+            setIsProcessing(false);
         }
     };
 
@@ -183,6 +188,7 @@ export function DashboardPage() {
             // 2. Transfer back to user
             tx.transferObjects([fundsCoin], tx.pure.address(account.address));
 
+            setIsProcessing(true);
             signAndExecute({
                 transaction: tx,
             }, {
@@ -190,12 +196,14 @@ export function DashboardPage() {
                     console.log("Withdrawn!", result);
                     updateStatus('success', { message: "Funds withdrawn successfully!" });
                     setIsSuccessOpen(true);
+                    setIsProcessing(false);
                 },
                 onError: (error) => {
                     console.error("Withdrawal failed", error);
                     updateStatus('error', { error: error.message || "Withdrawal failed" });
                     setDepositError(error.message || "Unknown transaction error");
                     setIsFailureOpen(true);
+                    setIsProcessing(false);
                 }
             });
         } catch (e) {
@@ -203,6 +211,7 @@ export function DashboardPage() {
             updateStatus('error', { error: e instanceof Error ? e.message : "Setup failed" });
             setDepositError(e instanceof Error ? e.message : "Could not build transaction");
             setIsFailureOpen(true);
+            setIsProcessing(false);
         }
     };
 
@@ -227,6 +236,7 @@ export function DashboardPage() {
             // 2. Transfer the withdrawn LP tokens back to the user
             tx.transferObjects([fundsCoin], tx.pure.address(account.address));
 
+            setIsProcessing(true);
             signAndExecute({
                 transaction: tx,
             }, {
@@ -234,13 +244,20 @@ export function DashboardPage() {
                     console.log("Abandoned!");
                     updateStatus('success', { message: "Dream abandoned. Funds returned." });
                     setIsGiveUpOpen(false);
+                    setIsProcessing(false);
                     // Force refresh or redirect?
+                },
+                onError: (error) => {
+                    console.error("Abandon failed", error);
+                    updateStatus('error', { error: error.message || "Abandon failed" });
+                    setIsProcessing(false);
                 }
             });
         } catch (e) {
             console.error("Abandon failed", e);
             updateStatus('error', { error: e instanceof Error ? e.message : "Abandon failed" });
             setIsGiveUpOpen(false);
+            setIsProcessing(false);
         }
     };
 
@@ -262,6 +279,7 @@ export function DashboardPage() {
             // 2. Transfer the yield-bearing LP tokens back to the user
             tx.transferObjects([fundsCoin], tx.pure.address(account.address));
 
+            setIsProcessing(true);
             signAndExecute({
                 transaction: tx,
             }, {
@@ -269,14 +287,17 @@ export function DashboardPage() {
                     console.log("Completed!");
                     updateStatus('success', { title: "DREAM ACHIEVED! 🎉", message: "All funds and rewards collected!" });
                     setIsSuccessOpen(true);
+                    setIsProcessing(false);
                 },
                 onError: (error) => {
                     updateStatus('error', { error: error.message || "Completion failed" });
+                    setIsProcessing(false);
                 }
             });
         } catch (e) {
             console.error("Complete failed", e);
             updateStatus('error', { error: e instanceof Error ? e.message : "Complete failed" });
+            setIsProcessing(false);
         }
     };
 
@@ -292,10 +313,10 @@ export function DashboardPage() {
             />
 
             <GiveUpDreamDialog
-
                 isOpen={isGiveUpOpen}
                 onClose={() => setIsGiveUpOpen(false)}
                 onConfirm={handleGiveUp}
+                isProcessing={isProcessing}
             />
 
             <AddWaterDialog
@@ -303,6 +324,7 @@ export function DashboardPage() {
                 onClose={() => setIsAddWaterOpen(false)}
                 onConfirm={handleConfirmDeposit}
                 availableBalance={balance}
+                isProcessing={isProcessing}
             />
 
             <WithdrawWaterDialog
@@ -310,6 +332,7 @@ export function DashboardPage() {
                 onClose={() => setIsWithdrawOpen(false)}
                 onConfirm={handleConfirmWithdraw}
                 availableBalance={activeSeed ? (parseInt(activeSeed.funds || "0") / 1_000_000).toFixed(2) : "0.00"}
+                isProcessing={isProcessing}
             />
 
             <DepositSuccessDialog
@@ -365,7 +388,7 @@ export function DashboardPage() {
                     <div className="flex flex-col gap-3">
                         <button
                             onClick={() => setIsAddWaterOpen(true)}
-                            disabled={(activeSeed?.status !== SEED_STATUS.CREATED && activeSeed?.status !== SEED_STATUS.IN_PROGRESS) || isLoadingSeeds}
+                            disabled={(activeSeed?.status !== SEED_STATUS.CREATED && activeSeed?.status !== SEED_STATUS.IN_PROGRESS) || isLoadingSeeds || isProcessing}
                             className="group relative w-full py-3 bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-background-dark rounded-2xl font-black text-lg shadow-[0_4px_0_0_#1a9e1a] hover:shadow-[0_2px_0_0_#1a9e1a] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden"
                         >
                             <span className="material-symbols-outlined text-2xl animate-bounce">water_drop</span>
@@ -374,7 +397,7 @@ export function DashboardPage() {
 
                         <button
                             onClick={() => setIsWithdrawOpen(true)}
-                            disabled={(activeSeed?.status !== SEED_STATUS.CREATED && activeSeed?.status !== SEED_STATUS.IN_PROGRESS) || isLoadingSeeds || !activeSeed || parseInt(activeSeed.funds || "0") === 0}
+                            disabled={(activeSeed?.status !== SEED_STATUS.CREATED && activeSeed?.status !== SEED_STATUS.IN_PROGRESS) || isLoadingSeeds || !activeSeed || parseInt(activeSeed.funds || "0") === 0 || isProcessing}
                             className="group relative w-full py-3 bg-orange-400 hover:bg-orange-500 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-white rounded-2xl font-black text-lg shadow-[0_4px_0_0_#c2410c] hover:shadow-[0_2px_0_0_#c2410c] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden"
                         >
                             <span className="material-symbols-outlined text-2xl">logout</span>
@@ -383,13 +406,13 @@ export function DashboardPage() {
                     </div>
 
                     {activeSeed && parseInt(activeSeed.funds) >= parseInt(activeSeed.target_amount) && activeSeed.status !== SEED_STATUS.COMPLETED && (
-                        <button onClick={handleFinish} className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black text-lg shadow-[0_4px_0_0_#065f46] hover:shadow-[0_2px_0_0_#065f46] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden">
-                            <span className="material-symbols-outlined text-2xl">celebration</span>
-                            Finish Dream & Collect!
+                        <button onClick={handleFinish} disabled={isProcessing} className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-white rounded-2xl font-black text-lg shadow-[0_4px_0_0_#065f46] hover:shadow-[0_2px_0_0_#065f46] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden">
+                            <span className="material-symbols-outlined text-2xl animate-bounce">{isProcessing ? 'sync' : 'celebration'}</span>
+                            {isProcessing ? 'Processing...' : 'Finish Dream & Collect!'}
                         </button>
                     )}
 
-                    <button onClick={() => setIsGiveUpOpen(true)} className="w-full py-2.5 bg-white dark:bg-card-dark text-red-500 dark:text-red-400 border-2 border-red-100 dark:border-red-900/30 rounded-xl font-bold text-sm hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center justify-center gap-2">
+                    <button onClick={() => setIsGiveUpOpen(true)} disabled={isProcessing} className="w-full py-2.5 bg-white dark:bg-card-dark disabled:opacity-50 text-red-500 dark:text-red-400 border-2 border-red-100 dark:border-red-900/30 rounded-xl font-bold text-sm hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center justify-center gap-2">
                         <span className="material-symbols-outlined text-lg">cancel</span>
                         {activeSeed?.status === SEED_STATUS.COMPLETED ? 'Remove Dream Record' : (activeSeed ? 'Cancel Dream & Withdraw Funds' : 'Go Back')}
                     </button>

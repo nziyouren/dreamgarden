@@ -26,6 +26,8 @@ export function SeedStationPage() {
     const [isSuccessOpen, setIsSuccessOpen] = useState(false);
     const [isFailureOpen, setIsFailureOpen] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
+    const [isMinting, setIsMinting] = useState(false);
+    const [isBurning, setIsBurning] = useState(false);
     const { status, errorMsg: txError, successMsg, title, updateStatus, reset } = useTransactionStatus();
 
 
@@ -81,22 +83,26 @@ export function SeedStationPage() {
                 stableCoinType: BTC_USD_TYPE
             });
 
+            setIsMinting(true);
             signAndExecute({ transaction: tx }, {
                 onSuccess: () => {
                     updateStatus('success', { message: "Successfully minted Magic Drops!" });
                     setIsSuccessOpen(true);
                     setMintAmount("");
+                    setIsMinting(false);
                 },
                 onError: (e) => {
                     updateStatus('error', { error: e.message || "Minting failed" });
                     setErrorMsg(e.message);
                     setIsFailureOpen(true);
+                    setIsMinting(false);
                 }
             });
         } catch (e: any) {
             updateStatus('error', { error: e.message || "Minting failed" });
             setErrorMsg(e.message);
             setIsFailureOpen(true);
+            setIsMinting(false);
         }
 
     };
@@ -118,22 +124,26 @@ export function SeedStationPage() {
                 autoTransfer: true
             });
 
+            setIsBurning(true);
             signAndExecute({ transaction: tx }, {
                 onSuccess: () => {
                     updateStatus('success', { message: "Successfully burned Magic Drops!" });
                     setIsSuccessOpen(true);
                     setBurnAmount("");
+                    setIsBurning(false);
                 },
                 onError: (e) => {
                     updateStatus('error', { error: e.message || "Burning failed" });
                     setErrorMsg(e.message);
                     setIsFailureOpen(true);
+                    setIsBurning(false);
                 }
             });
         } catch (e: any) {
             updateStatus('error', { error: e.message || "Burning failed" });
             setErrorMsg(e.message);
             setIsFailureOpen(true);
+            setIsBurning(false);
         }
 
     };
@@ -222,10 +232,15 @@ export function SeedStationPage() {
                         <div className="mt-auto w-full">
                             <button
                                 onClick={handleMint}
-                                className="w-full py-4 bg-[#00E676] hover:bg-[#00c965] text-white rounded-xl text-xl font-black shadow-[0_6px_0_0_#009661] hover:shadow-[0_4px_0_0_#009661] active:shadow-none active:translate-y-1 transition-all flex items-center justify-center gap-2"
+                                disabled={!mintAmount || parseFloat(mintAmount) <= 0 || isMinting}
+                                className="w-full py-4 bg-[#00E676] hover:bg-[#00c965] disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-white rounded-xl text-xl font-black shadow-[0_6px_0_0_#009661] hover:shadow-[0_4px_0_0_#009661] active:shadow-none active:translate-y-1 transition-all flex items-center justify-center gap-2"
                             >
-                                Mint Now
-                                <span className="material-symbols-outlined">arrow_forward</span>
+                                {isMinting ? 'Processing...' : (
+                                    <>
+                                        Mint Now
+                                        <span className="material-symbols-outlined">arrow_forward</span>
+                                    </>
+                                )}
                             </button>
                         </div>
                     </div>
@@ -278,10 +293,15 @@ export function SeedStationPage() {
                         <div className="mt-auto w-full">
                             <button
                                 onClick={handleBurn}
-                                className="w-full py-4 bg-[#FF5252] hover:bg-[#ff3b3b] text-white rounded-xl text-xl font-black shadow-[0_6px_0_0_#cc4242] hover:shadow-[0_4px_0_0_#cc4242] active:shadow-none active:translate-y-1 transition-all flex items-center justify-center gap-2"
+                                disabled={!burnAmount || parseFloat(burnAmount) <= 0 || isBurning}
+                                className="w-full py-4 bg-[#FF5252] hover:bg-[#ff3b3b] disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-white rounded-xl text-xl font-black shadow-[0_6px_0_0_#cc4242] hover:shadow-[0_4px_0_0_#cc4242] active:shadow-none active:translate-y-1 transition-all flex items-center justify-center gap-2"
                             >
-                                Burn & Exchange
-                                <span className="material-symbols-outlined">currency_exchange</span>
+                                {isBurning ? 'Processing...' : (
+                                    <>
+                                        Burn & Exchange
+                                        <span className="material-symbols-outlined">currency_exchange</span>
+                                    </>
+                                )}
                             </button>
                         </div>
                     </div>

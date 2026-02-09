@@ -165,8 +165,9 @@ export function PlantSeedPage() {
                                             {SEED_TYPE_LIST.map(type => (
                                                 <button
                                                     key={type.id}
-                                                    onClick={() => setSeedType(type.id)}
-                                                    className={`aspect-square rounded-xl border ${seedType === type.id ? 'border-primary bg-primary/10 text-primary' : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-transparent text-gray-400 hover:border-primary hover:text-primary'} flex flex-col items-center justify-center gap-1 transition-all group`}
+                                                    onClick={() => !isPlanting && setSeedType(type.id)}
+                                                    disabled={isPlanting}
+                                                    className={`aspect-square rounded-xl border ${isPlanting ? 'opacity-50 cursor-not-allowed' : ''} ${seedType === type.id ? 'border-primary bg-primary/10 text-primary' : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-transparent text-gray-400 hover:border-primary hover:text-primary'} flex flex-col items-center justify-center gap-1 transition-all group`}
                                                 >
                                                     <span className="material-symbols-outlined text-2xl">{type.icon}</span>
                                                     <span className="text-[10px] font-bold uppercase">{type.id}</span>

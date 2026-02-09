@@ -4,9 +4,10 @@ interface GiveUpDreamDialogProps {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: () => void;
+    isProcessing?: boolean;
 }
 
-export function GiveUpDreamDialog({ isOpen, onClose, onConfirm }: GiveUpDreamDialogProps) {
+export function GiveUpDreamDialog({ isOpen, onClose, onConfirm, isProcessing }: GiveUpDreamDialogProps) {
     if (!isOpen) return null;
 
     return (
@@ -71,14 +72,14 @@ export function GiveUpDreamDialog({ isOpen, onClose, onConfirm }: GiveUpDreamDia
                             If you stop growing this seed, all your saved gold will go back to your wallet so you can start a brand new adventure. <span className="text-red-500 dark:text-red-400 font-bold block mt-1 text-sm">Your current progress will be lost!</span>
                         </p>
                         <div className="flex flex-col gap-2.5 w-full">
-                            <button onClick={onClose} className="group relative flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-primary hover:bg-[#1ee61e] transition-all duration-200 active:scale-[0.98] shadow-[0_0_20px_rgba(37,244,37,0.3)] border border-transparent">
+                            <button onClick={onClose} disabled={isProcessing} className="group relative flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-primary hover:bg-[#1ee61e] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 active:scale-[0.98] shadow-[0_0_20px_rgba(37,244,37,0.3)] border border-transparent">
                                 <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                                 <span className="material-symbols-outlined text-[#0d1c0d] mr-2 text-[20px]">water_drop</span>
                                 <span className="text-[#0d1c0d] text-base font-bold tracking-wide">Keep Growing</span>
                             </button>
-                            <button onClick={onConfirm} className="group flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-[#ffebee] hover:bg-[#ffcdd2] dark:bg-red-900/20 dark:hover:bg-red-900/40 text-[#c62828] dark:text-[#ef9a9a] transition-colors duration-200 active:scale-[0.98]">
-                                <span className="material-symbols-outlined mr-2 text-[20px]">replay</span>
-                                <span className="text-base font-bold tracking-wide">Take Back Gold & Restart</span>
+                            <button onClick={onConfirm} disabled={isProcessing} className="group flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-[#ffebee] hover:bg-[#ffcdd2] disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/20 dark:hover:bg-red-900/40 text-[#c62828] dark:text-[#ef9a9a] transition-colors duration-200 active:scale-[0.98]">
+                                <span className="material-symbols-outlined mr-2 text-[20px]">{isProcessing ? 'sync' : 'replay'}</span>
+                                <span className="text-base font-bold tracking-wide">{isProcessing ? 'Processing...' : 'Take Back Gold & Restart'}</span>
                             </button>
                         </div>
                     </div>

@@ -5,9 +5,10 @@ interface WithdrawWaterDialogProps {
     onClose: () => void;
     onConfirm: (amount: string) => void;
     availableBalance: string;
+    isProcessing?: boolean;
 }
 
-export function WithdrawWaterDialog({ isOpen, onClose, onConfirm, availableBalance }: WithdrawWaterDialogProps) {
+export function WithdrawWaterDialog({ isOpen, onClose, onConfirm, availableBalance, isProcessing }: WithdrawWaterDialogProps) {
     const [amount, setAmount] = useState("");
 
     if (!isOpen) return null;
@@ -115,11 +116,13 @@ export function WithdrawWaterDialog({ isOpen, onClose, onConfirm, availableBalan
                         {/* Confirm Button */}
                         <button
                             onClick={() => onConfirm(amount)}
-                            disabled={!amount || parseFloat(amount) <= 0 || parseFloat(amount) > parseFloat(availableBalance)}
+                            disabled={!amount || parseFloat(amount) <= 0 || parseFloat(amount) > parseFloat(availableBalance) || isProcessing}
                             className="w-full bg-[#FF7043] hover:bg-[#F4511E] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xl font-bold py-5 rounded-lg shadow-lg hover:translate-y-[-2px] active:translate-y-[2px] transition-all flex items-center justify-center gap-3"
                         >
-                            <span className="material-symbols-outlined font-bold">outbound</span>
-                            Confirm Withdrawal
+                            <span className="material-symbols-outlined font-bold">
+                                {isProcessing ? 'sync' : 'outbound'}
+                            </span>
+                            {isProcessing ? 'Processing...' : 'Confirm Withdrawal'}
                         </button>
                     </div>
                 </div>

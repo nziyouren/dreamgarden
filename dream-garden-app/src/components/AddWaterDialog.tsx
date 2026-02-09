@@ -5,9 +5,10 @@ interface AddWaterDialogProps {
     onClose: () => void;
     onConfirm: (amount: string) => void;
     availableBalance: string;
+    isProcessing?: boolean;
 }
 
-export function AddWaterDialog({ isOpen, onClose, onConfirm, availableBalance }: AddWaterDialogProps) {
+export function AddWaterDialog({ isOpen, onClose, onConfirm, availableBalance, isProcessing }: AddWaterDialogProps) {
     const [amount, setAmount] = useState("");
     const [growthScale, setGrowthScale] = useState(1);
     const [isMax, setIsMax] = useState(false);
@@ -185,11 +186,13 @@ export function AddWaterDialog({ isOpen, onClose, onConfirm, availableBalance }:
                         {/* Confirm Button */}
                         <button
                             onClick={() => onConfirm(amount)}
-                            disabled={!amount || parseFloat(amount) <= 0}
+                            disabled={!amount || parseFloat(amount) <= 0 || isProcessing}
                             className="w-full bg-primary hover:bg-[#1ee01e] disabled:opacity-50 disabled:cursor-not-allowed text-[#111811] text-xl font-bold py-5 rounded-lg shadow-[0px_8px_0px_0px_rgba(0,0,0,0.1)] hover:translate-y-[2px] active:shadow-none active:translate-y-[8px] transition-all flex items-center justify-center gap-3"
                         >
-                            <span className="material-symbols-outlined font-bold">water_drop</span>
-                            Confirm Deposit
+                            <span className="material-symbols-outlined font-bold">
+                                {isProcessing ? 'sync' : 'water_drop'}
+                            </span>
+                            {isProcessing ? 'Processing...' : 'Confirm Deposit'}
                         </button>
                     </div>
                 </div>
