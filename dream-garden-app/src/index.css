@@ -7,39 +7,39 @@
 @tailwind utilities;
 
 @layer utilities {
-    .terrarium-glass {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 2px solid rgba(255, 255, 255, 0.6);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-    }
+  .terrarium-glass {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #cbd5e1;
-    border-radius: 20px;
+  background-color: #cbd5e1;
+  border-radius: 20px;
 }
 
 html {
-    overflow-y: scroll;
+  overflow-y: scroll;
 }
 
 body {
-    background-color: #E0F7FA;
+  background-color: #E0F7FA;
 }
 
 .dark body {
-    background-color: #0A1F22;
+  background-color: #0A1F22;
 }
 
 @keyframes firework {
@@ -47,14 +47,17 @@ body {
     transform: translate(-50%, -50%) rotate(var(--angle)) translateY(0) scale(0);
     opacity: 0;
   }
+
   15% {
     transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(var(--distance) * -1)) scale(1.2);
     opacity: 1;
   }
+
   40% {
     transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(var(--distance) * -1)) scale(1);
     opacity: 1;
   }
+
   100% {
     transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(var(--distance) * -1 + 60px)) scale(0.5);
     opacity: 0;
@@ -63,4 +66,17 @@ body {
 
 .animate-firework {
   animation: firework 2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+/* Hide number input spinners */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
