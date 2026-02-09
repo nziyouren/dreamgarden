@@ -7,7 +7,7 @@ import { TransactionStatus } from "../components/TransactionStatus";
 import { useTransactionStatus } from "../hooks/useTransactionStatus";
 
 
-export function SeedStationPage() {
+export function MagicDropPage() {
     const account = useCurrentAccount();
     const suiClient = useSuiClient();
     const { mutate: signAndExecute } = useSignAndExecuteTransaction();
