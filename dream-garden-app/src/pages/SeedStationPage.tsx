@@ -5,6 +5,9 @@ import { StableLayerClient } from "stable-layer-sdk";
 import { USDC_TYPE, BTC_USD_TYPE } from "../constants";
 import { DepositSuccessDialog } from "../components/DepositSuccessDialog";
 import { DepositFailureDialog } from "../components/DepositFailureDialog";
+import { TransactionStatus } from "../components/TransactionStatus";
+import { useTransactionStatus } from "../hooks/useTransactionStatus";
+
 
 export function SeedStationPage() {
     const account = useCurrentAccount();
@@ -23,6 +26,8 @@ export function SeedStationPage() {
     const [isSuccessOpen, setIsSuccessOpen] = useState(false);
     const [isFailureOpen, setIsFailureOpen] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
+    const { status, errorMsg: txError, successMsg, title, updateStatus, reset } = useTransactionStatus();
+
 
     const fetchData = async () => {
         if (!account) return;
@@ -62,7 +67,9 @@ export function SeedStationPage() {
         const amount = BigInt(Math.floor(parseFloat(mintAmount) * 1_000_000));
 
         try {
+            updateStatus('pending', { message: "Minting Magic Drops..." });
             await sdk.buildMintTx({
+
                 tx,
                 amount,
                 sender: account.address,
@@ -76,18 +83,22 @@ export function SeedStationPage() {
 
             signAndExecute({ transaction: tx }, {
                 onSuccess: () => {
+                    updateStatus('success', { message: "Successfully minted Magic Drops!" });
                     setIsSuccessOpen(true);
                     setMintAmount("");
                 },
                 onError: (e) => {
+                    updateStatus('error', { error: e.message || "Minting failed" });
                     setErrorMsg(e.message);
                     setIsFailureOpen(true);
                 }
             });
         } catch (e: any) {
+            updateStatus('error', { error: e.message || "Minting failed" });
             setErrorMsg(e.message);
             setIsFailureOpen(true);
         }
+
     };
 
     const handleBurn = async () => {
@@ -96,7 +107,9 @@ export function SeedStationPage() {
         const amount = BigInt(Math.floor(parseFloat(burnAmount) * 1_000_000));
 
         try {
+            updateStatus('pending', { message: "Burning Magic Drops..." });
             await sdk.buildBurnTx({
+
                 tx,
                 stableCoinType: BTC_USD_TYPE,
                 amount,
@@ -107,23 +120,35 @@ export function SeedStationPage() {
 
             signAndExecute({ transaction: tx }, {
                 onSuccess: () => {
+                    updateStatus('success', { message: "Successfully burned Magic Drops!" });
                     setIsSuccessOpen(true);
                     setBurnAmount("");
                 },
                 onError: (e) => {
+                    updateStatus('error', { error: e.message || "Burning failed" });
                     setErrorMsg(e.message);
                     setIsFailureOpen(true);
                 }
             });
         } catch (e: any) {
+            updateStatus('error', { error: e.message || "Burning failed" });
             setErrorMsg(e.message);
             setIsFailureOpen(true);
         }
+
     };
 
     return (
-        <main className="flex-grow w-full max-w-[1100px] mx-auto px-4 sm:px-6 py-8 flex flex-col justify-center">
+        <main className="flex-grow w-full max-w-[1100px] mx-auto px-4 sm:px-6 py-8 flex flex-col justify-center relative">
+            <TransactionStatus
+                status={status}
+                title={title}
+                error={txError}
+                message={successMsg}
+                onClose={reset}
+            />
             <header className="text-center mb-12 mt-12">
+
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full font-bold text-sm mb-4">
                     <span className="material-symbols-outlined text-lg">hotel_class</span>
                     Magic Drops Shop

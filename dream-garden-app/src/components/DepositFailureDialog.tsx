@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { TRANSACTION_STATUS_AUTO_CLOSE_DELAY } from "../constants";
+
 interface DepositFailureDialogProps {
     isOpen: boolean;
     onClose: () => void;
@@ -6,7 +9,17 @@ interface DepositFailureDialogProps {
 }
 
 export function DepositFailureDialog({ isOpen, onClose, onTryAgain, error }: DepositFailureDialogProps) {
+    useEffect(() => {
+        if (isOpen) {
+            const timer = setTimeout(() => {
+                onClose();
+            }, TRANSACTION_STATUS_AUTO_CLOSE_DELAY);
+            return () => clearTimeout(timer);
+        }
+    }, [isOpen, onClose]);
+
     if (!isOpen) return null;
+
 
     return (
         <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">

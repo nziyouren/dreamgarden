@@ -22,3 +22,5 @@ export const SEED_TYPES = {
 } as const;
 
 export const SEED_TYPE_LIST = Object.values(SEED_TYPES);
+
+export const TRANSACTION_STATUS_AUTO_CLOSE_DELAY = 8000; // 8 seconds

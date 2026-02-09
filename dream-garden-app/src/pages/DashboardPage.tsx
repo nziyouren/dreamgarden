@@ -10,6 +10,9 @@ import { DepositSuccessDialog } from "../components/DepositSuccessDialog.tsx";
 import { DepositFailureDialog } from "../components/DepositFailureDialog.tsx";
 
 import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_STATUS, SEED_TYPE_LIST } from "../constants";
+import { TransactionStatus } from "../components/TransactionStatus";
+import { useTransactionStatus } from "../hooks/useTransactionStatus";
+
 
 
 export function DashboardPage() {
@@ -30,6 +33,9 @@ export function DashboardPage() {
 
     const [activeSeed, setActiveSeed] = useState<any>(null);
     const [isLoadingSeeds, setIsLoadingSeeds] = useState(true);
+    const { status, errorMsg, successMsg, title, updateStatus, reset } = useTransactionStatus();
+
+
 
     // Fetch Balances and Seeds
     useEffect(() => {
@@ -110,7 +116,9 @@ export function DashboardPage() {
         const amount = BigInt(Math.floor(parseFloat(amountStr) * 1_000_000));
 
         try {
+            updateStatus('pending', { message: "Adding water to your dream..." });
             // Directly use user's BTC_USD_TYPE (Magic Drop)
+
             const goldCoin = coinWithBalance({
                 balance: amount,
                 type: BTC_USD_TYPE,
@@ -132,10 +140,12 @@ export function DashboardPage() {
                 }, {
                     onSuccess: (result) => {
                         console.log("Water added!", result);
+                        updateStatus('success', { message: "Water added to your dream!" });
                         setIsSuccessOpen(true);
                     },
                     onError: (error) => {
                         console.error("Transaction failed", error);
+                        updateStatus('error', { error: error.message || "Transaction failed" });
                         setDepositError(error.message || "Unknown transaction error");
                         setIsFailureOpen(true);
                     }
@@ -143,10 +153,12 @@ export function DashboardPage() {
             }
         } catch (e) {
             console.error("Deposit setup failed", e);
+            updateStatus('error', { error: e instanceof Error ? e.message : "Setup failed" });
             setDepositError(e instanceof Error ? e.message : "Could not build transaction");
             setIsFailureOpen(true);
         }
     };
+
 
     const handleConfirmWithdraw = async (amountStr: string) => {
         if (!account || !activeSeed) return;
@@ -156,7 +168,9 @@ export function DashboardPage() {
         const withdrawAmount = BigInt(Math.floor(parseFloat(amountStr) * 1_000_000));
 
         try {
+            updateStatus('pending', { message: "Withdrawing funds from seed..." });
             // 1. Withdraw specific amount from seed
+
             const [fundsCoin] = tx.moveCall({
                 target: `${DREAM_GARDEN_PACKAGE_ID}::${DREAM_GARDEN_MODULE}::withdraw`,
                 arguments: [
@@ -174,20 +188,24 @@ export function DashboardPage() {
             }, {
                 onSuccess: (result) => {
                     console.log("Withdrawn!", result);
+                    updateStatus('success', { message: "Funds withdrawn successfully!" });
                     setIsSuccessOpen(true);
                 },
                 onError: (error) => {
                     console.error("Withdrawal failed", error);
+                    updateStatus('error', { error: error.message || "Withdrawal failed" });
                     setDepositError(error.message || "Unknown transaction error");
                     setIsFailureOpen(true);
                 }
             });
         } catch (e) {
             console.error("Withdraw setup failed", e);
+            updateStatus('error', { error: e instanceof Error ? e.message : "Setup failed" });
             setDepositError(e instanceof Error ? e.message : "Could not build transaction");
             setIsFailureOpen(true);
         }
     };
+
 
     const handleGiveUp = async () => {
         if (!account || !activeSeed) {
@@ -197,7 +215,9 @@ export function DashboardPage() {
 
         const tx = new Transaction();
         try {
+            updateStatus('pending', { message: "Abandoning dream and withdrawing funds..." });
             // 1. Abandon and withdraw funds from seed
+
             const [fundsCoin] = tx.moveCall({
                 target: `${DREAM_GARDEN_PACKAGE_ID}::${DREAM_GARDEN_MODULE}::abandon`,
                 arguments: [tx.object(activeSeed.objectId)],
@@ -212,22 +232,27 @@ export function DashboardPage() {
             }, {
                 onSuccess: () => {
                     console.log("Abandoned!");
+                    updateStatus('success', { message: "Dream abandoned. Funds returned." });
                     setIsGiveUpOpen(false);
                     // Force refresh or redirect?
                 }
             });
         } catch (e) {
             console.error("Abandon failed", e);
+            updateStatus('error', { error: e instanceof Error ? e.message : "Abandon failed" });
             setIsGiveUpOpen(false);
         }
     };
+
 
     const handleFinish = async () => {
         if (!account || !activeSeed) return;
 
         const tx = new Transaction();
         try {
+            updateStatus('pending', { message: "Completing dream and collecting rewards..." });
             // 1. Mark completed and withdraw ALL funds
+
             const [fundsCoin] = tx.moveCall({
                 target: `${DREAM_GARDEN_PACKAGE_ID}::${DREAM_GARDEN_MODULE}::complete`,
                 arguments: [tx.object(activeSeed.objectId)],
@@ -242,17 +267,32 @@ export function DashboardPage() {
             }, {
                 onSuccess: () => {
                     console.log("Completed!");
+                    updateStatus('success', { title: "DREAM ACHIEVED! 🎉", message: "All funds and rewards collected!" });
                     setIsSuccessOpen(true);
+                },
+                onError: (error) => {
+                    updateStatus('error', { error: error.message || "Completion failed" });
                 }
             });
         } catch (e) {
             console.error("Complete failed", e);
+            updateStatus('error', { error: e instanceof Error ? e.message : "Complete failed" });
         }
     };
 
+
     return (
-        <main className="flex-grow w-full max-w-[1200px] mx-auto px-4 sm:px-6 py-8 flex flex-col items-center">
+        <main className="flex-grow w-full max-w-[1200px] mx-auto px-4 sm:px-6 py-8 flex flex-col items-center relative">
+            <TransactionStatus
+                status={status}
+                title={title}
+                error={errorMsg}
+                message={successMsg}
+                onClose={reset}
+            />
+
             <GiveUpDreamDialog
+
                 isOpen={isGiveUpOpen}
                 onClose={() => setIsGiveUpOpen(false)}
                 onConfirm={handleGiveUp}

@@ -3,6 +3,9 @@ import { useSuiClient, useCurrentAccount, useSignAndExecuteTransaction } from "@
 import { useState, useEffect } from "react";
 import { Transaction } from "@mysten/sui/transactions";
 import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_STATUS, SEED_TYPE_LIST } from "../constants";
+import { TransactionStatus } from "../components/TransactionStatus";
+import { useTransactionStatus } from "../hooks/useTransactionStatus";
+
 
 export function LandingPage() {
     const account = useCurrentAccount();
@@ -13,6 +16,8 @@ export function LandingPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isBatchProcessing, setIsBatchProcessing] = useState(false);
     const { mutate: signAndExecute } = useSignAndExecuteTransaction();
+    const { status, errorMsg: txError, successMsg, title, updateStatus, reset } = useTransactionStatus();
+
 
     useEffect(() => {
         if (!account) {
@@ -67,7 +72,9 @@ export function LandingPage() {
         }
 
         setIsBatchProcessing(true);
+        updateStatus('pending', { message: "Batch withdrawing funds from garden..." });
         const tx = new Transaction();
+
 
         seedsWithFunds.forEach(seed => {
             const [coin] = tx.moveCall({
@@ -83,20 +90,29 @@ export function LandingPage() {
 
         signAndExecute({ transaction: tx }, {
             onSuccess: () => {
-                alert("Test Success: All funds withdrawn to your wallet!");
-                window.location.reload();
+                updateStatus('success', { message: "All funds withdrawn successfully!" });
+                setTimeout(() => window.location.reload(), 2000);
             },
             onError: (err) => {
                 console.error(err);
-                alert("Batch withdraw failed: " + err.message);
+                updateStatus('error', { error: err.message || "Batch withdraw failed" });
                 setIsBatchProcessing(false);
             }
         });
+
     };
 
     return (
-        <main className="flex-grow w-full max-w-[1040px] mx-auto px-4 sm:px-6 py-8">
+        <main className="flex-grow w-full max-w-[1040px] mx-auto px-4 sm:px-6 py-8 relative">
+            <TransactionStatus
+                status={status}
+                title={title}
+                error={txError}
+                message={successMsg}
+                onClose={reset}
+            />
             {/* Welcome Header */}
+
             <header className="mb-10 flex flex-col md:flex-row justify-between items-end gap-6">
                 <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-2 text-primary font-bold uppercase tracking-wider text-xs">

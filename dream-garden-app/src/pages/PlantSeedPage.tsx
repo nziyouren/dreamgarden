@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useCurrentAccount, useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_TYPES, SEED_TYPE_LIST } from "../constants";
+import { TransactionStatus } from "../components/TransactionStatus";
+import { useTransactionStatus } from "../hooks/useTransactionStatus";
+
 
 export function PlantSeedPage() {
     const navigate = useNavigate();
@@ -14,6 +17,9 @@ export function PlantSeedPage() {
     const [targetAmount, setTargetAmount] = useState("");
     const [seedType, setSeedType] = useState<string>(SEED_TYPES.TOY.id);
     const [isPlanting, setIsPlanting] = useState(false);
+    const { status, errorMsg, successMsg, title, updateStatus, reset } = useTransactionStatus();
+
+
 
     const handlePlantSeed = async () => {
         if (!account || !dreamName || !targetAmount) return;
@@ -25,7 +31,9 @@ export function PlantSeedPage() {
         const amount = BigInt(Math.floor(parseFloat(targetAmount) * 1_000_000));
 
         try {
+            updateStatus('pending', { message: "Sending your seed to the Magic Vault..." });
             tx.moveCall({
+
                 target: `${DREAM_GARDEN_PACKAGE_ID}::${DREAM_GARDEN_MODULE}::create_seed`,
                 arguments: [
                     tx.pure.string(dreamName),
@@ -41,7 +49,10 @@ export function PlantSeedPage() {
             }, {
                 onSuccess: async (result) => {
                     console.log("Seed planted!", result);
+                    updateStatus('success', { message: "Your magic seed is now growing in the vault." });
                     try {
+                        // We need to fetch the transaction details to get objectChanges
+
                         // We need to fetch the transaction details to get objectChanges
                         const txData = await suiClient.waitForTransaction({
                             digest: result.digest,
@@ -69,8 +80,10 @@ export function PlantSeedPage() {
                 },
                 onError: (error) => {
                     console.error("Failed to plant seed", error);
+                    updateStatus('error', { error: error.message || "Failed to plant seed" });
                     setIsPlanting(false);
                 }
+
             });
         } catch (e) {
             console.error("Setup failed", e);
@@ -94,7 +107,16 @@ export function PlantSeedPage() {
                 </div>
 
                 <div className="bg-white dark:bg-[#1a2e1a] rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden relative">
+                    <TransactionStatus
+                        status={status}
+                        title={title}
+                        error={errorMsg}
+                        message={successMsg}
+                        onClose={reset}
+                    />
+
                     <div className="grid lg:grid-cols-2 gap-0">
+
                         {/* Left Side - Image Upload */}
                         <div className="relative hidden lg:flex flex-col p-8 bg-gradient-to-br from-green-50 to-primary/10 dark:from-green-950/30 dark:to-primary/5 items-center justify-center">
                             <div className="w-full aspect-[4/5] rounded-[2rem] bg-white dark:bg-gray-900 shadow-2xl overflow-hidden border-8 border-white dark:border-gray-800 relative group">
