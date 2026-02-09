@@ -387,10 +387,12 @@ export function DashboardPage() {
                         </button>
                     )}
 
-                    <button onClick={() => setIsGiveUpOpen(true)} disabled={isProcessing} className="w-full py-2.5 bg-white dark:bg-card-dark disabled:opacity-50 text-red-500 dark:text-red-400 border-2 border-red-100 dark:border-red-900/30 rounded-xl font-bold text-sm hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center justify-center gap-2">
-                        <span className="material-symbols-outlined text-lg">cancel</span>
-                        {activeSeed?.status === SEED_STATUS.COMPLETED ? 'Remove Dream Record' : (activeSeed ? 'Cancel Dream & Withdraw Funds' : 'Go Back')}
-                    </button>
+                    {activeSeed?.status !== SEED_STATUS.COMPLETED && (
+                        <button onClick={() => setIsGiveUpOpen(true)} disabled={isProcessing} className="w-full py-2.5 bg-white dark:bg-card-dark disabled:opacity-50 text-red-500 dark:text-red-400 border-2 border-red-100 dark:border-red-900/30 rounded-xl font-bold text-sm hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center justify-center gap-2">
+                            <span className="material-symbols-outlined text-lg">cancel</span>
+                            {activeSeed ? 'Cancel Dream & Withdraw Funds' : 'Go Back'}
+                        </button>
+                    )}
                 </div>
 
                 {/* Right Column: Visualization */}
