@@ -1,12 +1,54 @@
-import type { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { Header } from "./Header.tsx";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useCurrentAccount, useSuiClient } from "@mysten/dapp-kit";
+import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE } from "../constants";
 
 interface LayoutProps {
     children: ReactNode;
 }
 
 export function Layout({ children }: LayoutProps) {
+    const account = useCurrentAccount();
+    const suiClient = useSuiClient();
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Global onboarding redirection logic
+    useEffect(() => {
+        const checkOnboarding = async () => {
+            // 1. Skip if no account connected
+            if (!account) return;
+
+            // 2. Skip if we are already on the help page
+            if (location.pathname === "/help") return;
+
+            // 3. Skip if user has already seen the help (per device)
+            const hasSeenHelp = localStorage.getItem("dream_garden_help_seen");
+            if (hasSeenHelp === "true") return;
+
+            try {
+                // 4. Check if the user has any seeds
+                const objects = await suiClient.getOwnedObjects({
+                    owner: account.address,
+                    filter: {
+                        StructType: `${DREAM_GARDEN_PACKAGE_ID}::${DREAM_GARDEN_MODULE}::Seed<${BTC_USD_TYPE}>`
+                    },
+                    limit: 1 // We only need to know if at least one exists
+                });
+
+                // 5. If no seeds and haven't seen help, redirect
+                if (objects.data.length === 0) {
+                    navigate("/help");
+                }
+            } catch (error) {
+                console.error("Failed to check seeds for onboarding:", error);
+            }
+        };
+
+        checkOnboarding();
+    }, [account, location.pathname, navigate, suiClient]);
+
     return (
         <div className="flex flex-col min-h-screen relative overflow-x-hidden">
             <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">

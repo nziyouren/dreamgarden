@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export function HelpPage() {
+    useEffect(() => {
+        localStorage.setItem("dream_garden_help_seen", "true");
+    }, []);
+
     const steps = [
         {
             number: 1,
