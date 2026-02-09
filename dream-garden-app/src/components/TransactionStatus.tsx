@@ -29,6 +29,11 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
     }, [status]);
 
     useEffect(() => {
+        if (status === 'success') {
+            const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
+            audio.volume = 0.5;
+            audio.play().catch(e => console.log('Audio play failed:', e));
+        }
         if ((status === 'success' || status === 'error') && autoCloseDelay > 0) {
             const timer = setTimeout(() => {
                 setVisible(false);
@@ -101,14 +106,15 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
 };
 
 const Fireworks = () => {
-    const particles = Array.from({ length: 8 });
+    const particles = Array.from({ length: 24 });
+    const COLORS = ['#FF0000', '#00FF00', '#4299E1', '#F6E05E', '#FF00FF', '#00FFFF', '#FFA500', '#800080'];
 
     return (
         <div className="absolute inset-0 pointer-events-none z-0">
             {particles.map((_, i) => {
                 const type = i % 3; // 0: star, 1: circle, 2: triangle
-                const angle = (i * 360) / 8;
-                const distance = 25 + Math.random() * 15;
+                const angle = (i * 360) / 24;
+                const distance = 60 + Math.random() * 80;
 
                 return (
                     <div
@@ -117,20 +123,20 @@ const Fireworks = () => {
                         style={{
                             '--angle': `${angle}deg`,
                             '--distance': `${distance}px`,
-                            '--delay': `${Math.random() * 0.2}s`,
-                            '--color': type === 0 ? '#F6E05E' : type === 1 ? '#4299E1' : '#48BB78',
+                            '--delay': `${Math.random() * 0.4}s`,
+                            '--color': COLORS[i % COLORS.length],
                             animationDelay: 'var(--delay)'
                         } as any}
                     >
                         {type === 0 && (
-                            <span className="material-symbols-outlined text-[9px]" style={{ color: 'var(--color)' }}>star</span>
+                            <span className="material-symbols-outlined text-[14px]" style={{ color: 'var(--color)' }}>star</span>
                         )}
                         {type === 1 && (
-                            <div className="size-1 rounded-full" style={{ backgroundColor: 'var(--color)' }}></div>
+                            <div className="size-2 rounded-full" style={{ backgroundColor: 'var(--color)' }}></div>
                         )}
                         {type === 2 && (
                             <div
-                                className="w-0 h-0 border-l-[3px] border-l-transparent border-r-[3px] border-r-transparent border-b-[6px]"
+                                className="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[9px]"
                                 style={{ borderBottomColor: 'var(--color)' }}
                             ></div>
                         )}
@@ -140,4 +146,5 @@ const Fireworks = () => {
         </div>
     );
 };
+
 
