@@ -29,11 +29,11 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
     }, [status]);
 
     useEffect(() => {
-        if (status === 'success') {
-            const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
-            audio.volume = 0.5;
-            audio.play().catch(e => console.log('Audio play failed:', e));
-        }
+        // if (status === 'success') {
+        //     const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
+        //     audio.volume = 0.5;
+        //     audio.play().catch(e => console.log('Audio play failed:', e));
+        // }
         if ((status === 'success' || status === 'error') && autoCloseDelay > 0) {
             const timer = setTimeout(() => {
                 setVisible(false);
