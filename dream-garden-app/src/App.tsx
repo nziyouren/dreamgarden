@@ -7,6 +7,7 @@ import { GardenHistoryPage } from "./pages/GardenHistoryPage.tsx";
 import { SeedStationPage } from "./pages/SeedStationPage.tsx";
 import { SeedsGalleryPage } from "./pages/SeedsGalleryPage.tsx";
 import { LessonPage } from "./pages/LessonPage.tsx";
+import { HelpPage } from "./pages/HelpPage.tsx";
 
 import { ScrollToTop } from "./components/ScrollToTop.tsx";
 
@@ -20,9 +21,10 @@ function App() {
           <Route path="/plant" element={<PlantSeedPage />} />
           <Route path="/dashboard/:objectId?" element={<DashboardPage />} />
           <Route path="/history" element={<GardenHistoryPage />} />
-          <Route path="/seed-station" element={<SeedStationPage />} />
+          <Route path="/magic-drops" element={<SeedStationPage />} />
           <Route path="/gallery" element={<SeedsGalleryPage />} />
           <Route path="/lesson/1" element={<LessonPage />} />
+          <Route path="/help" element={<HelpPage />} />
         </Routes>
       </Layout>
     </Router>

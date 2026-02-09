@@ -321,7 +321,7 @@ export function LandingPage() {
             <button
                 onClick={handleBatchWithdraw}
                 disabled={isBatchProcessing || activeSeeds.length === 0}
-                className="fixed bottom-8 right-8 z-[60] bg-red-500 hover:bg-red-600 text-white p-4 rounded-full shadow-2xl transition-all active:scale-95 group flex items-center gap-2 overflow-hidden max-w-[56px] hover:max-w-[200px] disabled:opacity-50 disabled:cursor-not-allowed border-4 border-white/20"
+                className="fixed bottom-8 left-8 z-[60] bg-red-500 hover:bg-red-600 text-white p-4 rounded-full shadow-2xl transition-all active:scale-95 group flex items-center gap-2 overflow-hidden max-w-[56px] hover:max-w-[200px] disabled:opacity-50 disabled:cursor-not-allowed border-4 border-white/20"
                 title="Test Tool: Withdraw all funds"
             >
                 <span className={`material-symbols-outlined ${isBatchProcessing ? 'animate-spin' : ''}`}>
