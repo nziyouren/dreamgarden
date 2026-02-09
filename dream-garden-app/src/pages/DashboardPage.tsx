@@ -7,7 +7,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AddWaterDialog } from "../components/AddWaterDialog.tsx";
 import { WithdrawWaterDialog } from "../components/WithdrawWaterDialog.tsx";
 import { DepositSuccessDialog } from "../components/DepositSuccessDialog.tsx";
-import { DepositFailureDialog } from "../components/DepositFailureDialog.tsx";
 
 import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_STATUS, SEED_TYPE_LIST } from "../constants";
 import { TransactionStatus } from "../components/TransactionStatus";
@@ -27,9 +26,6 @@ export function DashboardPage() {
     const [isAddWaterOpen, setIsAddWaterOpen] = useState(false);
     const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
     const [isSuccessOpen, setIsSuccessOpen] = useState(false);
-    const [isFailureOpen, setIsFailureOpen] = useState(false);
-    const [lastDepositAmount, setLastDepositAmount] = useState("");
-    const [depositError, setDepositError] = useState("");
     const [isProcessing, setIsProcessing] = useState(false);
 
     const [activeSeed, setActiveSeed] = useState<any>(null);
@@ -110,7 +106,6 @@ export function DashboardPage() {
 
     const handleConfirmDeposit = async (amountStr: string) => {
         if (!account) return;
-        setLastDepositAmount(amountStr);
         setIsAddWaterOpen(false);
 
         const tx = new Transaction();
@@ -149,8 +144,6 @@ export function DashboardPage() {
                     onError: (error) => {
                         console.error("Transaction failed", error);
                         updateStatus('error', { error: error.message || "Transaction failed" });
-                        setDepositError(error.message || "Unknown transaction error");
-                        setIsFailureOpen(true);
                         setIsProcessing(false);
                     }
                 });
@@ -158,8 +151,6 @@ export function DashboardPage() {
         } catch (e) {
             console.error("Deposit setup failed", e);
             updateStatus('error', { error: e instanceof Error ? e.message : "Setup failed" });
-            setDepositError(e instanceof Error ? e.message : "Could not build transaction");
-            setIsFailureOpen(true);
             setIsProcessing(false);
         }
     };
@@ -195,22 +186,17 @@ export function DashboardPage() {
                 onSuccess: (result) => {
                     console.log("Withdrawn!", result);
                     updateStatus('success', { message: "Funds withdrawn successfully!" });
-                    setIsSuccessOpen(true);
                     setIsProcessing(false);
                 },
                 onError: (error) => {
                     console.error("Withdrawal failed", error);
                     updateStatus('error', { error: error.message || "Withdrawal failed" });
-                    setDepositError(error.message || "Unknown transaction error");
-                    setIsFailureOpen(true);
                     setIsProcessing(false);
                 }
             });
         } catch (e) {
             console.error("Withdraw setup failed", e);
             updateStatus('error', { error: e instanceof Error ? e.message : "Setup failed" });
-            setDepositError(e instanceof Error ? e.message : "Could not build transaction");
-            setIsFailureOpen(true);
             setIsProcessing(false);
         }
     };
@@ -286,7 +272,6 @@ export function DashboardPage() {
                 onSuccess: () => {
                     console.log("Completed!");
                     updateStatus('success', { title: "DREAM ACHIEVED! 🎉", message: "All funds and rewards collected!" });
-                    setIsSuccessOpen(true);
                     setIsProcessing(false);
                 },
                 onError: (error) => {
@@ -338,16 +323,6 @@ export function DashboardPage() {
             <DepositSuccessDialog
                 isOpen={isSuccessOpen}
                 onClose={() => setIsSuccessOpen(false)}
-            />
-
-            <DepositFailureDialog
-                isOpen={isFailureOpen}
-                onClose={() => setIsFailureOpen(false)}
-                error={depositError}
-                onTryAgain={() => {
-                    setIsFailureOpen(false);
-                    handleConfirmDeposit(lastDepositAmount);
-                }}
             />
 
             <header className="w-full mb-8 text-center">

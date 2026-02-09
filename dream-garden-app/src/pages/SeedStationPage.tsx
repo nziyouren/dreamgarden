@@ -3,8 +3,6 @@ import { useSuiClient, useCurrentAccount, useSignAndExecuteTransaction } from "@
 import { Transaction, coinWithBalance } from "@mysten/sui/transactions";
 import { StableLayerClient } from "stable-layer-sdk";
 import { USDC_TYPE, BTC_USD_TYPE } from "../constants";
-import { DepositSuccessDialog } from "../components/DepositSuccessDialog";
-import { DepositFailureDialog } from "../components/DepositFailureDialog";
 import { TransactionStatus } from "../components/TransactionStatus";
 import { useTransactionStatus } from "../hooks/useTransactionStatus";
 
@@ -23,9 +21,6 @@ export function SeedStationPage() {
     const [lpBalance, setLpBalance] = useState<string>("0.00");
     const [mintAmount, setMintAmount] = useState<string>("");
     const [burnAmount, setBurnAmount] = useState<string>("");
-    const [isSuccessOpen, setIsSuccessOpen] = useState(false);
-    const [isFailureOpen, setIsFailureOpen] = useState(false);
-    const [errorMsg, setErrorMsg] = useState("");
     const [isMinting, setIsMinting] = useState(false);
     const [isBurning, setIsBurning] = useState(false);
     const { status, errorMsg: txError, successMsg, title, updateStatus, reset } = useTransactionStatus();
@@ -87,21 +82,17 @@ export function SeedStationPage() {
             signAndExecute({ transaction: tx }, {
                 onSuccess: () => {
                     updateStatus('success', { message: "Successfully minted Magic Drops!" });
-                    setIsSuccessOpen(true);
                     setMintAmount("");
                     setIsMinting(false);
+                    fetchData();
                 },
                 onError: (e) => {
                     updateStatus('error', { error: e.message || "Minting failed" });
-                    setErrorMsg(e.message);
-                    setIsFailureOpen(true);
                     setIsMinting(false);
                 }
             });
         } catch (e: any) {
             updateStatus('error', { error: e.message || "Minting failed" });
-            setErrorMsg(e.message);
-            setIsFailureOpen(true);
             setIsMinting(false);
         }
 
@@ -128,21 +119,17 @@ export function SeedStationPage() {
             signAndExecute({ transaction: tx }, {
                 onSuccess: () => {
                     updateStatus('success', { message: "Successfully burned Magic Drops!" });
-                    setIsSuccessOpen(true);
                     setBurnAmount("");
                     setIsBurning(false);
+                    fetchData();
                 },
                 onError: (e) => {
                     updateStatus('error', { error: e.message || "Burning failed" });
-                    setErrorMsg(e.message);
-                    setIsFailureOpen(true);
                     setIsBurning(false);
                 }
             });
         } catch (e: any) {
             updateStatus('error', { error: e.message || "Burning failed" });
-            setErrorMsg(e.message);
-            setIsFailureOpen(true);
             setIsBurning(false);
         }
 
@@ -330,13 +317,6 @@ export function SeedStationPage() {
                 </div>
             </div>
 
-            <DepositSuccessDialog isOpen={isSuccessOpen} onClose={() => { setIsSuccessOpen(false); fetchData(); }} />
-            <DepositFailureDialog
-                isOpen={isFailureOpen}
-                onClose={() => setIsFailureOpen(false)}
-                onTryAgain={handleMint}
-                error={errorMsg}
-            />
         </main>
     );
 }
