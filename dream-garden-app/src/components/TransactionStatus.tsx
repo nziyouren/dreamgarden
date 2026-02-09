@@ -46,9 +46,9 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
     if (!visible || status === 'idle') return null;
 
     return (
-        <div className="fixed top-[100px] right-8 z-[100] animate-in fade-in slide-in-from-top-4 duration-300 pointer-events-none">
+        <div className="fixed top-[100px] right-8 z-[100] animate-in fade-in slide-in-from-top-4 duration-300 pointer-events-none max-w-[calc(100vw-4rem)] sm:max-w-md">
             <div className={`
-        flex items-center gap-2.5 px-4 py-2.5 rounded-full border shadow-xl backdrop-blur-md transition-all duration-300 pointer-events-auto
+        flex items-center gap-2.5 px-4 py-2.5 rounded-3xl border shadow-xl backdrop-blur-md transition-all duration-300 pointer-events-auto w-full
         ${status === 'error'
                     ? 'bg-[#FFF5F5]/90 border-[#FFE0E0] text-[#C53030]'
                     : 'bg-[#F0FFF4]/90 border-[#D1FAE5] text-[#1A202C]'
@@ -81,12 +81,12 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
                 </div>
 
                 {/* Text Area */}
-                <div className="flex flex-col pr-1.5 min-w-[125px]">
-                    <h4 className="font-black text-[15px] leading-tight">
+                <div className="flex flex-col pr-1.5 min-w-[125px] overflow-hidden">
+                    <h4 className="font-black text-[15px] leading-tight shrink-0">
                         {title || (status === 'pending' ? 'Processing...' : status === 'success' ? 'Success!' : 'Oops!')}
                     </h4>
                     <p className={`
-            text-[9px] font-bold tracking-wide uppercase opacity-70
+            text-[9px] font-bold tracking-wide uppercase opacity-70 break-all
             ${status === 'error' ? 'text-[#E53E3E]' : 'text-primary'}
           `}>
                         {status === 'error' ? (error || 'Failed') : (message || (status === 'pending' ? 'Confirming...' : 'Wait a moment'))}
