@@ -224,7 +224,7 @@ export function SeedsGalleryPage() {
                                             <div className="absolute inset-0 bg-purple-500/5 dark:bg-purple-500/10 z-0"></div>
                                             <div className="p-4 relative z-10 flex flex-col h-full">
                                                 <div className="flex justify-between items-start mb-4">
-                                                    <div className="bg-purple-100 dark:bg-purple-900/50 p-2.5 rounded-full text-purple-600 dark:text-purple-300">
+                                                    <div className="bg-purple-100 dark:bg-purple-900/50 size-10 flex items-center justify-center flex-shrink-0 rounded-full text-purple-600 dark:text-purple-300">
                                                         <span className="material-symbols-outlined">check_circle</span>
                                                     </div>
                                                     <span className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-sm flex items-center gap-1">
