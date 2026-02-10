@@ -337,25 +337,67 @@ export function DashboardPage() {
             <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Left Column: Vault Status */}
                 <div className="lg:col-span-4 flex flex-col gap-6 order-2 lg:order-1">
-                    <div className="bg-card-light dark:bg-card-dark p-8 rounded-[2.5rem] shadow-soft border border-white/40 dark:border-white/5 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-8 opacity-10">
-                            <span className="material-symbols-outlined text-9xl">savings</span>
+                    <div className="bg-white dark:bg-card-dark p-8 rounded-[2.5rem] shadow-soft border-4 border-white dark:border-white/5 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-4 opacity-10">
+                            <span className="material-symbols-outlined text-[10rem] rotate-12">savings</span>
                         </div>
-                        <h3 className="text-lg font-bold text-text-muted dark:text-gray-400 mb-2">Vault Balance</h3>
-                        <span className="text-5xl font-black text-text-main dark:text-white">
-                            ${activeSeed ? (parseInt(activeSeed.funds || "0") / 1_000_000).toFixed(2) : balance}
-                        </span>
-                        <span className="text-xl font-bold text-text-muted dark:text-gray-500">
-                            / ${activeSeed ? (parseInt(activeSeed.target_amount) / 1_000_000).toFixed(2) : "80.00"}
-                        </span>
 
-                        {/* Progress Bar */}
-                        <div className="relative w-full h-8 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden shadow-inner-lg mb-2 border-2 border-white dark:border-gray-700">
-                            <div
-                                className="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-green-400 rounded-full flex items-center justify-end pr-2 transition-all duration-1000"
-                                style={{ width: `${Math.min(100, (parseInt(activeSeed?.funds || "0") / parseInt(activeSeed?.target_amount || "1")) * 100)}%` }}
-                            >
-                                <div className="h-4 w-4 bg-white rounded-full animate-pulse"></div>
+                        <div className="relative z-10">
+                            <h3 className="text-xl font-bold text-[#4a5568] dark:text-gray-400 mb-2">Vault Balance</h3>
+                            <div className="flex items-baseline gap-2 mb-8">
+                                <span className="text-6xl font-black text-[#1a2e1a] dark:text-white">
+                                    ${activeSeed ? (parseInt(activeSeed.funds || "0") / 1_000_000).toFixed(2) : balance}
+                                </span>
+                                <span className="text-2xl font-bold text-[#718096] dark:text-gray-500">
+                                    / ${activeSeed ? (parseInt(activeSeed.target_amount) / 1_000_000).toFixed(2) : "80.00"}
+                                </span>
+                            </div>
+
+                            {/* Segmented Progress Bar */}
+                            <div className="relative mb-6">
+                                <div className="flex gap-[2px] h-10 bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-hidden p-0 relative">
+                                    {[1, 2, 3, 4].map((seg) => (
+                                        <div key={seg} className="flex-1 bg-[#f7fafc] dark:bg-black/20 h-full"></div>
+                                    ))}
+                                    {/* Active Progress Overlay */}
+                                    <div
+                                        className="absolute top-0 left-0 h-full bg-[#35f425] rounded-2xl transition-all duration-1000 flex items-center justify-end pr-1"
+                                        style={{ width: `${Math.min(100, (parseInt(activeSeed?.funds || "0") / parseInt(activeSeed?.target_amount || "1")) * 100)}%` }}
+                                    >
+                                        <div className="size-6 bg-white rounded-full shadow-md"></div>
+                                    </div>
+                                </div>
+                                <div className="flex justify-between mt-3 text-sm font-bold px-1">
+                                    <span className="text-[#4a5568] dark:text-gray-400">Started</span>
+                                    <span className="text-[#35f425] font-black">
+                                        {Math.min(100, (parseInt(activeSeed?.funds || "0") / parseInt(activeSeed?.target_amount || "1")) * 100).toFixed(0)}% Grown
+                                    </span>
+                                    <span className="text-[#4a5568] dark:text-gray-400">Goal</span>
+                                </div>
+                            </div>
+
+                            {/* Estimated Completion Card - Smaller Version */}
+                            <div className="mt-8 bg-[#f7fafc] dark:bg-black/20 px-4 py-3 rounded-[1.25rem] flex items-center justify-between border border-[#edf2f7] dark:border-white/5 shadow-sm">
+                                <div className="flex items-center gap-3">
+                                    <div className="size-10 bg-orange-100 dark:bg-orange-950/30 rounded-xl flex items-center justify-center text-orange-500">
+                                        <span className="material-symbols-outlined text-xl font-bold">calendar_month</span>
+                                    </div>
+                                    <span className="text-base font-bold text-[#4a5568] dark:text-gray-300">Est. Completion</span>
+                                </div>
+                                <span className="text-base font-black text-[#1a2e1a] dark:text-white">
+                                    {activeSeed ? (() => {
+                                        const funds = parseInt(activeSeed.funds || "0");
+                                        const target = parseInt(activeSeed.target_amount || "0");
+                                        if (funds >= target) return "0 Weeks";
+                                        if (funds === 0) return "TBD";
+
+                                        // Simple heuristic: assuming a goal of 80% growth takes ~3 weeks
+                                        // remaining_weeks = (remaining_pct / total_pct) * scale
+                                        const remainingPct = (target - funds) / target;
+                                        const estimatedWeeks = Math.ceil(remainingPct * 4); // Max 4 weeks estimate
+                                        return `${estimatedWeeks} ${estimatedWeeks === 1 ? 'Week' : 'Weeks'}`;
+                                    })() : "--"}
+                                </span>
                             </div>
                         </div>
                     </div>
