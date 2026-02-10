@@ -5,10 +5,11 @@ interface AddWaterDialogProps {
     onClose: () => void;
     onConfirm: (amount: string) => void;
     availableBalance: string;
+    targetAmount: string;
     isProcessing?: boolean;
 }
 
-export function AddWaterDialog({ isOpen, onClose, onConfirm, availableBalance, isProcessing }: AddWaterDialogProps) {
+export function AddWaterDialog({ isOpen, onClose, onConfirm, availableBalance, targetAmount, isProcessing }: AddWaterDialogProps) {
     const [amount, setAmount] = useState("");
     const [growthScale, setGrowthScale] = useState(1);
     const [isMax, setIsMax] = useState(false);
@@ -19,12 +20,13 @@ export function AddWaterDialog({ isOpen, onClose, onConfirm, availableBalance, i
         setGrowthScale(scale);
         setIsMax(isMaxFlag);
 
-        // Simple heuristic: if user clicks a percentage, update the amount based on balance
-        const balanceNum = parseFloat(availableBalance.replace(/[^0-9.]/g, '')) || 0;
-        if (scale === 1.2) setAmount((balanceNum * 0.25).toFixed(2));
-        else if (scale === 1.5) setAmount((balanceNum * 0.50).toFixed(2));
-        else if (scale === 1.8) setAmount((balanceNum * 0.75).toFixed(2));
-        else if (isMaxFlag) setAmount(balanceNum.toFixed(2));
+        // Percentages are now based on the seed's target amount
+        const targetNum = parseFloat(targetAmount) || 0;
+
+        if (scale === 1.2) setAmount((targetNum * 0.25).toFixed(2));
+        else if (scale === 1.5) setAmount((targetNum * 0.50).toFixed(2));
+        else if (scale === 1.8) setAmount((targetNum * 0.75).toFixed(2));
+        else if (isMaxFlag) setAmount(targetNum.toFixed(2));
     };
 
     return (

@@ -325,6 +325,7 @@ export function DashboardPage() {
                 onClose={() => setIsAddWaterOpen(false)}
                 onConfirm={handleConfirmDeposit}
                 availableBalance={balance}
+                targetAmount={activeSeed ? (parseInt(activeSeed.target_amount) / 1_000_000).toFixed(2) : "0"}
                 isProcessing={isProcessing}
             />
 
