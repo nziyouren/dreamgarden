@@ -62,7 +62,7 @@ export function ConnectWalletDialog({ isOpen, onClose }: ConnectWalletDialogProp
                         </h2>
 
                         <p className="text-lg text-text-muted dark:text-gray-300 font-bold leading-snug mb-8">
-                            To start planting, we need to connect your magic wallet first. This is where your gold is safely kept!
+                            Please connect your magic wallet to continue. This is where your Magic Drops and garden progress are safely managed!
                         </p>
 
                         <div className="w-full space-y-3">
