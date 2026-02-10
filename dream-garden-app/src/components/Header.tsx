@@ -54,9 +54,13 @@ export function Header() {
                     padding: 6px !important;
                     border: 1px solid #e5e7eb !important; /* 更实线的扁平边框 */
                     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important; /* 更扁平的阴影 */
-                    min-width: 200px !important;
+                    min-width: 240px !important;
                     margin-top: 8px !important;
                     animation: dropdownFadeIn 0.15s ease-out !important;
+                    max-height: 60vh !important;
+                    overflow-y: auto !important;
+                    display: flex !important;
+                    flex-direction: column !important;
                 }
 
                 @keyframes dropdownFadeIn {
@@ -73,25 +77,33 @@ export function Header() {
                     cursor: pointer !important;
                     color: #1a2e1a !important;
                     margin-bottom: 1px !important;
+                    flex-shrink: 0 !important;
                 }
 
                 div[role="menuitem"]:hover {
                     background-color: #f0fdf4 !important;
                     color: #25f425 !important;
-                    /* 移除 translateX(4px) 以防止文字跳动 */
                 }
 
                 /* 针对断开连接按钮的特殊样式 */
                 div[role="menuitem"]:last-child {
                     margin-top: 4px !important;
-                    padding-top: 10px !important;
-                    color: #666 !important;
-                    /* 移除了 border-top */
+                    padding-top: 12px !important;
+                    padding-bottom: 12px !important;
+                    color: #ef4444 !important; /* 使用红色增强警示 */
+                    border-top: 1px solid #f3f4f6 !important;
+                    position: sticky !important;
+                    bottom: -6px !important; /* 抵消父容器 padding */
+                    background-color: white !important;
+                    z-index: 10 !important;
+                    margin-bottom: -6px !important; /* 抵消父容器 padding */
+                    border-bottom-left-radius: 16px !important;
+                    border-bottom-right-radius: 16px !important;
                 }
 
                 div[role="menuitem"]:last-child:hover {
                     background-color: #fef2f2 !important;
-                    color: #ef4444 !important;
+                    color: #dc2626 !important;
                 }
             `}</style>
             <div className="max-w-[1240px] h-full mx-auto flex items-center justify-between">
