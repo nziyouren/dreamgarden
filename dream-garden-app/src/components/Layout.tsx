@@ -62,9 +62,18 @@ export function Layout({ children }: LayoutProps) {
 
             <footer className="mt-auto border-t border-[#f0f5f0] dark:border-white/10 py-8 bg-card-light dark:bg-card-dark">
                 <div className="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary">emoji_nature</span>
-                        <span className="font-bold text-sm text-text-muted">© 2023 Dream Garden</span>
+                    <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+                        <div className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-primary">emoji_nature</span>
+                            <span className="font-bold text-sm text-text-muted">© 2023 Dream Garden</span>
+                        </div>
+
+                        <div className="flex items-center gap-2 px-4 py-1.5 bg-[#f8faf8] dark:bg-white/5 border border-[#edf2ed] dark:border-white/10 rounded-full shadow-sm opacity-80 hover:opacity-100 transition-opacity">
+                            <span className="material-symbols-outlined text-[16px] text-[#6b8e6b] font-medium">deployed_code</span>
+                            <span className="text-[11px] font-bold text-[#6b8e6b] uppercase tracking-widest">
+                                Powered by StableLayer SDK
+                            </span>
+                        </div>
                     </div>
                 </div>
             </footer>
