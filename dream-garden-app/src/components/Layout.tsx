@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect } from "react";
 import { Header } from "./Header.tsx";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCurrentAccount, useSuiClient } from "@mysten/dapp-kit";

@@ -409,7 +409,7 @@ export function DashboardPage() {
                             className="group relative w-full py-3 bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-background-dark rounded-2xl font-black text-lg shadow-[0_4px_0_0_#1a9e1a] hover:shadow-[0_2px_0_0_#1a9e1a] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden"
                         >
                             <span className="material-symbols-outlined text-2xl animate-bounce">water_drop</span>
-                            {isLoadingSeeds ? '...' : 'Add (Deposit)'}
+                            {isLoadingSeeds ? '...' : 'Add Water'}
                         </button>
 
                         <button
@@ -418,7 +418,7 @@ export function DashboardPage() {
                             className="group relative w-full py-3 bg-orange-400 hover:bg-orange-500 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-white rounded-2xl font-black text-lg shadow-[0_4px_0_0_#c2410c] hover:shadow-[0_2px_0_0_#c2410c] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden"
                         >
                             <span className="material-symbols-outlined text-2xl">logout</span>
-                            {isLoadingSeeds ? '...' : 'Take (Withdraw)'}
+                            {isLoadingSeeds ? '...' : 'Withdraw Funds'}
                         </button>
                     </div>
 

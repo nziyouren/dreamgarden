@@ -151,16 +151,16 @@ export function MagicDropPage() {
                     Magic Drops Shop
                 </div>
                 <h2 className="text-4xl sm:text-6xl font-black tracking-tight text-text-main dark:text-white mb-4">
-                    Manage Your <span className="text-primary underline decoration-wavy decoration-4 underline-offset-4">Magic Drop</span>
+                    Manage Your <span className="text-primary underline decoration-wavy decoration-4 underline-offset-4">Magic Drops</span>
                 </h2>
                 <p className="text-lg text-text-muted dark:text-gray-400 max-w-2xl mx-auto font-medium">
-                    Turn your real coins into Magic Drop to water your seeds, or turn your Magic Drop back into coins to spend!
+                    Turn your real coins into Magic Drops to water your seeds, or turn your Magic Drops back into coins to spend!
                 </p>
             </header>
 
             <div className="relative z-10 -mb-10 mx-auto w-fit">
                 <div className="bg-text-main text-white dark:bg-white dark:text-text-main px-10 py-6 rounded-2xl shadow-xl flex flex-col items-center transform rotate-[-2deg] border-4 border-white dark:border-card-dark transition-all hover:rotate-0">
-                    <span className="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Magic Drop Balance</span>
+                    <span className="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Magic Drops Balance</span>
                     <div className="flex items-center gap-3">
                         <span className="material-symbols-outlined text-4xl text-primary">monetization_on</span>
                         <span className="text-5xl font-black tracking-tight">{lpBalance}</span>
@@ -273,7 +273,7 @@ export function MagicDropPage() {
                                 ))}
                             </div>
                             <div className="flex justify-between items-center mt-4 text-xs font-bold text-text-muted">
-                                <span>Available: {lpBalance} Magic Drop</span>
+                                <span>Available: {lpBalance} Magic Drops</span>
                             </div>
                         </div>
 
