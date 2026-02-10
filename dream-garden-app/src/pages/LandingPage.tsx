@@ -318,7 +318,7 @@ export function LandingPage() {
                 </div>
             </section>
             {/* Test Tool: Batch Withdraw Button */}
-            <button
+            {/* <button
                 onClick={handleBatchWithdraw}
                 disabled={isBatchProcessing || activeSeeds.length === 0}
                 className="fixed bottom-8 left-8 z-[60] bg-red-500 hover:bg-red-600 text-white p-4 rounded-full shadow-2xl transition-all active:scale-95 group flex items-center gap-2 overflow-hidden max-w-[56px] hover:max-w-[200px] disabled:opacity-50 disabled:cursor-not-allowed border-4 border-white/20"
@@ -330,7 +330,7 @@ export function LandingPage() {
                 <span className="whitespace-nowrap font-bold text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {isBatchProcessing ? 'Running PTB...' : 'TEST: Batch Withdraw'}
                 </span>
-            </button>
+            </button> */}
         </main>
     );
 }
