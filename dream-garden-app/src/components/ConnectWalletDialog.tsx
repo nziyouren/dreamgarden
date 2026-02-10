@@ -58,7 +58,7 @@ export function ConnectWalletDialog({ isOpen, onClose }: ConnectWalletDialogProp
                         </div>
 
                         <h2 className="text-3xl font-black text-text-main dark:text-white leading-tight mb-3">
-                            Wait! We need your <span className="text-primary block">Magic Key!</span>
+                            Wait! We need your <span className="text-primary block">Magic Source!</span>
                         </h2>
 
                         <p className="text-lg text-text-muted dark:text-gray-300 font-bold leading-snug mb-8">
