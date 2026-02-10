@@ -66,10 +66,10 @@ export function GiveUpDreamDialog({ isOpen, onClose, onConfirm, isProcessing }: 
 
                     <div className="flex flex-col px-6 pt-5 pb-6 text-center">
                         <h2 className="text-[#0d1c0d] dark:text-white text-2xl font-bold leading-tight tracking-tight mb-2">
-                            Oops! Want to change your dream?
+                            Oops! Want to give up your dream?
                         </h2>
                         <p className="text-[#4a594a] dark:text-[#aebfae] text-base font-medium leading-relaxed mb-6">
-                            If you stop growing this seed, all your saved gold will go back to your wallet so you can start a brand new adventure. <span className="text-red-500 dark:text-red-400 font-bold block mt-1 text-sm">Your current progress will be lost!</span>
+                            If you stop growing this seed, all your saved Magic Drops will go back to your wallet. <span className="text-red-500 dark:text-red-400 font-bold block mt-1 text-sm">Don't worry. Your can plant a new dream seed</span>
                         </p>
                         <div className="flex flex-col gap-2.5 w-full">
                             <button onClick={onClose} disabled={isProcessing} className="group relative flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-primary hover:bg-[#1ee61e] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 active:scale-[0.98] shadow-[0_0_20px_rgba(37,244,37,0.3)] border border-transparent">
@@ -79,7 +79,7 @@ export function GiveUpDreamDialog({ isOpen, onClose, onConfirm, isProcessing }: 
                             </button>
                             <button onClick={onConfirm} disabled={isProcessing} className="group flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-[#ffebee] hover:bg-[#ffcdd2] disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/20 dark:hover:bg-red-900/40 text-[#c62828] dark:text-[#ef9a9a] transition-colors duration-200 active:scale-[0.98]">
                                 <span className="material-symbols-outlined mr-2 text-[20px]">{isProcessing ? 'sync' : 'replay'}</span>
-                                <span className="text-base font-bold tracking-wide">{isProcessing ? 'Processing...' : 'Take Back Gold & Restart'}</span>
+                                <span className="text-base font-bold tracking-wide">{isProcessing ? 'Processing...' : 'Take Back Drops'}</span>
                             </button>
                         </div>
                     </div>

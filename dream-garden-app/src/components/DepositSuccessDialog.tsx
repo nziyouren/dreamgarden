@@ -100,7 +100,7 @@ export function DepositSuccessDialog({ isOpen, onClose }: DepositSuccessDialogPr
                                 You Did It!
                             </h1>
                             <p className="text-lg text-[#8a7560] dark:text-[#bcaaa4] font-medium leading-snug">
-                                Your gold is safely in the magic vault. Look at your dream grow!
+                                Your Magic Drops are safely in the vault. Look at your dream grow!
                             </p>
                         </div>
 
