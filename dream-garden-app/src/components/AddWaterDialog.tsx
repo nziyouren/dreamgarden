@@ -137,7 +137,7 @@ export function AddWaterDialog({ isOpen, onClose, onConfirm, availableBalance, i
                             Time to water your seed!
                         </h2>
                         <p className="text-[#608a60] dark:text-[#a0cfa0] text-center font-medium text-base mb-6">
-                            How much water (gold) will you add today?
+                            How much water (drops) will you add today?
                         </p>
 
                         {/* Gold Input */}
@@ -152,7 +152,7 @@ export function AddWaterDialog({ isOpen, onClose, onConfirm, availableBalance, i
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
                             />
-                            <span className="absolute right-6 top-1/2 -translate-y-1/2 text-[#111811] dark:text-white font-bold text-lg opacity-60 tracking-tight">GOLD</span>
+                            <span className="absolute right-6 top-1/2 -translate-y-1/2 text-[#111811] dark:text-white font-bold text-lg opacity-60 tracking-tight">DROP</span>
                         </div>
 
                         {/* Quick Targets */}
@@ -179,7 +179,7 @@ export function AddWaterDialog({ isOpen, onClose, onConfirm, availableBalance, i
                         <div className="w-full flex items-start gap-3 bg-[#e6fcf5] dark:bg-[#1a331a] p-4 rounded-lg mb-8 border border-[#40E0D0]/20">
                             <span className="material-symbols-outlined text-[#40E0D0] shrink-0">info</span>
                             <p className="text-sm text-[#111811] dark:text-[#dbe6db] font-medium leading-snug">
-                                Adding water helps your seed grow faster! You have <span className="font-bold text-[#FFA500]">{availableBalance} Gold(btcUSDC)</span> available.
+                                Adding water helps your seed grow faster! You have <span className="font-bold text-[#FFA500]">{availableBalance} Magic Drops</span> available.
                             </p>
                         </div>
 

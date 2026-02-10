@@ -96,10 +96,10 @@ export function GardenHistoryPage() {
 
                     if (isAddWater || isMint) {
                         type = 'add_water';
-                        actionName = isAddWater ? "Watered the Garden" : "Minted Magic Drop";
+                        actionName = isAddWater ? "Watered the Garden" : "Minted Magic Drops";
                     } else if (isWithdraw || isBurn) {
                         type = 'withdraw';
-                        actionName = isWithdraw ? "Harvested (Withdraw)" : "Moved to Storage";
+                        actionName = isWithdraw ? "Harvested (Withdraw)" : "Burned Magic Drops";
                     } else if (isComplete) {
                         type = 'other';
                         actionName = "Dream Completed!";

@@ -67,7 +67,7 @@ export function WithdrawWaterDialog({ isOpen, onClose, onConfirm, availableBalan
                             Withdraw from Seed
                         </h2>
                         <p className="text-[#8a6060] dark:text-[#cfa0a0] text-center font-medium text-base mb-6">
-                            Need some gold back? You can withdraw any amount.
+                            Need some drops back? You can withdraw any amount.
                         </p>
 
                         {/* Gold Input */}
@@ -82,7 +82,7 @@ export function WithdrawWaterDialog({ isOpen, onClose, onConfirm, availableBalan
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
                             />
-                            <span className="absolute right-6 top-1/2 -translate-y-1/2 text-[#111811] dark:text-white font-bold text-lg opacity-60 tracking-tight">GOLD</span>
+                            <span className="absolute right-6 top-1/2 -translate-y-1/2 text-[#111811] dark:text-white font-bold text-lg opacity-60 tracking-tight">DROP</span>
                         </div>
 
                         {/* Quick Targets */}
@@ -109,7 +109,7 @@ export function WithdrawWaterDialog({ isOpen, onClose, onConfirm, availableBalan
                         <div className="w-full flex items-start gap-3 bg-[#fdf2f2] dark:bg-[#331a1a] p-4 rounded-lg mb-8 border border-[#FF7043]/20">
                             <span className="material-symbols-outlined text-[#FF7043] shrink-0">info</span>
                             <p className="text-sm text-[#181111] dark:text-[#ebdbe6] font-medium leading-snug">
-                                You currently have <span className="font-bold text-[#FF7043]">{availableBalance} Gold</span> in this seed.
+                                You currently have <span className="font-bold text-[#FF7043]">{availableBalance} Magic Drops</span> in this seed.
                             </p>
                         </div>
 

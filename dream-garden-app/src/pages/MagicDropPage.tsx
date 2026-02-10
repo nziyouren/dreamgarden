@@ -181,9 +181,9 @@ export function MagicDropPage() {
                                 <span className="material-symbols-outlined text-4xl font-bold">add</span>
                             </div>
                         </div>
-                        <h3 className="text-3xl font-black text-text-main dark:text-white mb-2">Mint Magic Drop</h3>
+                        <h3 className="text-3xl font-black text-text-main dark:text-white mb-2">Mint Magic Drops</h3>
                         <p className="text-text-muted dark:text-gray-400 font-medium mb-8 px-4 text-sm">
-                            Convert your USDC into Magic Drop to start growing your dream seeds and earn rewards.
+                            Convert your USDC into Magic Drops to start growing your dream seeds and earn rewards.
                         </p>
 
                         <div className="w-full bg-background-light dark:bg-black/20 p-6 rounded-2xl mb-6">
@@ -242,9 +242,9 @@ export function MagicDropPage() {
                                 <span className="material-symbols-outlined text-4xl font-bold">remove</span>
                             </div>
                         </div>
-                        <h3 className="text-3xl font-black text-text-main dark:text-white mb-2">Burn Magic Drop</h3>
+                        <h3 className="text-3xl font-black text-text-main dark:text-white mb-2">Burn Magic Drops</h3>
                         <p className="text-text-muted dark:text-gray-400 font-medium mb-8 px-4 text-sm">
-                            Finished growing? Exchange your Magic Drop back into real USDC to spend or save.
+                            Finished growing? Exchange your Magic Drops back into real USDC to spend or save.
                         </p>
 
                         <div className="w-full bg-background-light dark:bg-black/20 p-6 rounded-2xl mb-6">
@@ -258,7 +258,7 @@ export function MagicDropPage() {
                                     onChange={(e) => setBurnAmount(e.target.value)}
                                 />
                                 <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1 text-sm font-bold text-text-muted select-none pointer-events-none">
-                                    <span>MG</span>
+                                    <span>DROP</span>
                                 </div>
                             </div>
                             <div className="flex gap-2 justify-between w-full">
@@ -303,7 +303,7 @@ export function MagicDropPage() {
                         </div>
                         <div>
                             <p className="font-bold text-sm text-text-main dark:text-white">Exchange Rate</p>
-                            <p className="text-xs text-text-muted">1 USDC = 1 Magic Drop (btcUSDC)</p>
+                            <p className="text-xs text-text-muted">1 USDC = 1 Magic Drop</p>
                         </div>
                     </div>
                     <div className="flex gap-4">
