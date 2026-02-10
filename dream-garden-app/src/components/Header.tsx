@@ -91,14 +91,14 @@ export function Header() {
                     padding-top: 12px !important;
                     padding-bottom: 12px !important;
                     color: #ef4444 !important; /* 使用红色增强警示 */
-                    border-top: 1px solid #f3f4f6 !important;
                     position: sticky !important;
-                    bottom: -6px !important; /* 抵消父容器 padding */
+                    bottom: 0px !important; 
                     background-color: white !important;
                     z-index: 10 !important;
-                    margin-bottom: -6px !important; /* 抵消父容器 padding */
-                    border-bottom-left-radius: 16px !important;
-                    border-bottom-right-radius: 16px !important;
+                    margin-bottom: 0px !important; 
+                    border-bottom-left-radius: 10px !important;
+                    border-bottom-right-radius: 10px !important;
+                    overflow: hidden !important;
                 }
 
                 div[role="menuitem"]:last-child:hover {
