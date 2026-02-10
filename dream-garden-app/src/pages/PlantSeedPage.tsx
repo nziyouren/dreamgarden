@@ -4,6 +4,7 @@ import { useCurrentAccount, useSignAndExecuteTransaction, useSuiClient } from "@
 import { Transaction } from "@mysten/sui/transactions";
 import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_TYPES, SEED_TYPE_LIST } from "../constants";
 import { TransactionStatus } from "../components/TransactionStatus";
+import { ConnectWalletDialog } from "../components/ConnectWalletDialog";
 import { useTransactionStatus } from "../hooks/useTransactionStatus";
 
 
@@ -17,12 +18,17 @@ export function PlantSeedPage() {
     const [targetAmount, setTargetAmount] = useState("");
     const [seedType, setSeedType] = useState<string>(SEED_TYPES.TOY.id);
     const [isPlanting, setIsPlanting] = useState(false);
+    const [isConnectOpen, setIsConnectOpen] = useState(false);
     const { status, errorMsg, successMsg, title, updateStatus, reset } = useTransactionStatus();
 
 
 
     const handlePlantSeed = async () => {
-        if (!account || !dreamName || !targetAmount) return;
+        if (!account) {
+            setIsConnectOpen(true);
+            return;
+        }
+        if (!dreamName || !targetAmount) return;
 
         setIsPlanting(true);
         const tx = new Transaction();
@@ -113,6 +119,10 @@ export function PlantSeedPage() {
                         error={errorMsg}
                         message={successMsg}
                         onClose={reset}
+                    />
+                    <ConnectWalletDialog
+                        isOpen={isConnectOpen}
+                        onClose={() => setIsConnectOpen(false)}
                     />
 
                     <div className="grid lg:grid-cols-2 gap-0">

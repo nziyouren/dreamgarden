@@ -4,6 +4,7 @@ import { Transaction, coinWithBalance } from "@mysten/sui/transactions";
 import { StableLayerClient } from "stable-layer-sdk";
 import { USDC_TYPE, BTC_USD_TYPE } from "../constants";
 import { TransactionStatus } from "../components/TransactionStatus";
+import { ConnectWalletDialog } from "../components/ConnectWalletDialog";
 import { useTransactionStatus } from "../hooks/useTransactionStatus";
 
 
@@ -27,6 +28,7 @@ export function MagicDropPage() {
         networkSupply: "0.00",
         apr: "10.50"
     });
+    const [isConnectOpen, setIsConnectOpen] = useState(false);
     const { status, errorMsg: txError, successMsg, title, updateStatus, reset } = useTransactionStatus();
 
 
@@ -73,7 +75,11 @@ export function MagicDropPage() {
     }, [account]);
 
     const handleMint = async () => {
-        if (!account || !mintAmount) return;
+        if (!account) {
+            setIsConnectOpen(true);
+            return;
+        }
+        if (!mintAmount) return;
         const tx = new Transaction();
         const amount = BigInt(Math.floor(parseFloat(mintAmount) * 1_000_000));
 
@@ -113,7 +119,11 @@ export function MagicDropPage() {
     };
 
     const handleBurn = async () => {
-        if (!account || !burnAmount) return;
+        if (!account) {
+            setIsConnectOpen(true);
+            return;
+        }
+        if (!burnAmount) return;
         const tx = new Transaction();
         const amount = BigInt(Math.floor(parseFloat(burnAmount) * 1_000_000));
 
@@ -157,6 +167,10 @@ export function MagicDropPage() {
                 error={txError}
                 message={successMsg}
                 onClose={reset}
+            />
+            <ConnectWalletDialog
+                isOpen={isConnectOpen}
+                onClose={() => setIsConnectOpen(false)}
             />
             <header className="text-center mb-12 mt-12">
 

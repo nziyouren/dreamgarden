@@ -10,6 +10,7 @@ import { DepositSuccessDialog } from "../components/DepositSuccessDialog.tsx";
 
 import { DREAM_GARDEN_PACKAGE_ID, DREAM_GARDEN_MODULE, BTC_USD_TYPE, SEED_STATUS, SEED_TYPE_LIST } from "../constants";
 import { TransactionStatus } from "../components/TransactionStatus";
+import { ConnectWalletDialog } from "../components/ConnectWalletDialog";
 import { useTransactionStatus } from "../hooks/useTransactionStatus";
 
 
@@ -30,10 +31,10 @@ export function DashboardPage() {
 
     const [activeSeed, setActiveSeed] = useState<any>(null);
     const [isLoadingSeeds, setIsLoadingSeeds] = useState(true);
+    const [isConnectOpen, setIsConnectOpen] = useState(false);
     const { status, errorMsg, successMsg, title, updateStatus, reset } = useTransactionStatus();
 
     const isCompleted = activeSeed?.status === SEED_STATUS.COMPLETED;
-    const isAbandoned = activeSeed?.status === SEED_STATUS.ABANDONED;
     const isActive = activeSeed?.status === SEED_STATUS.CREATED || activeSeed?.status === SEED_STATUS.IN_PROGRESS;
 
     const displayFunds = activeSeed
@@ -171,6 +172,14 @@ export function DashboardPage() {
         }
     };
 
+
+    const handleAction = (callback: () => void) => {
+        if (!account) {
+            setIsConnectOpen(true);
+            return;
+        }
+        callback();
+    };
 
     const handleConfirmWithdraw = async (amountStr: string) => {
         if (!account || !activeSeed) return;
@@ -422,7 +431,7 @@ export function DashboardPage() {
                     {isActive && (
                         <div className="flex flex-col gap-3">
                             <button
-                                onClick={() => setIsAddWaterOpen(true)}
+                                onClick={() => handleAction(() => setIsAddWaterOpen(true))}
                                 disabled={isLoadingSeeds || isProcessing}
                                 className="group relative w-full py-3 bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-background-dark rounded-2xl font-black text-lg shadow-[0_4px_0_0_#1a9e1a] hover:shadow-[0_2px_0_0_#1a9e1a] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden"
                             >
@@ -431,7 +440,7 @@ export function DashboardPage() {
                             </button>
 
                             <button
-                                onClick={() => setIsWithdrawOpen(true)}
+                                onClick={() => handleAction(() => setIsWithdrawOpen(true))}
                                 disabled={isLoadingSeeds || !activeSeed || parseInt(activeSeed.funds || "0") === 0 || isProcessing}
                                 className="group relative w-full py-3 bg-orange-400 hover:bg-orange-500 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-white rounded-2xl font-black text-lg shadow-[0_4px_0_0_#c2410c] hover:shadow-[0_2px_0_0_#c2410c] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden"
                             >
@@ -442,14 +451,14 @@ export function DashboardPage() {
                     )}
 
                     {isActive && activeSeed && parseInt(activeSeed.funds) >= parseInt(activeSeed.target_amount) && (
-                        <button onClick={handleFinish} disabled={isProcessing} className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-white rounded-2xl font-black text-lg shadow-[0_4px_0_0_#065f46] hover:shadow-[0_2px_0_0_#065f46] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden">
+                        <button onClick={() => handleAction(handleFinish)} disabled={isProcessing} className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none text-white rounded-2xl font-black text-lg shadow-[0_4px_0_0_#065f46] hover:shadow-[0_2px_0_0_#065f46] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] transition-all duration-150 flex items-center justify-center gap-3 overflow-hidden">
                             <span className="material-symbols-outlined text-2xl animate-bounce">{isProcessing ? 'sync' : 'celebration'}</span>
                             {isProcessing ? 'Processing...' : 'Finish Dream & Collect!'}
                         </button>
                     )}
 
                     {isActive && (
-                        <button onClick={() => setIsGiveUpOpen(true)} disabled={isProcessing} className="w-full py-2.5 bg-white dark:bg-card-dark disabled:opacity-50 text-red-500 dark:text-red-400 border-2 border-red-100 dark:border-red-900/30 rounded-xl font-bold text-sm hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center justify-center gap-2 mt-2">
+                        <button onClick={() => handleAction(() => setIsGiveUpOpen(true))} disabled={isProcessing} className="w-full py-2.5 bg-white dark:bg-card-dark disabled:opacity-50 text-red-500 dark:text-red-400 border-2 border-red-100 dark:border-red-900/30 rounded-xl font-bold text-sm hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center justify-center gap-2 mt-2">
                             <span className="material-symbols-outlined text-lg">cancel</span>
                             {activeSeed ? 'Cancel Dream & Withdraw Funds' : 'Go Back'}
                         </button>
@@ -498,6 +507,10 @@ export function DashboardPage() {
                     </div>
                 </div>
             </div>
+            <ConnectWalletDialog
+                isOpen={isConnectOpen}
+                onClose={() => setIsConnectOpen(false)}
+            />
         </main>
     );
 }
